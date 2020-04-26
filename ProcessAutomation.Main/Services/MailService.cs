@@ -6,17 +6,14 @@ namespace ProcessAutomation.Main.Services
 {
     public class MailService
     {
-        public string subject { get; set; }
-        public string body { get; set; }
-
-        public void SendEmail()
+        public void SendEmail(string subject, string body)
         {
             using (MailMessage mail = new MailMessage())
             {
                 mail.From = new MailAddress(Constant.EMAIL_FROM_ID);
                 mail.To.Add(Constant.EMAIL_TO);
-                mail.Subject = this.subject;
-                mail.Body = this.body;
+                mail.Subject = subject;
+                mail.Body = body;
 
                 using (SmtpClient smtp = new SmtpClient(Constant.SMTP_ADDRESS, Constant.PORT_NUMBER))
                 {

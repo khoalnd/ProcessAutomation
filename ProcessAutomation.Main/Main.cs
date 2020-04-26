@@ -20,8 +20,8 @@ namespace ProcessAutomation.Main
 
         private void Main_Load(object sender, EventArgs e)
         {
-            //var mailService = new MailService { subject = "test", body = "test" };
-            //mailService.SendEmail();
+            //var mailService = new MailService();
+            //mailService.SendEmail(subject: "test", body: "test");
         }
     }
 }
