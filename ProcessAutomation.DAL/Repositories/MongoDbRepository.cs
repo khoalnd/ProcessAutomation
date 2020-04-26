@@ -6,7 +6,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using MongoDB.Driver.Linq;
@@ -32,7 +31,7 @@ public class MongoDbRepository<TEntity> :
     public bool Insert(TEntity entity)
     {
         entity.Id = Guid.NewGuid();
-        return collection.Insert(entity).Ok;
+        return collection.Insert(entity).HasLastErrorMessage;
     }
 
     public bool Update(TEntity entity)
