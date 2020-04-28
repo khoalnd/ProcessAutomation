@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProcessAutomation.Main.Services
+namespace ProcessAutomation.Main.Services.Interfaces
 {
-    public class DeviceSerialPortService
+    interface IAutomationPayIn
     {
-
     }
 }
