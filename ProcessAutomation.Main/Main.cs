@@ -8,12 +8,15 @@ using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace ProcessAutomation.Main
-{ 
+{
     public partial class Main : Form
     {
+        System.Timers.Timer readMesageTimer;
+        System.Timers.Timer payinProcessTimer;
         DevicePortCOMService serialPortService = new DevicePortCOMService();
         SerialPort serialPort = new SerialPort();
         MessageService messageService = new MessageService();
@@ -29,6 +32,7 @@ namespace ProcessAutomation.Main
             AddPortsToCombobox();
         }
 
+        #region Read Message
         private void connectPortBtn_Click(object sender, EventArgs e)
         {
             var portName = SerialPortCombobox.Text;
@@ -52,6 +56,57 @@ namespace ProcessAutomation.Main
             }
 
             messageService.StartReadMessage(serialPort);
+            InitReadMessageTimer();
+            InitPayInProcessTimer();
+        }
+
+        private void InitReadMessageTimer()
+        {
+            readMesageTimer.Interval = 5000;
+            readMesageTimer.AutoReset = false;
+            readMesageTimer.Elapsed += StartReadMessage;
+        }
+
+        private void StartReadMessage(object sender, ElapsedEventArgs e)
+        {
+            var needStop = false;
+            try
+            {
+                messageService.StartReadMessage(serialPort);
+            }
+            catch (Exception ex)
+            {
+                readMesageTimer.Enabled = false;
+                needStop = true;
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                if (needStop)
+                    readMesageTimer.Start();
+            }
+        }
+
+        private void InitPayInProcessTimer()
+        {
+            payinProcessTimer.Interval = 10000;
+            payinProcessTimer.AutoReset = false;
+            payinProcessTimer.Elapsed += StartPayIn;
+        }
+
+        private void StartPayIn(object sender, ElapsedEventArgs e)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+            }
         }
 
         private void AddPortsToCombobox()
@@ -63,5 +118,7 @@ namespace ProcessAutomation.Main
                 SerialPortCombobox.SelectedIndex = portNames.Length - 1;
             }
         }
+
+        #endregion
     }
 }

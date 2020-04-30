@@ -9,7 +9,6 @@ namespace ProcessAutomation.Main.Services
 {
     public class DevicePortCOMService
     {
-        MessageService messageService = new MessageService();
         private bool isPortWork(SerialPort serialPort)
         {
             try
@@ -41,8 +40,6 @@ namespace ProcessAutomation.Main.Services
                     RtsEnable = true,
                     NewLine = Environment.NewLine,
                 };
-                //serialPort.DataReceived += new SerialDataReceivedEventHandler
-                //    (messageService.StartReadMessage1);
 
                 serialPort.Open();
                 if (isPortWork(serialPort))
