@@ -1,22 +1,16 @@
-﻿using ProcessAutomation.Main.Helpers;
-using ProcessAutomation.Main.Services.Interfaces;
+﻿using ProcessAutomation.Main.Ultility;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace ProcessAutomation.Main.Services
 {
     public class MessageService
     {
         CSV csvHelper = new CSV();
-        const string regExtractMessage = "(\\+CMGL: \\d+)+(,\".*?\",)+(\".*?\",)+(,\".*?\")+(\n|\r\n)+(.*)";
-        const string regExtractMoney = "(tang)+(.*?VND)";
-        const string regExtractAccount = "( ND )+(.*? )";
-        List<string> webs = new List<string> { "cb","hlc","30s", "gdvn" }; 
 
         public void StartReadMessage(SerialPort serialPort)
         {
@@ -24,7 +18,7 @@ namespace ProcessAutomation.Main.Services
             serialPort.Write("AT+CMGL=\"ALL\"" + Environment.NewLine);
             System.Threading.Thread.Sleep(50);
             var response = serialPort.ReadExisting();
-            var rule = new Regex(regExtractMessage);
+            var rule = new Regex(Constant.REG_EXTRACT_MESSAGE);
             var matches = rule.Matches(response);
             SaveMessage(matches);
             
@@ -77,7 +71,7 @@ namespace ProcessAutomation.Main.Services
             var account = string.Empty;
             var isSatisfied = false;
 
-            var match = new Regex(regExtractMoney).Match(mess).Groups[2] ?? null;
+            var match = new Regex(Constant.REG_EXTRACT_MONEY).Match(mess).Groups[2] ?? null;
             if (string.IsNullOrEmpty(match.Value))
                 return (money, account, isSatisfied);
 
@@ -92,12 +86,12 @@ namespace ProcessAutomation.Main.Services
             if (!isSatisfied)
                 return (money, account, isSatisfied);
 
-            match = new Regex(regExtractAccount).Match(mess).Groups[2] ?? null;
+            match = new Regex(Constant.REG_EXTRACT_ACCOUNT).Match(mess).Groups[2] ?? null;
             if (string.IsNullOrEmpty(match.Value))
                 return (money, account, !isSatisfied);
 
             account = match.Value;
-            isSatisfied = webs
+            isSatisfied = Constant.WEBS_NAME
                 .Any(x => match.Value.Contains(x));
 
             return (money, account, isSatisfied);

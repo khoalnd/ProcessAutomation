@@ -57,14 +57,15 @@ namespace ProcessAutomation.Main
 
             messageService.StartReadMessage(serialPort);
             InitReadMessageTimer();
-            InitPayInProcessTimer();
+            //InitPayInProcessTimer();
         }
 
         private void InitReadMessageTimer()
         {
-            readMesageTimer.Interval = 5000;
+            readMesageTimer = new System.Timers.Timer(5000);
             readMesageTimer.AutoReset = false;
             readMesageTimer.Elapsed += StartReadMessage;
+            readMesageTimer.Start();
         }
 
         private void StartReadMessage(object sender, ElapsedEventArgs e)
@@ -89,9 +90,10 @@ namespace ProcessAutomation.Main
 
         private void InitPayInProcessTimer()
         {
-            payinProcessTimer.Interval = 10000;
+            readMesageTimer = new System.Timers.Timer(10000);
             payinProcessTimer.AutoReset = false;
             payinProcessTimer.Elapsed += StartPayIn;
+            readMesageTimer.Start();
         }
 
         private void StartPayIn(object sender, ElapsedEventArgs e)
