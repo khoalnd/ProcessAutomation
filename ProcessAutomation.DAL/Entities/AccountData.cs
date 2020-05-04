@@ -1,8 +1,29 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-public class AccountData : EntityBase
+public class AccountData
 {
+    public AccountData()
+    {
+        Id = new ObjectId();
+        IDAccount = 0;
+        Name = string.Empty;
+        Phone = string.Empty;
+        CB = string.Empty;
+        HL = string.Empty;
+        GD = string.Empty;
+        NT = string.Empty;
+    }
+
+    public ObjectId Id { get; set; }
+    public int IDAccount { get; set; }
+    public string Name { get; set; }
+    public string Phone { get; set; }
+    public string CB { get; set; }
+    public string HL { get; set; }
+    public string GD { get; set; }
+    public string NT { get; set; }
 }

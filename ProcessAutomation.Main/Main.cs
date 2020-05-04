@@ -1,13 +1,7 @@
-﻿using ProcessAutomation.Main.Services;
+﻿using ProcessAutomation.Main.PayIn;
+using ProcessAutomation.Main.Services;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO.Ports;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 
@@ -16,11 +10,11 @@ namespace ProcessAutomation.Main
     public partial class Main : Form
     {
         System.Timers.Timer readMesageTimer;
-        System.Timers.Timer payinProcessTimer;
         DevicePortCOMService serialPortService = new DevicePortCOMService();
         SerialPort serialPort = new SerialPort();
         MessageService messageService = new MessageService();
-
+        IAutomationPayIn iAutomationPayin;
+        bool isPayInProcessDone = true;
         public Main()
         {
             InitializeComponent();
@@ -55,8 +49,8 @@ namespace ProcessAutomation.Main
                 return;
             }
 
-            messageService.StartReadMessage(serialPort);
-            InitReadMessageTimer();
+            //messageService.StartReadMessage(serialPort);
+            //InitReadMessageTimer();
             //InitPayInProcessTimer();
         }
 
@@ -83,31 +77,43 @@ namespace ProcessAutomation.Main
             }
             finally
             {
-                if (needStop)
+                if (!needStop)
                     readMesageTimer.Start();
             }
         }
 
         private void InitPayInProcessTimer()
         {
-            readMesageTimer = new System.Timers.Timer(10000);
-            payinProcessTimer.AutoReset = false;
-            payinProcessTimer.Elapsed += StartPayIn;
-            readMesageTimer.Start();
+            timer1.Interval = (10000);
+            timer1.Tick += new EventHandler(StartPayIn);
+            timer1.Start();
         }
 
-        private void StartPayIn(object sender, ElapsedEventArgs e)
+        private void StartPayIn(object sender, EventArgs e)
         {
             try
             {
+                if (isPayInProcessDone)
+                {
+                    var dataForProcess = messageService.ReadMessage();
+                    if (dataForProcess.Count == 0)
+                        isPayInProcessDone = true;
+                    else
+                    {
 
+                        isPayInProcessDone = false;
+                        if (iAutomationPayin != null && !iAutomationPayin.checkProcessDone())
+                        {
+                            return;
+                        }
+                        iAutomationPayin = new CBSite(null, webLayout);
+                        iAutomationPayin.startPayIN();
+                    }
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }
-            finally
-            {
             }
         }
 

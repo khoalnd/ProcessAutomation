@@ -9,9 +9,9 @@ namespace ProcessAutomation.Main.Services
 {
     public class CSV
     {
-        private string DELIMITER = ",";
         private string PATH = AppDomain.CurrentDomain.BaseDirectory;
-        private StringBuilder HEADER = new StringBuilder("id, sotien, ngay, noidung, hople, daxuly " + Environment.NewLine);
+        private StringBuilder HEADER = new StringBuilder(
+            "taikhoan, sotien, web, ngaynhan, hople, daxuly, loi, noidung " + Environment.NewLine);
 
         public void WriteToFile(StringBuilder data, string fileName)
         {

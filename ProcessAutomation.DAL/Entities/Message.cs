@@ -1,8 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using MongoDB.Bson;
 
-public class Message : EntityBase
+public class Message
 {
+    public Message()
+    {
+        Id = new ObjectId();
+        Account = string.Empty;
+        Money = string.Empty;
+        Web = string.Empty;
+        RecievedDate = string.Empty;
+        MessageContent = string.Empty;
+        IsSatisfied = false;
+        IsProcessed = false;
+        Error = string.Empty;
+    }
+
+    public ObjectId Id { get; set; }
+    public string Account { get; set; }
+    public string Money { get; set; }
+    public string Web { get; set; }
+    public string RecievedDate { get; set; }
+    public string MessageContent { get; set; }
+    public bool IsSatisfied { get; set; }
+    public bool IsProcessed{ get; set; }
+    public string Error { get; set; }
 }

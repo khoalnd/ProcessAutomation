@@ -28,10 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.SerialPortCombobox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.connectPortBtn = new System.Windows.Forms.Button();
             this.webLayout = new System.Windows.Forms.WebBrowser();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // SerialPortCombobox
@@ -94,5 +96,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button connectPortBtn;
         private System.Windows.Forms.WebBrowser webLayout;
+        private System.Windows.Forms.Timer timer1;
     }
 }

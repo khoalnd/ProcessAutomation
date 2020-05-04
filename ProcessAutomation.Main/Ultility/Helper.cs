@@ -9,7 +9,7 @@ namespace ProcessAutomation.Main.Ultility
 {
     public class Helper
     {
-        public static bool CheckInternetConnection()
+        public bool CheckInternetConnection()
         {
 			try
 			{
