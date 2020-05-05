@@ -9,21 +9,21 @@ public class AccountData
     public AccountData()
     {
         Id = new ObjectId();
-        IDAccount = 0;
+        IDAccount = string.Empty;
         Name = string.Empty;
         Phone = string.Empty;
         CB = string.Empty;
-        HL = string.Empty;
+        HLC = string.Empty;
         GD = string.Empty;
         NT = string.Empty;
     }
 
     public ObjectId Id { get; set; }
-    public int IDAccount { get; set; }
+    public string IDAccount { get; set; }
     public string Name { get; set; }
     public string Phone { get; set; }
     public string CB { get; set; }
-    public string HL { get; set; }
+    public string HLC { get; set; }
     public string GD { get; set; }
     public string NT { get; set; }
 }

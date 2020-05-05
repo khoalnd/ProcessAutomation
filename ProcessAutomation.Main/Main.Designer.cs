@@ -33,7 +33,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.connectPortBtn = new System.Windows.Forms.Button();
             this.webLayout = new System.Windows.Forms.WebBrowser();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timerCheckPayInProcess = new System.Windows.Forms.Timer(this.components);
+            this.timerCheckChildProcess = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // SerialPortCombobox
@@ -70,14 +71,14 @@
             this.webLayout.Location = new System.Drawing.Point(38, 108);
             this.webLayout.MinimumSize = new System.Drawing.Size(20, 20);
             this.webLayout.Name = "webLayout";
-            this.webLayout.Size = new System.Drawing.Size(592, 414);
+            this.webLayout.Size = new System.Drawing.Size(1215, 504);
             this.webLayout.TabIndex = 3;
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(688, 534);
+            this.ClientSize = new System.Drawing.Size(1265, 624);
             this.Controls.Add(this.webLayout);
             this.Controls.Add(this.connectPortBtn);
             this.Controls.Add(this.label1);
@@ -96,6 +97,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button connectPortBtn;
         private System.Windows.Forms.WebBrowser webLayout;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer timerCheckPayInProcess;
+        private System.Windows.Forms.Timer timerCheckChildProcess;
     }
 }

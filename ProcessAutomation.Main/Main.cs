@@ -1,6 +1,7 @@
 ﻿using ProcessAutomation.Main.PayIn;
 using ProcessAutomation.Main.Services;
 using System;
+using System.Collections.Generic;
 using System.IO.Ports;
 using System.Timers;
 using System.Windows.Forms;
@@ -14,7 +15,9 @@ namespace ProcessAutomation.Main
         SerialPort serialPort = new SerialPort();
         MessageService messageService = new MessageService();
         IAutomationPayIn iAutomationPayin;
-        bool isPayInProcessDone = true;
+        bool isCurrentPayInProcessDone = true;
+        Dictionary<string, List<Message>> listMessage = new Dictionary<string, List<Message>>(); 
+
         public Main()
         {
             InitializeComponent();
@@ -24,6 +27,10 @@ namespace ProcessAutomation.Main
         {
             // add serial port com from computer
             AddPortsToCombobox();
+
+            timerCheckChildProcess = new System.Windows.Forms.Timer();
+            timerCheckChildProcess.Interval = (5000);
+            timerCheckChildProcess.Tick += new EventHandler(Process);
         }
 
         #region Read Message
@@ -49,9 +56,9 @@ namespace ProcessAutomation.Main
                 return;
             }
 
-            //messageService.StartReadMessage(serialPort);
-            //InitReadMessageTimer();
-            //InitPayInProcessTimer();
+            messageService.StartReadMessage(serialPort);
+            InitReadMessageTimer();
+            InitPayInProcessTimer();
         }
 
         private void InitReadMessageTimer()
@@ -84,37 +91,96 @@ namespace ProcessAutomation.Main
 
         private void InitPayInProcessTimer()
         {
-            timer1.Interval = (10000);
-            timer1.Tick += new EventHandler(StartPayIn);
-            timer1.Start();
+            timerCheckPayInProcess.Interval = (10000);
+            timerCheckPayInProcess.Tick += new EventHandler(StartPayIn);
+            timerCheckPayInProcess.Start();
         }
 
         private void StartPayIn(object sender, EventArgs e)
         {
             try
             {
-                if (isPayInProcessDone)
-                {
-                    var dataForProcess = messageService.ReadMessage();
-                    if (dataForProcess.Count == 0)
-                        isPayInProcessDone = true;
-                    else
-                    {
+                if (!isCurrentPayInProcessDone)
+                    return;
 
-                        isPayInProcessDone = false;
-                        if (iAutomationPayin != null && !iAutomationPayin.checkProcessDone())
-                        {
-                            return;
-                        }
-                        iAutomationPayin = new CBSite(null, webLayout);
-                        iAutomationPayin.startPayIN();
-                    }
+                listMessage = new Dictionary<string, List<Message>>();
+                listMessage = messageService.ReadMessage();
+                if (listMessage.Count == 0)
+                    isCurrentPayInProcessDone = true;
+                else
+                {
+                    isCurrentPayInProcessDone = false;
+                    if (!timerCheckChildProcess.Enabled)
+                        timerCheckChildProcess.Start();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void Process(object sender, EventArgs e)
+        {
+            if (listMessage.Count == 0)
+            {
+                isCurrentPayInProcessDone = true;
+                timerCheckChildProcess.Stop();
+                return;
+            }
+                
+            if (listMessage.ContainsKey("cb") && listMessage["cb"].Count > 0)
+            {
+                if (iAutomationPayin == null || !(iAutomationPayin is CBSite))
+                {
+                    iAutomationPayin = new CBSite(new List<Message>(listMessage["cb"]), webLayout);
+                    iAutomationPayin.startPayIN();
+                }
+
+                if (!iAutomationPayin.checkProcessDone())
+                    return;
+
+                listMessage.Remove("cb");
+            }
+            else if (listMessage.ContainsKey("hlc") && listMessage["hlc"].Count > 0)
+            {
+                if (iAutomationPayin == null || !(iAutomationPayin is HLCSite))
+                {
+                    iAutomationPayin = new HLCSite(new List<Message>(listMessage["hlc"]), webLayout);
+                    iAutomationPayin.startPayIN();
+                }
+
+                if (!iAutomationPayin.checkProcessDone())
+                    return;
+
+                listMessage.Remove("hlc");
+            }
+            //else if (listMessage.ContainsKey("gd") && listMessage["gd"].Count > 0)
+            //{
+            //    if (iAutomationPayin == null || !(iAutomationPayin is GDSite))
+            //    {
+            //        iAutomationPayin = new GDSite(new List<Message>(listMessage["gd"]), webLayout);
+            //        iAutomationPayin.startPayIN();
+            //    }
+
+            //    if (!iAutomationPayin.checkProcessDone())
+            //        return;
+
+            //    listMessage.Remove("gd");
+            //}
+            //else if (listMessage["nt"] != null && listMessage["nt"].Count > 0)
+            //{
+            //    if (iAutomationPayin == null || !(iAutomationPayin is CBSite))
+            //    {
+            //        iAutomationPayin = new CBSite(listMessage["nt"], webLayout);
+            //        iAutomationPayin.startPayIN();
+            //    }
+
+            //    if (!iAutomationPayin.checkProcessDone())
+            //        return;
+
+            //    listMessage.Remove("nt");
+            //}
         }
 
         private void AddPortsToCombobox()

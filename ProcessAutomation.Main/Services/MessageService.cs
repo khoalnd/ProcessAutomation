@@ -31,9 +31,13 @@ namespace ProcessAutomation.Main.Services
             //serialPort.ReadExisting();
         }
 
-        public List<Message> ReadMessage()
+        public Dictionary<string, List<Message>> ReadMessage()
         {
-            return database.Query.Where(x => x.IsProcessed == false && x.IsSatisfied == true).ToList();
+            return database.
+               Query
+               .Where(x => x.IsProcessed == false && x.IsSatisfied == true).ToList()
+               .GroupBy(x => x.Web)
+               .ToDictionary(x => x.Key, x => x.ToList());
         }
 
         private void SaveMessage(MatchCollection matches)
@@ -102,7 +106,7 @@ namespace ProcessAutomation.Main.Services
                 decimal outMoney = 0;
 
                 result.IsSatisfied = false;
-                if (decimal.TryParse(money, out outMoney)/* && outMoney >= 500000*/)
+                if (decimal.TryParse(money, out outMoney) && outMoney >= 20000)
                 {
                     result.Money = outMoney.ToString();
                     result.IsSatisfied = true;

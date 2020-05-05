@@ -13,22 +13,22 @@ using System.Windows.Forms;
 
 namespace ProcessAutomation.Main.PayIn
 {
-    public class CBSite : IAutomationPayIn
+    public class GDSite : IAutomationPayIn
     {
         MailService mailService = new MailService();
         Helper helper = new Helper();
         WebBrowser webLayout;
         List<Message> data = new List<Message>();
-        private const string web_name = "cay bang";
-        private const string url = "https://caybang.club/";
-        private const string index_URL = url + "Login";
-        private const string user_URL = url + "Users";
-        private const string agencies_URL = url + "Users/Agencies";
+        private const string web_name = "gia dinh vina";
+        private const string url = "https://giadinhvina.com.vn/";
+        private const string index_URL = url + "HIMONEY/HiMM/";
+        private const string user_URL = url + "HIMONEY/HiMM/helloVMV.php";
+        private const string agencies_URL = url + "HIMONEY/HiMM/chuyenkhoan.php";
         private const string addMoney_URL = url + "Users/AddMoneyToUser";
         private bool isFinishProcess = true;
         Message currentMessage;
 
-        public CBSite(List<Message> data, WebBrowser web)
+        public GDSite(List<Message> data, WebBrowser web)
         {
             this.data = data;
             this.webLayout = web;
@@ -53,6 +53,11 @@ namespace ProcessAutomation.Main.PayIn
             WebBrowserDocumentCompletedEventHandler documentComplete = null;
             documentComplete = new WebBrowserDocumentCompletedEventHandler((s, e) =>
             {
+                HtmlDocument doc = webLayout.Document;
+                HtmlElement head = doc.GetElementsByTagName("head")[0];
+                HtmlElement s12 = doc.CreateElement("script");
+                s12.SetAttribute("text", "window.alert = function () {test(); };function test() {window.href='https://google.com.vn'}");
+                head.AppendChild(s12);
                 webLayout.DocumentCompleted -= documentComplete;
                 tcs.SetResult(v);
             });
@@ -61,6 +66,7 @@ namespace ProcessAutomation.Main.PayIn
             var triedAccessWeb = 1;
             try
             {
+
                 var process = "OpenWeb";
                 do
                 {
@@ -73,7 +79,7 @@ namespace ProcessAutomation.Main.PayIn
                             webLayout.Navigate(index_URL);
                             await tcs.Task;
 
-                            if (!(webLayout.DocumentText.Contains("ĐĂNG NHẬP")))
+                            if (!(webLayout.DocumentText.Contains("Đăng nhập")))
                             {
                                 if (triedAccessWeb == 5)
                                 {
@@ -102,6 +108,7 @@ namespace ProcessAutomation.Main.PayIn
                             {
                                 tcs = new TaskCompletionSource<Void>();
                                 Login();
+                             
                                 webLayout.ScriptErrorsSuppressed = true;
                                 webLayout.DocumentCompleted += documentComplete;
                                 await tcs.Task;
@@ -128,6 +135,11 @@ namespace ProcessAutomation.Main.PayIn
                         case "AccessToDaily":
                             tcs = new TaskCompletionSource<Void>();
                             AccessToDaily();
+
+
+                          
+                            //webLayout.Document.InvokeScript("sayHello");
+
                             webLayout.ScriptErrorsSuppressed = true;
                             webLayout.DocumentCompleted += documentComplete;
                             await tcs.Task;
@@ -164,22 +176,23 @@ namespace ProcessAutomation.Main.PayIn
                             break;
                         case "AccessToPayIn":
                             tcs = new TaskCompletionSource<Void>();
-                            AccessToPayIn();
                             webLayout.ScriptErrorsSuppressed = true;
+                            AccessToPayIn();
+                           
                             webLayout.DocumentCompleted += documentComplete;
                             await tcs.Task;
 
-                            if (!webLayout.Url.ToString().Contains(addMoney_URL))
-                            {
-                                var errorMessage = $"Trang cộng tiền web {web_name} bị lỗi";
-                                SendNotificationForError(
-                                    "Truy cập vào trang cộng tiền bị lỗi", errorMessage);
+                            //if (!webLayout.Url.ToString().Contains(addMoney_URL))
+                            //{
+                            //    var errorMessage = $"Trang cộng tiền web {web_name} bị lỗi";
+                            //    SendNotificationForError(
+                            //        "Truy cập vào trang cộng tiền bị lỗi", errorMessage);
 
-                                isFinishProcess = true;
-                                break;
-                            }
-
-                            process = "PayIn";
+                            //    isFinishProcess = true;
+                            //    break;
+                            //}
+                            isFinishProcess = true;
+                            //process = "PayIn";
                             break;
                         case "PayIn":
                             tcs = new TaskCompletionSource<Void>();
@@ -200,14 +213,14 @@ namespace ProcessAutomation.Main.PayIn
                             {
                                 SaveRecord();
                             }
-
                             data.Remove(currentMessage);
-                            if (data.Count == 0)
+                            if (data.Count > 0)
                             {
-                                isFinishProcess = true;
-                                break;
+                                process = "OpenWeb";
                             }
-                            process = "OpenWeb";
+                            else {
+                                isFinishProcess = true;
+                            }
                             break;
                     }
                 } while (!isFinishProcess || !helper.CheckInternetConnection());
@@ -224,18 +237,24 @@ namespace ProcessAutomation.Main.PayIn
         private void Login() 
         {
             var htmlLogin = webLayout.Document;
-            var inputUserName = htmlLogin.GetElementById("Username");
-            var inputPassword = htmlLogin.GetElementById("Password");
-            var btnLogin = htmlLogin.GetElementById("login");
-
-            if (inputUserName != null && inputPassword != null)
+            var inputTag = htmlLogin.GetElementsByTagName("input");
+            foreach (HtmlElement item in inputTag)
             {
-                inputUserName.SetAttribute("value", "autobank");
-                inputPassword.SetAttribute("value", "Abc@12345");
-                btnLogin.InvokeMember("Click");
+                var name = item.GetAttribute("name");
+                if (name != null && name == "txtemail")
+                {
+                    item.SetAttribute("value", "autobank@gmail.com");
+                }
+                else if (name != null && name == "ntxtupass")
+                {
+                    item.SetAttribute("value", "Abc@12345");
+                }
             }
-        }
 
+            var btnLogin = htmlLogin.GetElementById("btn-login");
+            btnLogin.InvokeMember("Click");
+        }
+       
         private void AccessToDaily()
         {
             var htmlIndex = webLayout.Document;
@@ -243,7 +262,8 @@ namespace ProcessAutomation.Main.PayIn
             foreach (HtmlElement item in aTag)
             {
                 var href = item.GetAttribute("href");
-                if (href != null && href == agencies_URL)
+                var innerHTML = item.InnerHtml;
+                if (href != null && href == agencies_URL && innerHTML.Contains("Chuyển Khoản Cấp Dưới"))
                 {
                     item.InvokeMember("Click");
                     break;
@@ -257,34 +277,34 @@ namespace ProcessAutomation.Main.PayIn
             var userAccount = accountData.
                 Query.Where(x => x.IDAccount == currentMessage.Account).FirstOrDefault();
 
-            if (userAccount == null || string.IsNullOrEmpty(userAccount.CB))
+            if (userAccount == null || string.IsNullOrEmpty(userAccount.GD))
                 return userAccount;
 
-            var html = webLayout.Document;
-            var userFilter = html.GetElementById("phone");
-            userFilter.SetAttribute("value", userAccount.CB);
-            var aTag = html.GetElementsByTagName("a");
-            foreach (HtmlElement item in aTag)
-            {
-                var btnTimKiem = item.InnerHtml;
-                if (btnTimKiem == "TÌM KIẾM")
-                {
-                    item.InvokeMember("Click");
-                    break;
-                }
-            }
-            Thread.Sleep(100);
+            //var html = webLayout.Document;
+            //var userFilter = html.GetElementById("phone");
+            //userFilter.SetAttribute("value", userAccount.CB);
+            //var aTag = html.GetElementsByTagName("a");
+            //foreach (HtmlElement item in aTag)
+            //{
+            //    var btnTimKiem = item.InnerHtml;
+            //    if (btnTimKiem == "TÌM KIẾM")
+            //    {
+            //        item.InvokeMember("Click");
+            //        break;
+            //    }
+            //}
+            //Thread.Sleep(100);
             return userAccount;
         }
 
         private void AccessToPayIn()
         {
             var html = webLayout.Document;
-            var aTag = html.GetElementsByTagName("a");
+            var aTag = html.GetElementsByTagName("button");
             foreach (HtmlElement item in aTag)
             {
-                var btnTimKiem = item.InnerHtml;
-                if (btnTimKiem == "CỘNG TIỀN")
+                var btnSubmit = item.GetAttribute("name");
+                if (btnSubmit == "kiemtraemailnguoinhan")
                 {
                     item.InvokeMember("Click");
                     break;
@@ -311,6 +331,7 @@ namespace ProcessAutomation.Main.PayIn
                     break;
                 }
             }
+            
         }
 
         private void SendNotificationForError(string subject, string message)

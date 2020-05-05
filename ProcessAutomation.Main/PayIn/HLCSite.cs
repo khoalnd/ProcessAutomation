@@ -13,14 +13,14 @@ using System.Windows.Forms;
 
 namespace ProcessAutomation.Main.PayIn
 {
-    public class CBSite : IAutomationPayIn
+    public class HLCSite : IAutomationPayIn
     {
         MailService mailService = new MailService();
         Helper helper = new Helper();
         WebBrowser webLayout;
         List<Message> data = new List<Message>();
-        private const string web_name = "cay bang";
-        private const string url = "https://caybang.club/";
+        private const string web_name = "hanh lang cu";
+        private const string url = "https://hanhlangcu.com/";
         private const string index_URL = url + "Login";
         private const string user_URL = url + "Users";
         private const string agencies_URL = url + "Users/Agencies";
@@ -28,7 +28,7 @@ namespace ProcessAutomation.Main.PayIn
         private bool isFinishProcess = true;
         Message currentMessage;
 
-        public CBSite(List<Message> data, WebBrowser web)
+        public HLCSite(List<Message> data, WebBrowser web)
         {
             this.data = data;
             this.webLayout = web;
@@ -61,6 +61,7 @@ namespace ProcessAutomation.Main.PayIn
             var triedAccessWeb = 1;
             try
             {
+
                 var process = "OpenWeb";
                 do
                 {
@@ -158,6 +159,8 @@ namespace ProcessAutomation.Main.PayIn
                                 {
                                     isFinishProcess = true;
                                 }
+                                // restart process
+                                process = "OpenWeb";
                                 break;
                             }
                             process = "AccessToPayIn";
@@ -183,7 +186,7 @@ namespace ProcessAutomation.Main.PayIn
                             break;
                         case "PayIn":
                             tcs = new TaskCompletionSource<Void>();
-                            PayIn();
+                            PayIn(ref isFinishProcess);
                             webLayout.ScriptErrorsSuppressed = true;
                             webLayout.DocumentCompleted += documentComplete;
                             await tcs.Task;
@@ -200,14 +203,14 @@ namespace ProcessAutomation.Main.PayIn
                             {
                                 SaveRecord();
                             }
-
                             data.Remove(currentMessage);
-                            if (data.Count == 0)
+                            if (data.Count > 0)
                             {
-                                isFinishProcess = true;
-                                break;
+                                process = "OpenWeb";
                             }
-                            process = "OpenWeb";
+                            else {
+                                isFinishProcess = true;
+                            }
                             break;
                     }
                 } while (!isFinishProcess || !helper.CheckInternetConnection());
@@ -254,15 +257,14 @@ namespace ProcessAutomation.Main.PayIn
         private AccountData SearchUser()
         {
             MongoDatabase<AccountData> accountData = new MongoDatabase<AccountData>("AccountData");
-            var userAccount = accountData.
-                Query.Where(x => x.IDAccount == currentMessage.Account).FirstOrDefault();
+            var userAccount = accountData.Query.Where(x => x.IDAccount == currentMessage.Account).FirstOrDefault();
 
-            if (userAccount == null || string.IsNullOrEmpty(userAccount.CB))
+            if (userAccount == null || string.IsNullOrEmpty(userAccount.HLC))
                 return userAccount;
 
             var html = webLayout.Document;
             var userFilter = html.GetElementById("phone");
-            userFilter.SetAttribute("value", userAccount.CB);
+            userFilter.SetAttribute("value", userAccount.HLC);
             var aTag = html.GetElementsByTagName("a");
             foreach (HtmlElement item in aTag)
             {
@@ -292,7 +294,7 @@ namespace ProcessAutomation.Main.PayIn
             }
         }
 
-        private void PayIn()
+        private void PayIn(ref bool isFinishProcess)
         {
             //var html = webLayout.Document;
             //var amount = html.GetElementById("Amount");
@@ -300,6 +302,8 @@ namespace ProcessAutomation.Main.PayIn
             //amount.SetAttribute("value", currentMessage.Money);
             //btnAdd.InvokeMember("Click");
             //Thread.Sleep(100);
+
+            Thread.Sleep(1000);
             var html = webLayout.Document;
             var amount = html.GetElementsByTagName("input");
             foreach (HtmlElement item in amount)
