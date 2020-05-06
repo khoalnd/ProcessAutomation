@@ -70,10 +70,10 @@ namespace ProcessAutomation.Main.PayIn
                             tcs = new TaskCompletionSource<Void>();
                             webLayout.ScriptErrorsSuppressed = true;
                             webLayout.DocumentCompleted += documentComplete;
-                            webLayout.Navigate(index_URL);
+                            webLayout.Navigate(url);
                             await tcs.Task;
 
-                            if (!(webLayout.DocumentText.Contains("ĐĂNG NHẬP")))
+                            if (webLayout.Url.ToString() != index_URL)
                             {
                                 if (triedAccessWeb == 5)
                                 {
@@ -81,7 +81,7 @@ namespace ProcessAutomation.Main.PayIn
                                             "Trang Web Không Truy Cập Được",
                                             $"Trang Web {web_name} không thể truy cập");
 
-                                    isFinishProcess = true;
+                                    process = "Finish";
                                     break;
                                 }
                                 else
@@ -98,28 +98,19 @@ namespace ProcessAutomation.Main.PayIn
                             break;
                         case "Login":
                             // check already has cookie
-                            if (!(webLayout.Url.ToString() == user_URL))
+                            if (webLayout.Url.ToString() == index_URL)
                             {
                                 tcs = new TaskCompletionSource<Void>();
                                 Login();
                                 webLayout.ScriptErrorsSuppressed = true;
                                 webLayout.DocumentCompleted += documentComplete;
+                                throw new Exception("test");
                                 await tcs.Task;
 
                                 if (webLayout.Url.ToString() == index_URL)
                                 {
-                                    var subject = "Account Đăng Nhập Lỗi";
-                                    if (webLayout.DocumentText.Contains("TÀI KHOẢN HOẶC MẬT KHẨU KHÔNG ĐÚNG"))
-                                    {
-                                        SendNotificationForError(
-                                            subject, $"Account đăng nhập web {web_name} bị lỗi");
-                                    }
-                                    else
-                                    {
-                                        SendNotificationForError(
-                                            subject, $"Lỗi không xác định khi đăng nhập web {web_name}");
-                                    }
-                                    isFinishProcess = true;
+                                    SendNotificationForError("Account Đăng Nhập Lỗi", $"Account đăng nhập web {web_name} bị lỗi");
+                                    process = "Finish";
                                     break;
                                 }
                             }
@@ -132,11 +123,11 @@ namespace ProcessAutomation.Main.PayIn
                             webLayout.DocumentCompleted += documentComplete;
                             await tcs.Task;
 
-                            if (!(webLayout.Url.ToString() == agencies_URL))
+                            if (webLayout.Url.ToString() != agencies_URL)
                             {
                                 SendNotificationForError(
                                     "Truy cập vào đại lý bị lỗi", $"Trang đại lý web {web_name} bị lỗi");
-                                isFinishProcess = true;
+                                process = "Finish";
                                 break;
                             }
 
@@ -150,14 +141,12 @@ namespace ProcessAutomation.Main.PayIn
                                 // save record
                                 SaveRecord("Không tìm thấy user");
                                 data.Remove(currentMessage);
-                                if (data.Count > 0)
+                                if (data.Count == 0)
                                 {
-                                    process = "OpenWeb";
+                                    process = "Finish";
+                                    break;
                                 }
-                                else
-                                {
-                                    isFinishProcess = true;
-                                }
+                                process = "OpenWeb";
                                 break;
                             }
                             process = "AccessToPayIn";
@@ -175,7 +164,7 @@ namespace ProcessAutomation.Main.PayIn
                                 SendNotificationForError(
                                     "Truy cập vào trang cộng tiền bị lỗi", errorMessage);
 
-                                isFinishProcess = true;
+                                process = "Finish";
                                 break;
                             }
 
@@ -204,17 +193,21 @@ namespace ProcessAutomation.Main.PayIn
                             data.Remove(currentMessage);
                             if (data.Count == 0)
                             {
-                                isFinishProcess = true;
+                                process = "Finish";
                                 break;
                             }
                             process = "OpenWeb";
+                            break;
+                        case "Finish":
+                            isFinishProcess = true;
                             break;
                     }
                 } while (!isFinishProcess || !helper.CheckInternetConnection());
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
+                isFinishProcess = true;
                 throw;
             }
             
@@ -230,7 +223,7 @@ namespace ProcessAutomation.Main.PayIn
 
             if (inputUserName != null && inputPassword != null)
             {
-                inputUserName.SetAttribute("value", "autobank");
+                inputUserName.SetAttribute("value", "aut3obank");
                 inputPassword.SetAttribute("value", "Abc@12345");
                 btnLogin.InvokeMember("Click");
             }

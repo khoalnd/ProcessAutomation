@@ -10,7 +10,6 @@ namespace ProcessAutomation.Main
 {
     public partial class Main : Form
     {
-        System.Timers.Timer readMesageTimer;
         DevicePortCOMService serialPortService = new DevicePortCOMService();
         SerialPort serialPort = new SerialPort();
         MessageService messageService = new MessageService();
@@ -28,96 +27,112 @@ namespace ProcessAutomation.Main
             // add serial port com from computer
             AddPortsToCombobox();
 
+            timerReadMessage = new System.Windows.Forms.Timer();
+            timerReadMessage.Interval = (5000);
+            timerReadMessage.Tick += new EventHandler(StartReadMessage);
+
+            timerCheckPayInProcess = new System.Windows.Forms.Timer();
+            timerCheckPayInProcess.Interval = (10000);
+            timerCheckPayInProcess.Tick += new EventHandler(StartPayIn);
+
             timerCheckChildProcess = new System.Windows.Forms.Timer();
             timerCheckChildProcess.Interval = (5000);
             timerCheckChildProcess.Tick += new EventHandler(Process);
+
+            lblErrorReadMessage.Hide();
+            lblPayIn.Hide();
         }
 
-        #region Read Message
+        private void btnStartReadMessage_Click(object sender, EventArgs e)
+        {
+            lblErrorReadMessage.Hide();
+            proBarReadMessage.Style = ProgressBarStyle.Marquee;
+            proBarReadMessage.MarqueeAnimationSpeed = 1;
+            timerReadMessage.Start();
+        }
+
+        private void btnStopReadMessage_Click(object sender, EventArgs e)
+        {
+            proBarReadMessage.MarqueeAnimationSpeed = 0;
+            proBarReadMessage.Style = ProgressBarStyle.Blocks;
+            timerReadMessage.Stop();
+        }
+
+        private void btnStartPayIn_Click(object sender, EventArgs e)
+        {
+            lblPayIn.Hide();
+            timerCheckPayInProcess.Start();
+        }
+
+        private void btnStopPayIn_Click(object sender, EventArgs e)
+        {
+            timerCheckPayInProcess.Stop();
+        }
+
         private void connectPortBtn_Click(object sender, EventArgs e)
         {
-            var portName = SerialPortCombobox.Text;
-            if (string.IsNullOrEmpty(portName))
-            {
-                MessageBox.Show("Hãy chọn cổng kết nối");
-                return;
-            }
+            //var portName = SerialPortCombobox.Text;
+            //if (string.IsNullOrEmpty(portName))
+            //{
+            //    MessageBox.Show("Hãy chọn cổng kết nối");
+            //    return;
+            //}
 
-            if (serialPort != null && serialPort.IsOpen)
-            {
-                serialPort.Close();
-                serialPort = null;
-            }
+            //if (serialPort != null && serialPort.IsOpen)
+            //{
+            //    serialPort.Close();
+            //    serialPort = null;
+            //}
 
-            serialPort = serialPortService.GetPortCOM(portName);
-            if (serialPort == null)
-            {
-                MessageBox.Show("Lỗi thiết bị, hãy kiểm tra lại");
-                return;
-            }
+            //serialPort = serialPortService.GetPortCOM(portName);
+            //if (serialPort == null)
+            //{
+            //    MessageBox.Show("Lỗi thiết bị, hãy kiểm tra lại");
+            //    return;
+            //}
 
-            messageService.StartReadMessage(serialPort);
-            InitReadMessageTimer();
-            InitPayInProcessTimer();
+            listMessage = new Dictionary<string, List<Message>>();
+            listMessage = messageService.ReadMessage();
+            timerCheckChildProcess.Start();
+            Process(sender, e);
         }
 
-        private void InitReadMessageTimer()
+        private void StartReadMessage(object sender, EventArgs e)
         {
-            readMesageTimer = new System.Timers.Timer(5000);
-            readMesageTimer.AutoReset = false;
-            readMesageTimer.Elapsed += StartReadMessage;
-            readMesageTimer.Start();
-        }
-
-        private void StartReadMessage(object sender, ElapsedEventArgs e)
-        {
-            var needStop = false;
             try
             {
                 messageService.StartReadMessage(serialPort);
             }
             catch (Exception ex)
             {
-                readMesageTimer.Enabled = false;
-                needStop = true;
-                MessageBox.Show(ex.Message);
+                timerReadMessage.Stop();
+                lblErrorReadMessage.Text = "Có lỗi hệ thống: " + ex.Message
+                    + Environment.NewLine + "Hãy kiểm tra và bắt đầu lại";
             }
-            finally
-            {
-                if (!needStop)
-                    readMesageTimer.Start();
-            }
-        }
-
-        private void InitPayInProcessTimer()
-        {
-            timerCheckPayInProcess.Interval = (10000);
-            timerCheckPayInProcess.Tick += new EventHandler(StartPayIn);
-            timerCheckPayInProcess.Start();
         }
 
         private void StartPayIn(object sender, EventArgs e)
         {
-            try
-            {
-                if (!isCurrentPayInProcessDone)
-                    return;
+            //try
+            //{
+            //    if (!isCurrentPayInProcessDone)
+            //        return;
 
-                listMessage = new Dictionary<string, List<Message>>();
-                listMessage = messageService.ReadMessage();
-                if (listMessage.Count == 0)
-                    isCurrentPayInProcessDone = true;
-                else
-                {
-                    isCurrentPayInProcessDone = false;
-                    if (!timerCheckChildProcess.Enabled)
-                        timerCheckChildProcess.Start();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            //    listMessage = new Dictionary<string, List<Message>>();
+            //    listMessage = messageService.ReadMessage();
+            //    if (listMessage.Count == 0)
+            //        isCurrentPayInProcessDone = true;
+            //    else
+            //    {
+            //        isCurrentPayInProcessDone = false;
+            //        if (!timerCheckChildProcess.Enabled)
+            //            timerCheckChildProcess.Start();
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //}
         }
 
         private void Process(object sender, EventArgs e)
@@ -192,7 +207,5 @@ namespace ProcessAutomation.Main
                 SerialPortCombobox.SelectedIndex = portNames.Length - 1;
             }
         }
-
-        #endregion
     }
 }

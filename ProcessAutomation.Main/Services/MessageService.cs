@@ -33,8 +33,7 @@ namespace ProcessAutomation.Main.Services
 
         public Dictionary<string, List<Message>> ReadMessage()
         {
-            return database.
-               Query
+            return database.Query
                .Where(x => x.IsProcessed == false && x.IsSatisfied == true).ToList()
                .GroupBy(x => x.Web)
                .ToDictionary(x => x.Key, x => x.ToList());
@@ -75,43 +74,50 @@ namespace ProcessAutomation.Main.Services
                     database.InsertMany(messages);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
         private Message AnalyzeMessage(string mess)
         {
             var result = new Message();
-
-            // Check account
-            var matches = new Regex(Constant.REG_EXTRACT_ACCOUNT).Match(mess).Groups;
-            if (matches.Count > 0 && matches[1].Value != "")
+            try
             {
-                result.Web = matches[2].ToString().Trim();
-                result.Account = matches[3].ToString().Trim();
-                result.IsSatisfied = Constant.WEBS_NAME
-                .Any(x => result.Web.Contains(x));
-            }
-            
-            // Check money
-            if (result.IsSatisfied)
-            {
-                var match = new Regex(Constant.REG_EXTRACT_MONEY).Match(mess).Groups[2] ?? null;
-                if (string.IsNullOrEmpty(match.Value))
-                    return result;
-
-                var money = match.Value?.Replace("VND", "");
-                decimal outMoney = 0;
-
-                result.IsSatisfied = false;
-                if (decimal.TryParse(money, out outMoney) && outMoney >= 20000)
+                // Check account
+                var matches = new Regex(Constant.REG_EXTRACT_ACCOUNT).Match(mess).Groups;
+                if (matches.Count > 0 && matches[1].Value != "")
                 {
-                    result.Money = outMoney.ToString();
-                    result.IsSatisfied = true;
+                    result.Web = matches[2].ToString().Trim();
+                    result.Account = matches[3].ToString().Trim();
+                    result.IsSatisfied = Constant.WEBS_NAME
+                    .Any(x => result.Web.Contains(x));
+                }
+
+                // Check money
+                if (result.IsSatisfied)
+                {
+                    var match = new Regex(Constant.REG_EXTRACT_MONEY).Match(mess).Groups[2] ?? null;
+                    if (string.IsNullOrEmpty(match.Value))
+                        return result;
+
+                    var money = match.Value?.Replace("VND", "");
+                    decimal outMoney = 0;
+
+                    result.IsSatisfied = false;
+                    if (decimal.TryParse(money, out outMoney) && outMoney >= 20000)
+                    {
+                        result.Money = outMoney.ToString();
+                        result.IsSatisfied = true;
+                    }
                 }
             }
+            catch (Exception)
+            {
+                throw;
+            }
+
             return result;
         }
     }

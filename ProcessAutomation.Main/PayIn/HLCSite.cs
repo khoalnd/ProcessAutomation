@@ -61,7 +61,6 @@ namespace ProcessAutomation.Main.PayIn
             var triedAccessWeb = 1;
             try
             {
-
                 var process = "OpenWeb";
                 do
                 {
@@ -71,10 +70,10 @@ namespace ProcessAutomation.Main.PayIn
                             tcs = new TaskCompletionSource<Void>();
                             webLayout.ScriptErrorsSuppressed = true;
                             webLayout.DocumentCompleted += documentComplete;
-                            webLayout.Navigate(index_URL);
+                            webLayout.Navigate(url);
                             await tcs.Task;
 
-                            if (!(webLayout.DocumentText.Contains("ĐĂNG NHẬP")))
+                            if (webLayout.Url.ToString() != index_URL)
                             {
                                 if (triedAccessWeb == 5)
                                 {
@@ -82,7 +81,7 @@ namespace ProcessAutomation.Main.PayIn
                                             "Trang Web Không Truy Cập Được",
                                             $"Trang Web {web_name} không thể truy cập");
 
-                                    isFinishProcess = true;
+                                    process = "Finish";
                                     break;
                                 }
                                 else
@@ -99,7 +98,7 @@ namespace ProcessAutomation.Main.PayIn
                             break;
                         case "Login":
                             // check already has cookie
-                            if (!(webLayout.Url.ToString() == user_URL))
+                            if (webLayout.Url.ToString() == index_URL)
                             {
                                 tcs = new TaskCompletionSource<Void>();
                                 Login();
@@ -109,18 +108,8 @@ namespace ProcessAutomation.Main.PayIn
 
                                 if (webLayout.Url.ToString() == index_URL)
                                 {
-                                    var subject = "Account Đăng Nhập Lỗi";
-                                    if (webLayout.DocumentText.Contains("TÀI KHOẢN HOẶC MẬT KHẨU KHÔNG ĐÚNG"))
-                                    {
-                                        SendNotificationForError(
-                                            subject, $"Account đăng nhập web {web_name} bị lỗi");
-                                    }
-                                    else
-                                    {
-                                        SendNotificationForError(
-                                            subject, $"Lỗi không xác định khi đăng nhập web {web_name}");
-                                    }
-                                    isFinishProcess = true;
+                                    SendNotificationForError("Account Đăng Nhập Lỗi", $"Account đăng nhập web {web_name} bị lỗi");
+                                    process = "Finish";
                                     break;
                                 }
                             }
@@ -133,11 +122,11 @@ namespace ProcessAutomation.Main.PayIn
                             webLayout.DocumentCompleted += documentComplete;
                             await tcs.Task;
 
-                            if (!(webLayout.Url.ToString() == agencies_URL))
+                            if (webLayout.Url.ToString() != agencies_URL)
                             {
                                 SendNotificationForError(
                                     "Truy cập vào đại lý bị lỗi", $"Trang đại lý web {web_name} bị lỗi");
-                                isFinishProcess = true;
+                                process = "Finish";
                                 break;
                             }
 
@@ -146,20 +135,16 @@ namespace ProcessAutomation.Main.PayIn
                         case "SearchUser":
                             currentMessage = data.FirstOrDefault();
                             var accountFound = SearchUser();
-                            if(accountFound == null)
+                            if (accountFound == null)
                             {
                                 // save record
                                 SaveRecord("Không tìm thấy user");
                                 data.Remove(currentMessage);
-                                if (data.Count > 0)
+                                if (data.Count == 0)
                                 {
-                                    process = "OpenWeb";
+                                    process = "Finish";
+                                    break;
                                 }
-                                else
-                                {
-                                    isFinishProcess = true;
-                                }
-                                // restart process
                                 process = "OpenWeb";
                                 break;
                             }
@@ -178,7 +163,7 @@ namespace ProcessAutomation.Main.PayIn
                                 SendNotificationForError(
                                     "Truy cập vào trang cộng tiền bị lỗi", errorMessage);
 
-                                isFinishProcess = true;
+                                process = "Finish";
                                 break;
                             }
 
@@ -186,7 +171,7 @@ namespace ProcessAutomation.Main.PayIn
                             break;
                         case "PayIn":
                             tcs = new TaskCompletionSource<Void>();
-                            PayIn(ref isFinishProcess);
+                            PayIn();
                             webLayout.ScriptErrorsSuppressed = true;
                             webLayout.DocumentCompleted += documentComplete;
                             await tcs.Task;
@@ -203,28 +188,31 @@ namespace ProcessAutomation.Main.PayIn
                             {
                                 SaveRecord();
                             }
+
                             data.Remove(currentMessage);
-                            if (data.Count > 0)
+                            if (data.Count == 0)
                             {
-                                process = "OpenWeb";
+                                process = "Finish";
+                                break;
                             }
-                            else {
-                                isFinishProcess = true;
-                            }
+                            process = "OpenWeb";
+                            break;
+                        case "Finish":
+                            isFinishProcess = true;
                             break;
                     }
                 } while (!isFinishProcess || !helper.CheckInternetConnection());
-
             }
-            catch (Exception ex)
+            catch (Exception)
             {
+                isFinishProcess = true;
                 throw;
             }
-            
+
             return;
         }
 
-        private void Login() 
+        private void Login()
         {
             var htmlLogin = webLayout.Document;
             var inputUserName = htmlLogin.GetElementById("Username");
@@ -233,7 +221,7 @@ namespace ProcessAutomation.Main.PayIn
 
             if (inputUserName != null && inputPassword != null)
             {
-                inputUserName.SetAttribute("value", "autobank");
+                inputUserName.SetAttribute("value", "aut3obank");
                 inputPassword.SetAttribute("value", "Abc@12345");
                 btnLogin.InvokeMember("Click");
             }
@@ -257,14 +245,15 @@ namespace ProcessAutomation.Main.PayIn
         private AccountData SearchUser()
         {
             MongoDatabase<AccountData> accountData = new MongoDatabase<AccountData>("AccountData");
-            var userAccount = accountData.Query.Where(x => x.IDAccount == currentMessage.Account).FirstOrDefault();
+            var userAccount = accountData.
+                Query.Where(x => x.IDAccount == currentMessage.Account).FirstOrDefault();
 
-            if (userAccount == null || string.IsNullOrEmpty(userAccount.HLC))
+            if (userAccount == null || string.IsNullOrEmpty(userAccount.CB))
                 return userAccount;
 
             var html = webLayout.Document;
             var userFilter = html.GetElementById("phone");
-            userFilter.SetAttribute("value", userAccount.HLC);
+            userFilter.SetAttribute("value", userAccount.CB);
             var aTag = html.GetElementsByTagName("a");
             foreach (HtmlElement item in aTag)
             {
@@ -294,7 +283,7 @@ namespace ProcessAutomation.Main.PayIn
             }
         }
 
-        private void PayIn(ref bool isFinishProcess)
+        private void PayIn()
         {
             //var html = webLayout.Document;
             //var amount = html.GetElementById("Amount");
@@ -302,8 +291,6 @@ namespace ProcessAutomation.Main.PayIn
             //amount.SetAttribute("value", currentMessage.Money);
             //btnAdd.InvokeMember("Click");
             //Thread.Sleep(100);
-
-            Thread.Sleep(1000);
             var html = webLayout.Document;
             var amount = html.GetElementsByTagName("input");
             foreach (HtmlElement item in amount)

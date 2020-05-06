@@ -55,9 +55,12 @@ namespace ProcessAutomation.Main.PayIn
             {
                 HtmlDocument doc = webLayout.Document;
                 HtmlElement head = doc.GetElementsByTagName("head")[0];
-                HtmlElement s12 = doc.CreateElement("script");
-                s12.SetAttribute("text", "window.alert = function () {test(); };function test() {window.href='https://google.com.vn'}");
-                head.AppendChild(s12);
+                HtmlElement script = doc.CreateElement("script");
+                script.SetAttribute("text", "window.alert = " +
+                    "function (e) {" +
+                    "setTimeout(function(){ window.location.replace('https://giadinhvina.com.vn/HIMONEY/HiMM/helloVMV.php'); }, 10000);" +
+                    "};");
+                head.AppendChild(script);
                 webLayout.DocumentCompleted -= documentComplete;
                 tcs.SetResult(v);
             });
@@ -135,9 +138,6 @@ namespace ProcessAutomation.Main.PayIn
                         case "AccessToDaily":
                             tcs = new TaskCompletionSource<Void>();
                             AccessToDaily();
-
-
-                          
                             //webLayout.Document.InvokeScript("sayHello");
 
                             webLayout.ScriptErrorsSuppressed = true;
@@ -172,27 +172,7 @@ namespace ProcessAutomation.Main.PayIn
                                 }
                                 break;
                             }
-                            process = "AccessToPayIn";
-                            break;
-                        case "AccessToPayIn":
-                            tcs = new TaskCompletionSource<Void>();
-                            webLayout.ScriptErrorsSuppressed = true;
-                            AccessToPayIn();
-                           
-                            webLayout.DocumentCompleted += documentComplete;
-                            await tcs.Task;
-
-                            //if (!webLayout.Url.ToString().Contains(addMoney_URL))
-                            //{
-                            //    var errorMessage = $"Trang cộng tiền web {web_name} bị lỗi";
-                            //    SendNotificationForError(
-                            //        "Truy cập vào trang cộng tiền bị lỗi", errorMessage);
-
-                            //    isFinishProcess = true;
-                            //    break;
-                            //}
-                            isFinishProcess = true;
-                            //process = "PayIn";
+                            process = "PayIn";
                             break;
                         case "PayIn":
                             tcs = new TaskCompletionSource<Void>();
@@ -278,60 +258,39 @@ namespace ProcessAutomation.Main.PayIn
                 Query.Where(x => x.IDAccount == currentMessage.Account).FirstOrDefault();
 
             if (userAccount == null || string.IsNullOrEmpty(userAccount.GD))
-                return userAccount;
+                return null;
 
-            //var html = webLayout.Document;
-            //var userFilter = html.GetElementById("phone");
-            //userFilter.SetAttribute("value", userAccount.CB);
-            //var aTag = html.GetElementsByTagName("a");
-            //foreach (HtmlElement item in aTag)
-            //{
-            //    var btnTimKiem = item.InnerHtml;
-            //    if (btnTimKiem == "TÌM KIẾM")
-            //    {
-            //        item.InvokeMember("Click");
-            //        break;
-            //    }
-            //}
-            //Thread.Sleep(100);
             return userAccount;
-        }
-
-        private void AccessToPayIn()
-        {
-            var html = webLayout.Document;
-            var aTag = html.GetElementsByTagName("button");
-            foreach (HtmlElement item in aTag)
-            {
-                var btnSubmit = item.GetAttribute("name");
-                if (btnSubmit == "kiemtraemailnguoinhan")
-                {
-                    item.InvokeMember("Click");
-                    break;
-                }
-            }
         }
 
         private void PayIn()
         {
-            //var html = webLayout.Document;
-            //var amount = html.GetElementById("Amount");
-            //var btnAdd = html.GetElementById("add_money_button");
-            //amount.SetAttribute("value", currentMessage.Money);
-            //btnAdd.InvokeMember("Click");
-            //Thread.Sleep(100);
             var html = webLayout.Document;
             var amount = html.GetElementsByTagName("input");
             foreach (HtmlElement item in amount)
             {
-                var value = item.GetAttribute("value");
-                if (value == "BACK")
+                var value = item.GetAttribute("name");
+                if (value == "txt_email")
+                {
+                    item.SetAttribute("value", "Autobank2@gmail.com");
+                    break;
+                }
+                else if (value == "txt_gia")
+                {
+                    item.SetAttribute("value", "20000");
+                    break;
+                }
+            }
+            var button = html.GetElementsByTagName("button");
+            foreach (HtmlElement item in button)
+            {
+                var btnSubmit = item.GetAttribute("name");
+                if (btnSubmit == "chuyenkhoantronghethong")
                 {
                     item.InvokeMember("Click");
                     break;
                 }
             }
-            
         }
 
         private void SendNotificationForError(string subject, string message)
