@@ -13,7 +13,7 @@ namespace ProcessAutomation.Main.Services
 {
     public class MessageService
     {
-        MongoDatabase<Message> database = new MongoDatabase<Message>("Message");
+        MongoDatabase<Message> database = new MongoDatabase<Message>(typeof(Message).Name);
         CSV csvHelper = new CSV();
         public void StartReadMessage(SerialPort serialPort)
         {

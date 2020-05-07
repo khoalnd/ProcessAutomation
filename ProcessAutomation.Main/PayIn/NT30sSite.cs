@@ -14,14 +14,14 @@ using System.Windows.Forms;
 
 namespace ProcessAutomation.Main.PayIn
 {
-    public class GDSite : IAutomationPayIn
+    public class NT30sSite : IAutomationPayIn
     {
         MailService mailService = new MailService();
         Helper helper = new Helper();
         WebBrowser webLayout;
         List<Message> data = new List<Message>();
-        private const string web_name = "giadinhvina";
-        private const string url = "https://giadinhvina.com.vn/";
+        private const string web_name = "naptien30s";
+        private const string url = "https://naptien30s.vn/";
         private const string index_URL = url + "HIMONEY/HiMM/";
         private const string user_URL = url + "HIMONEY/HiMM/helloVMV.php";
         private const string agencies_URL = url + "HIMONEY/HiMM/chuyenkhoan.php";
@@ -32,7 +32,7 @@ namespace ProcessAutomation.Main.PayIn
         WebBrowserDocumentCompletedEventHandler documentComplete = null;
         WebBrowserNavigatedEventHandler documentNavigatedComplete = null;
 
-        public GDSite(List<Message> data, WebBrowser web)
+        public NT30sSite(List<Message> data, WebBrowser web)
         {
             this.data = data;
             this.webLayout = web;
@@ -59,13 +59,13 @@ namespace ProcessAutomation.Main.PayIn
                 HtmlElement script = doc.CreateElement("script");
                 script.SetAttribute("text", "window.alert = function(e){" +
                     "if(e.indexOf('Tai Khoan Cua Ban Da Dang Nhap')" +
-                    "{ window.location.replace("+ url + ");}" +
+                    "{ window.location.replace(" + url + ");}" +
                     "else { };");
                 head.AppendChild(script);
                 webLayout.DocumentCompleted -= documentComplete;
                 tcs.SetResult(v);
             });
-
+           
             documentNavigatedComplete = new WebBrowserNavigatedEventHandler((s, e) =>
             {
                 HtmlDocument doc = webLayout.Document;
@@ -268,7 +268,7 @@ namespace ProcessAutomation.Main.PayIn
             var userAccount = accountData.
                 Query.Where(x => x.IDAccount == currentMessage.Account).FirstOrDefault();
 
-            if (userAccount == null || string.IsNullOrEmpty(userAccount.GD))
+            if (userAccount == null || string.IsNullOrEmpty(userAccount.NT))
                 return null;
 
             return userAccount;

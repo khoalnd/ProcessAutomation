@@ -19,7 +19,7 @@ namespace ProcessAutomation.Main.PayIn
         Helper helper = new Helper();
         WebBrowser webLayout;
         List<Message> data = new List<Message>();
-        private const string web_name = "hanh lang cu";
+        private const string web_name = "hanhlangcu";
         private const string url = "https://hanhlangcu.com/";
         private const string index_URL = url + "Login";
         private const string user_URL = url + "Users";
@@ -27,6 +27,9 @@ namespace ProcessAutomation.Main.PayIn
         private const string addMoney_URL = url + "Users/AddMoneyToUser";
         private bool isFinishProcess = true;
         Message currentMessage;
+        Void v;
+        TaskCompletionSource<Void> tcs = null;
+        WebBrowserDocumentCompletedEventHandler documentComplete = null;
 
         public HLCSite(List<Message> data, WebBrowser web)
         {
@@ -48,9 +51,6 @@ namespace ProcessAutomation.Main.PayIn
 
         async Task StartProcess()
         {
-            Void v;
-            TaskCompletionSource<Void> tcs = null;
-            WebBrowserDocumentCompletedEventHandler documentComplete = null;
             documentComplete = new WebBrowserDocumentCompletedEventHandler((s, e) =>
             {
                 webLayout.DocumentCompleted -= documentComplete;
@@ -59,17 +59,16 @@ namespace ProcessAutomation.Main.PayIn
 
             isFinishProcess = false;
             var triedAccessWeb = 1;
+            var adminAccount = new AdminAccount();
             try
             {
-                var process = "OpenWeb";
+                var process = checkAccountAdmin(ref adminAccount);
                 do
                 {
                     switch (process)
                     {
                         case "OpenWeb":
-                            tcs = new TaskCompletionSource<Void>();
-                            webLayout.ScriptErrorsSuppressed = true;
-                            webLayout.DocumentCompleted += documentComplete;
+                            CreateSyncTask();
                             webLayout.Navigate(url);
                             await tcs.Task;
 
@@ -100,10 +99,8 @@ namespace ProcessAutomation.Main.PayIn
                             // check already has cookie
                             if (webLayout.Url.ToString() == index_URL)
                             {
-                                tcs = new TaskCompletionSource<Void>();
-                                Login();
-                                webLayout.ScriptErrorsSuppressed = true;
-                                webLayout.DocumentCompleted += documentComplete;
+                                CreateSyncTask();
+                                Login(adminAccount);
                                 await tcs.Task;
 
                                 if (webLayout.Url.ToString() == index_URL)
@@ -116,10 +113,8 @@ namespace ProcessAutomation.Main.PayIn
                             process = "AccessToDaily";
                             break;
                         case "AccessToDaily":
-                            tcs = new TaskCompletionSource<Void>();
+                            CreateSyncTask();
                             AccessToDaily();
-                            webLayout.ScriptErrorsSuppressed = true;
-                            webLayout.DocumentCompleted += documentComplete;
                             await tcs.Task;
 
                             if (webLayout.Url.ToString() != agencies_URL)
@@ -151,10 +146,8 @@ namespace ProcessAutomation.Main.PayIn
                             process = "AccessToPayIn";
                             break;
                         case "AccessToPayIn":
-                            tcs = new TaskCompletionSource<Void>();
+                            CreateSyncTask();
                             AccessToPayIn();
-                            webLayout.ScriptErrorsSuppressed = true;
-                            webLayout.DocumentCompleted += documentComplete;
                             await tcs.Task;
 
                             if (!webLayout.Url.ToString().Contains(addMoney_URL))
@@ -170,10 +163,8 @@ namespace ProcessAutomation.Main.PayIn
                             process = "PayIn";
                             break;
                         case "PayIn":
-                            tcs = new TaskCompletionSource<Void>();
+                            CreateSyncTask();
                             PayIn();
-                            webLayout.ScriptErrorsSuppressed = true;
-                            webLayout.DocumentCompleted += documentComplete;
                             await tcs.Task;
 
                             if (!webLayout.Url.ToString().Contains(agencies_URL))
@@ -212,7 +203,14 @@ namespace ProcessAutomation.Main.PayIn
             return;
         }
 
-        private void Login()
+        private void CreateSyncTask()
+        {
+            tcs = new TaskCompletionSource<Void>();
+            webLayout.ScriptErrorsSuppressed = true;
+            webLayout.DocumentCompleted += documentComplete;
+        }
+
+        private void Login(AdminAccount adminAccount)
         {
             var htmlLogin = webLayout.Document;
             var inputUserName = htmlLogin.GetElementById("Username");
@@ -221,8 +219,8 @@ namespace ProcessAutomation.Main.PayIn
 
             if (inputUserName != null && inputPassword != null)
             {
-                inputUserName.SetAttribute("value", "aut3obank");
-                inputPassword.SetAttribute("value", "Abc@12345");
+                inputUserName.SetAttribute("value", adminAccount.AccountName);
+                inputPassword.SetAttribute("value", adminAccount.Password);
                 btnLogin.InvokeMember("Click");
             }
         }
@@ -244,7 +242,7 @@ namespace ProcessAutomation.Main.PayIn
 
         private AccountData SearchUser()
         {
-            MongoDatabase<AccountData> accountData = new MongoDatabase<AccountData>("AccountData");
+            MongoDatabase<AccountData> accountData = new MongoDatabase<AccountData>(typeof(AccountData).Name);
             var userAccount = accountData.
                 Query.Where(x => x.IDAccount == currentMessage.Account).FirstOrDefault();
 
@@ -304,6 +302,23 @@ namespace ProcessAutomation.Main.PayIn
             }
         }
 
+        private string checkAccountAdmin(ref AdminAccount account)
+        {
+            var dataAccount = new MongoDatabase<AdminAccount>(typeof(AdminAccount).Name);
+            var accountToPay = dataAccount.Query.Where(x => x.Web == web_name).FirstOrDefault();
+            if (accountToPay != null)
+            {
+                account = accountToPay;
+                return "OpenWeb";
+            }
+
+            SendNotificationForError(
+                "Lỗi Account Admin",
+                $"Không lấy được hoặc không tồn tại account admin trang web {web_name}");
+
+            return "Finish";
+        }
+
         private void SendNotificationForError(string subject, string message)
         {
             //mailService.SendEmail(subject, message);
@@ -311,7 +326,7 @@ namespace ProcessAutomation.Main.PayIn
 
         private void SaveRecord(string error = "")
         {
-            MongoDatabase<Message> database = new MongoDatabase<Message>("Message");
+            MongoDatabase<Message> database = new MongoDatabase<Message>(typeof(Message).Name);
             var updateOption = Builders<Message>.Update
             .Set(p => p.IsProcessed, true)
             .Set(p => p.Error, error);

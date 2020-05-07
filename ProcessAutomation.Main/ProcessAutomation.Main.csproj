@@ -103,6 +103,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PayIn\NT30sSite.cs" />
     <Compile Include="PayIn\GDSite.cs" />
     <Compile Include="PayIn\HLCSite.cs" />
     <Compile Include="PayIn\CBSite.cs" />

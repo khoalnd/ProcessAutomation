@@ -3,6 +3,7 @@ using ProcessAutomation.Main.Services;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
+using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows.Forms;
 
@@ -42,7 +43,6 @@ namespace ProcessAutomation.Main
             lblErrorReadMessage.Hide();
             lblPayIn.Hide();
         }
-
         private void btnStartReadMessage_Click(object sender, EventArgs e)
         {
             lblErrorReadMessage.Hide();
@@ -93,7 +93,7 @@ namespace ProcessAutomation.Main
 
             listMessage = new Dictionary<string, List<Message>>();
             listMessage = messageService.ReadMessage();
-            timerCheckChildProcess.Start();
+            
             Process(sender, e);
         }
 
@@ -157,19 +157,19 @@ namespace ProcessAutomation.Main
 
                 listMessage.Remove("cb");
             }
-            else if (listMessage.ContainsKey("hlc") && listMessage["hlc"].Count > 0)
-            {
-                if (iAutomationPayin == null || !(iAutomationPayin is HLCSite))
-                {
-                    iAutomationPayin = new HLCSite(new List<Message>(listMessage["hlc"]), webLayout);
-                    iAutomationPayin.startPayIN();
-                }
+            //else if (listMessage.ContainsKey("hlc") && listMessage["hlc"].Count > 0)
+            //{
+            //    if (iAutomationPayin == null || !(iAutomationPayin is HLCSite))
+            //    {
+            //        iAutomationPayin = new HLCSite(new List<Message>(listMessage["hlc"]), webLayout);
+            //        iAutomationPayin.startPayIN();
+            //    }
 
-                if (!iAutomationPayin.checkProcessDone())
-                    return;
+            //    if (!iAutomationPayin.checkProcessDone())
+            //        return;
 
-                listMessage.Remove("hlc");
-            }
+            //    listMessage.Remove("hlc");
+            //}
             //else if (listMessage.ContainsKey("gd") && listMessage["gd"].Count > 0)
             //{
             //    if (iAutomationPayin == null || !(iAutomationPayin is GDSite))

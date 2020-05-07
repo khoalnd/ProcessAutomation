@@ -35,8 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Entities\AdminAccount.cs" />
     <Compile Include="Entities\AccountData.cs" />
-    <Compile Include="Entities\AdminSetting.cs" />
     <Compile Include="Entities\Message.cs" />
     <Compile Include="Respository\IDatabase.cs" />
     <Compile Include="Respository\MongoDataBase.cs" />
