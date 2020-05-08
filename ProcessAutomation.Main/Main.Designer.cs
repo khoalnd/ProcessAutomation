@@ -33,11 +33,11 @@
             this.timerCheckChildProcess = new System.Windows.Forms.Timer(this.components);
             this.timerReadMessage = new System.Windows.Forms.Timer(this.components);
             this.tabPayIn = new System.Windows.Forms.TabPage();
-            this.lblPayIn = new System.Windows.Forms.Label();
             this.btnStopPayIn = new System.Windows.Forms.Button();
             this.btnStartPayIn = new System.Windows.Forms.Button();
             this.webLayout = new System.Windows.Forms.WebBrowser();
             this.tabReaMessage = new System.Windows.Forms.TabPage();
+            this.lblErrorReadMessage = new System.Windows.Forms.Label();
             this.proBarReadMessage = new System.Windows.Forms.ProgressBar();
             this.btnStopReadMessage = new System.Windows.Forms.Button();
             this.btnStartReadMessage = new System.Windows.Forms.Button();
@@ -45,7 +45,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.SerialPortCombobox = new System.Windows.Forms.ComboBox();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.lblErrorReadMessage = new System.Windows.Forms.Label();
             this.tabPayIn.SuspendLayout();
             this.tabReaMessage.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -53,7 +52,6 @@
             // 
             // tabPayIn
             // 
-            this.tabPayIn.Controls.Add(this.lblPayIn);
             this.tabPayIn.Controls.Add(this.btnStopPayIn);
             this.tabPayIn.Controls.Add(this.btnStartPayIn);
             this.tabPayIn.Controls.Add(this.webLayout);
@@ -65,17 +63,6 @@
             this.tabPayIn.Text = "Nạp Tiền";
             this.tabPayIn.UseVisualStyleBackColor = true;
             // 
-            // lblPayIn
-            // 
-            this.lblPayIn.AutoSize = true;
-            this.lblPayIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPayIn.ForeColor = System.Drawing.Color.Red;
-            this.lblPayIn.Location = new System.Drawing.Point(16, 72);
-            this.lblPayIn.Name = "lblPayIn";
-            this.lblPayIn.Size = new System.Drawing.Size(86, 31);
-            this.lblPayIn.TabIndex = 12;
-            this.lblPayIn.Text = "label2";
-            // 
             // btnStopPayIn
             // 
             this.btnStopPayIn.Location = new System.Drawing.Point(217, 18);
@@ -84,6 +71,7 @@
             this.btnStopPayIn.TabIndex = 11;
             this.btnStopPayIn.Text = "Dừng nạp tiền";
             this.btnStopPayIn.UseVisualStyleBackColor = true;
+            this.btnStopPayIn.Click += new System.EventHandler(this.btnStopPayIn_Click);
             // 
             // btnStartPayIn
             // 
@@ -93,6 +81,7 @@
             this.btnStartPayIn.TabIndex = 10;
             this.btnStartPayIn.Text = "Bắt đầu nạp tiền";
             this.btnStartPayIn.UseVisualStyleBackColor = true;
+            this.btnStartPayIn.Click += new System.EventHandler(this.btnStartPayIn_Click);
             // 
             // webLayout
             // 
@@ -119,6 +108,17 @@
             this.tabReaMessage.TabIndex = 0;
             this.tabReaMessage.Text = "Đọc Tin Nhắn";
             this.tabReaMessage.UseVisualStyleBackColor = true;
+            // 
+            // lblErrorReadMessage
+            // 
+            this.lblErrorReadMessage.AutoSize = true;
+            this.lblErrorReadMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblErrorReadMessage.ForeColor = System.Drawing.Color.Red;
+            this.lblErrorReadMessage.Location = new System.Drawing.Point(16, 228);
+            this.lblErrorReadMessage.Name = "lblErrorReadMessage";
+            this.lblErrorReadMessage.Size = new System.Drawing.Size(86, 31);
+            this.lblErrorReadMessage.TabIndex = 13;
+            this.lblErrorReadMessage.Text = "label2";
             // 
             // proBarReadMessage
             // 
@@ -190,17 +190,6 @@
             this.tabControl.Size = new System.Drawing.Size(944, 631);
             this.tabControl.TabIndex = 10;
             // 
-            // lblErrorReadMessage
-            // 
-            this.lblErrorReadMessage.AutoSize = true;
-            this.lblErrorReadMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblErrorReadMessage.ForeColor = System.Drawing.Color.Red;
-            this.lblErrorReadMessage.Location = new System.Drawing.Point(16, 228);
-            this.lblErrorReadMessage.Name = "lblErrorReadMessage";
-            this.lblErrorReadMessage.Size = new System.Drawing.Size(86, 31);
-            this.lblErrorReadMessage.TabIndex = 13;
-            this.lblErrorReadMessage.Text = "label2";
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -211,7 +200,6 @@
             this.Text = "Main";
             this.Load += new System.EventHandler(this.Main_Load);
             this.tabPayIn.ResumeLayout(false);
-            this.tabPayIn.PerformLayout();
             this.tabReaMessage.ResumeLayout(false);
             this.tabReaMessage.PerformLayout();
             this.tabControl.ResumeLayout(false);
@@ -235,7 +223,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox SerialPortCombobox;
         private System.Windows.Forms.TabControl tabControl;
-        private System.Windows.Forms.Label lblPayIn;
         private System.Windows.Forms.Label lblErrorReadMessage;
     }
 }

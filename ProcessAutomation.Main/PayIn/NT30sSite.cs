@@ -18,8 +18,8 @@ namespace ProcessAutomation.Main.PayIn
     {
         MailService mailService = new MailService();
         Helper helper = new Helper();
-        WebBrowser webLayout;
-        List<Message> data = new List<Message>();
+        private WebBrowser webLayout;
+        private List<Message> data = new List<Message>();
         private const string web_name = "naptien30s";
         private const string url = "https://naptien30s.vn/";
         private const string index_URL = url + "HIMONEY/HiMM/";
@@ -52,37 +52,42 @@ namespace ProcessAutomation.Main.PayIn
 
         async Task StartProcess()
         {
-            documentComplete = new WebBrowserDocumentCompletedEventHandler((s, e) =>
-            {
-                HtmlDocument doc = webLayout.Document;
-                HtmlElement head = doc.GetElementsByTagName("head")[0];
-                HtmlElement script = doc.CreateElement("script");
-                script.SetAttribute("text", "window.alert = function(e){" +
-                    "if(e.indexOf('Tai Khoan Cua Ban Da Dang Nhap')" +
-                    "{ window.location.replace(" + url + ");}" +
-                    "else { };");
-                head.AppendChild(script);
-                webLayout.DocumentCompleted -= documentComplete;
-                tcs.SetResult(v);
-            });
-           
-            documentNavigatedComplete = new WebBrowserNavigatedEventHandler((s, e) =>
-            {
-                HtmlDocument doc = webLayout.Document;
-                HtmlElement head = doc.GetElementsByTagName("head")[0];
-                HtmlElement script = doc.CreateElement("script");
-                script.SetAttribute("text", "window.alert = function(e){" +
-                    "if(e.indexOf('Chuyển Khoản Thành Công') !== -1) {}" +
-                    "else{window.location.replace(" + url + ");}};");
-                head.AppendChild(script);
-                webLayout.Navigated -= documentNavigatedComplete;
-            });
-
-            isFinishProcess = false;
-            var triedAccessWeb = 1;
-            var adminAccount = new AdminAccount();
             try
             {
+                documentComplete = new WebBrowserDocumentCompletedEventHandler((s, e) =>
+                {
+                    if (webLayout.DocumentText.Contains("res://ieframe.dll"))
+                    {
+                        tcs.SetException(new Exception("Lỗi không có kết nối internet"));
+                    }
+                    HtmlDocument doc = webLayout.Document;
+                    HtmlElement head = doc.GetElementsByTagName("head")[0];
+                    HtmlElement script = doc.CreateElement("script");
+                    script.SetAttribute("text", "window.alert = function(e){" +
+                        "if(e.indexOf('Tai Khoan Cua Ban Da Dang Nhap')" +
+                        "{ window.location.replace(" + url + ");}" +
+                        "else { };");
+                    head.AppendChild(script);
+                    webLayout.DocumentCompleted -= documentComplete;
+                    tcs.SetResult(v);
+                });
+
+                documentNavigatedComplete = new WebBrowserNavigatedEventHandler((s, e) =>
+                {
+                    HtmlDocument doc = webLayout.Document;
+                    HtmlElement head = doc.GetElementsByTagName("head")[0];
+                    HtmlElement script = doc.CreateElement("script");
+                    script.SetAttribute("text", "window.alert = function(e){" +
+                        "if(e.indexOf('Chuyển Khoản Thành Công') !== -1) {}" +
+                        "else{window.location.replace(" + url + ");}};");
+                    head.AppendChild(script);
+                    webLayout.Navigated -= documentNavigatedComplete;
+                });
+
+                isFinishProcess = false;
+                AccountData userAccount = new AccountData();
+                var adminAccount = new AdminAccount();
+
                 var process = checkAccountAdmin(ref adminAccount);
                 do
                 {
@@ -92,55 +97,37 @@ namespace ProcessAutomation.Main.PayIn
                             CreateSyncTask();
                             webLayout.Navigate(url);
                             await tcs.Task;
+                            await Task.Delay(5000);
+
+                            process = "Login";
+                            if (webLayout.Url.ToString() == user_URL)
+                            {
+                                process = "AccessToDaily";
+                                break;
+                            }
 
                             if (webLayout.Url.ToString() != index_URL)
                             {
-                                if (triedAccessWeb == 5)
-                                {
-                                    SendNotificationForError(
-                                            "Trang Web Không Truy Cập Được",
-                                            $"Trang Web {web_name} không thể truy cập");
+                                SendNotificationForError(
+                                       "Trang Web Không Truy Cập Được",
+                                       $"{web_name} không thể truy cập");
 
-                                    process = "Finish";
-                                    break;
-                                }
-                                else
-                                {
-                                    Thread.Sleep(60000);
-                                    triedAccessWeb++;
-                                    process = "OpenWeb";
-                                }
-                            }
-                            else
-                            {
-                                triedAccessWeb = 1;
-                                process = "Login";
+                                process = "Finish";
+                                break;
                             }
                             break;
                         case "Login":
-                            // check already has cookie
-                            if (webLayout.Url.ToString() != user_URL)
-                            {
-                                CreateSyncTask();
-                                Login(adminAccount);
-                                await tcs.Task;
+                            CreateSyncTask();
+                            Login(adminAccount);
+                            await tcs.Task;
+                            await Task.Delay(5000);
 
-                                if (webLayout.Url.ToString() == index_URL)
-                                {
-                                    var subject = "Account Đăng Nhập Lỗi";
-                                    if (webLayout.DocumentText.Contains("TÀI KHOẢN HOẶC MẬT KHẨU KHÔNG ĐÚNG"))
-                                    {
-                                        SendNotificationForError(
-                                            subject, $"Account đăng nhập web {web_name} bị lỗi");
-                                    }
-                                    else
-                                    {
-                                        SendNotificationForError(
-                                            subject, $"Lỗi không xác định khi đăng nhập web {web_name}");
-                                    }
-                                    process = "Finish";
-                                    break;
-                                }
+                            if (webLayout.Url.ToString() == index_URL)
+                            {
+                                SendNotificationForError("Account Admin Đăng Nhập Lỗi",
+                                    $"{web_name} : Account admin đăng nhập web bị lỗi");
+                                process = "Finish";
+                                break;
                             }
                             process = "AccessToDaily";
                             break;
@@ -148,11 +135,13 @@ namespace ProcessAutomation.Main.PayIn
                             CreateSyncTask();
                             AccessToDaily();
                             await tcs.Task;
+                            await Task.Delay(5000);
 
                             if (webLayout.Url.ToString() != agencies_URL)
                             {
                                 SendNotificationForError(
-                                    "Truy cập vào đại lý bị lỗi", $"Trang đại lý web {web_name} bị lỗi");
+                                    "Truy cập vào đại lý bị lỗi",
+                                    $"{web_name} : Trang đại lý bị lỗi");
                                 process = "Finish";
                                 break;
                             }
@@ -161,11 +150,12 @@ namespace ProcessAutomation.Main.PayIn
                             break;
                         case "SearchUser":
                             currentMessage = data.FirstOrDefault();
-                            var accountFound = SearchUser();
-                            if(accountFound == null)
+                            userAccount = SearchUser();
+                            if (userAccount == null)
                             {
                                 // save record
-                                SaveRecord("Không tìm thấy user");
+                                SaveRecord($"Không tìm thấy user {web_name} : user id {currentMessage.Account}");
+
                                 data.Remove(currentMessage);
                                 if (data.Count == 0)
                                 {
@@ -179,15 +169,17 @@ namespace ProcessAutomation.Main.PayIn
                             break;
                         case "PayIn":
                             CreateSyncTask();
-                            PayIn();
+                            PayIn(userAccount);
                             webLayout.Navigated += documentNavigatedComplete;
                             await tcs.Task;
+                            await Task.Delay(5000);
 
                             if (!webLayout.Url.ToString().Contains(agencies_URL))
                             {
-                                var errorMessage = $"Cộng tiền account { currentMessage.Account } ở web {web_name} bị lỗi";
+                                var errorMessage = $"Cộng tiền account { currentMessage.Account } bị lỗi";
                                 SendNotificationForError(
-                                    "Cộng tiền không thành công", $"Cộng tiền account { currentMessage.Account } ở web {web_name} bị lỗi");
+                                    "Cộng tiền không thành công",
+                                    $"{web_name} : Cộng tiền account { currentMessage.Account } bị lỗi");
 
                                 //SaveRecord(errorMessage);
                             }
@@ -205,16 +197,21 @@ namespace ProcessAutomation.Main.PayIn
                             break;
                         case "Finish":
                             isFinishProcess = true;
+                            webLayout.Navigate("about:blank");
                             break;
                     }
                 } while (!isFinishProcess || !helper.CheckInternetConnection());
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                isFinishProcess = true;
+                webLayout.Navigate("about:blank");
+                SendNotificationForError(
+                    "Lỗi không xác định",
+                    $"{web_name} : {ex.Message}");
             }
-            
+
             return;
         }
 
@@ -225,7 +222,7 @@ namespace ProcessAutomation.Main.PayIn
             webLayout.DocumentCompleted += documentComplete;
         }
 
-        private void Login(AdminAccount adminAccount) 
+        private void Login(AdminAccount adminAccount)
         {
             var htmlLogin = webLayout.Document;
             var inputTag = htmlLogin.GetElementsByTagName("input");
@@ -245,7 +242,7 @@ namespace ProcessAutomation.Main.PayIn
             var btnLogin = htmlLogin.GetElementById("btn-login");
             btnLogin.InvokeMember("Click");
         }
-       
+
         private void AccessToDaily()
         {
             var htmlIndex = webLayout.Document;
@@ -274,7 +271,7 @@ namespace ProcessAutomation.Main.PayIn
             return userAccount;
         }
 
-        void PayIn()
+        void PayIn(AccountData accountData)
         {
             var html = webLayout.Document;
             var amount = html.GetElementsByTagName("input");
@@ -283,11 +280,11 @@ namespace ProcessAutomation.Main.PayIn
                 var value = item.GetAttribute("name");
                 if (value == "txt_email")
                 {
-                    item.SetAttribute("value", "Autobank1@gmail.com");
+                    item.SetAttribute("value", accountData.NT);
                 }
                 else if (value == "txt_gia")
                 {
-                    item.SetAttribute("value", "20000");
+                    item.SetAttribute("value", currentMessage.Money);
                 }
             }
             var button = html.GetElementsByTagName("button");
@@ -296,7 +293,7 @@ namespace ProcessAutomation.Main.PayIn
                 var btnSubmit = item.GetAttribute("name");
                 //"kiemtraemailnguoinhan"
                 //"chuyenkhoantronghethong"
-                if (btnSubmit == "chuyenkhoantronghethong")
+                if (btnSubmit == "kiemtraemailnguoinhan")
                 {
                     item.InvokeMember("Click");
                     break;
@@ -332,7 +329,8 @@ namespace ProcessAutomation.Main.PayIn
             MongoDatabase<Message> database = new MongoDatabase<Message>(typeof(Message).Name);
             var updateOption = Builders<Message>.Update
             .Set(p => p.IsProcessed, true)
-            .Set(p => p.Error, error);
+            .Set(p => p.Error, error)
+            .Set(p => p.DateExcute, DateTime.Now);
 
             database.UpdateOne(x => x.Id == currentMessage.Id, updateOption);
         }

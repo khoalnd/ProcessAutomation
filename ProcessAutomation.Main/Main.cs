@@ -29,7 +29,7 @@ namespace ProcessAutomation.Main
             AddPortsToCombobox();
 
             timerReadMessage = new System.Windows.Forms.Timer();
-            timerReadMessage.Interval = (5000);
+            timerReadMessage.Interval = (10000);
             timerReadMessage.Tick += new EventHandler(StartReadMessage);
 
             timerCheckPayInProcess = new System.Windows.Forms.Timer();
@@ -41,14 +41,14 @@ namespace ProcessAutomation.Main
             timerCheckChildProcess.Tick += new EventHandler(Process);
 
             lblErrorReadMessage.Hide();
-            lblPayIn.Hide();
         }
         private void btnStartReadMessage_Click(object sender, EventArgs e)
         {
             lblErrorReadMessage.Hide();
             proBarReadMessage.Style = ProgressBarStyle.Marquee;
             proBarReadMessage.MarqueeAnimationSpeed = 1;
-            timerReadMessage.Start();
+            if (!timerReadMessage.Enabled)
+                timerReadMessage.Start();
         }
 
         private void btnStopReadMessage_Click(object sender, EventArgs e)
@@ -60,8 +60,8 @@ namespace ProcessAutomation.Main
 
         private void btnStartPayIn_Click(object sender, EventArgs e)
         {
-            lblPayIn.Hide();
-            timerCheckPayInProcess.Start();
+            if (!timerCheckPayInProcess.Enabled)
+                timerCheckPayInProcess.Start();
         }
 
         private void btnStopPayIn_Click(object sender, EventArgs e)
@@ -71,30 +71,30 @@ namespace ProcessAutomation.Main
 
         private void connectPortBtn_Click(object sender, EventArgs e)
         {
-            //var portName = SerialPortCombobox.Text;
-            //if (string.IsNullOrEmpty(portName))
-            //{
-            //    MessageBox.Show("Hãy chọn cổng kết nối");
-            //    return;
-            //}
+            var portName = SerialPortCombobox.Text;
+            if (string.IsNullOrEmpty(portName))
+            {
+                MessageBox.Show("Hãy chọn cổng kết nối");
+                return;
+            }
 
-            //if (serialPort != null && serialPort.IsOpen)
-            //{
-            //    serialPort.Close();
-            //    serialPort = null;
-            //}
+            if (serialPort != null && serialPort.IsOpen)
+            {
+                serialPort.Close();
+                serialPort = null;
+            }
 
-            //serialPort = serialPortService.GetPortCOM(portName);
-            //if (serialPort == null)
-            //{
-            //    MessageBox.Show("Lỗi thiết bị, hãy kiểm tra lại");
-            //    return;
-            //}
+            serialPort = serialPortService.GetPortCOM(portName);
+            if (serialPort == null)
+            {
+                MessageBox.Show("Lỗi thiết bị, hãy kiểm tra lại");
+                return;
+            }
 
-            listMessage = new Dictionary<string, List<Message>>();
-            listMessage = messageService.ReadMessage();
-            
-            Process(sender, e);
+            //listMessage = new Dictionary<string, List<Message>>();
+            //listMessage = messageService.ReadMessage();
+
+            //Process(sender, e);
         }
 
         private void StartReadMessage(object sender, EventArgs e)
@@ -113,26 +113,26 @@ namespace ProcessAutomation.Main
 
         private void StartPayIn(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    if (!isCurrentPayInProcessDone)
-            //        return;
+            try
+            {
+                if (!isCurrentPayInProcessDone)
+                    return;
 
-            //    listMessage = new Dictionary<string, List<Message>>();
-            //    listMessage = messageService.ReadMessage();
-            //    if (listMessage.Count == 0)
-            //        isCurrentPayInProcessDone = true;
-            //    else
-            //    {
-            //        isCurrentPayInProcessDone = false;
-            //        if (!timerCheckChildProcess.Enabled)
-            //            timerCheckChildProcess.Start();
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message);
-            //}
+                listMessage = new Dictionary<string, List<Message>>();
+                listMessage = messageService.ReadMessage();
+                if (listMessage.Count == 0)
+                    isCurrentPayInProcessDone = true;
+                else
+                {
+                    isCurrentPayInProcessDone = false;
+                    if (!timerCheckChildProcess.Enabled)
+                        timerCheckChildProcess.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void Process(object sender, EventArgs e)
@@ -156,20 +156,22 @@ namespace ProcessAutomation.Main
                     return;
 
                 listMessage.Remove("cb");
+                iAutomationPayin = null;
             }
-            //else if (listMessage.ContainsKey("hlc") && listMessage["hlc"].Count > 0)
-            //{
-            //    if (iAutomationPayin == null || !(iAutomationPayin is HLCSite))
-            //    {
-            //        iAutomationPayin = new HLCSite(new List<Message>(listMessage["hlc"]), webLayout);
-            //        iAutomationPayin.startPayIN();
-            //    }
+            else if (listMessage.ContainsKey("hlc") && listMessage["hlc"].Count > 0)
+            {
+                if (iAutomationPayin == null || !(iAutomationPayin is HLCSite))
+                {
+                    iAutomationPayin = new HLCSite(new List<Message>(listMessage["hlc"]), webLayout);
+                    iAutomationPayin.startPayIN();
+                }
 
-            //    if (!iAutomationPayin.checkProcessDone())
-            //        return;
+                if (!iAutomationPayin.checkProcessDone())
+                    return;
 
-            //    listMessage.Remove("hlc");
-            //}
+                listMessage.Remove("hlc");
+                iAutomationPayin = null;
+            }
             //else if (listMessage.ContainsKey("gd") && listMessage["gd"].Count > 0)
             //{
             //    if (iAutomationPayin == null || !(iAutomationPayin is GDSite))

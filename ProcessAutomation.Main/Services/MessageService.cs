@@ -25,10 +25,10 @@ namespace ProcessAutomation.Main.Services
             var matches = rule.Matches(response);
             SaveMessage(matches);
 
-            // Delele message after read from sim
-            //serialPort.Write("AT+CMGD=,4" + Environment.NewLine);
-            //System.Threading.Thread.Sleep(50);
-            //serialPort.ReadExisting();
+            //Delele message after read from sim
+            serialPort.Write("AT+CMGD=,4" + Environment.NewLine);
+            System.Threading.Thread.Sleep(50);
+            serialPort.ReadExisting();
         }
 
         public Dictionary<string, List<Message>> ReadMessage()

@@ -13,6 +13,7 @@ public class Message
         IsSatisfied = false;
         IsProcessed = false;
         Error = string.Empty;
+        DateExcute = null;
     }
 
     public ObjectId Id { get; set; }
@@ -24,4 +25,5 @@ public class Message
     public bool IsSatisfied { get; set; }
     public bool IsProcessed{ get; set; }
     public string Error { get; set; }
+    public BsonDateTime DateExcute { get; set; }
 }
