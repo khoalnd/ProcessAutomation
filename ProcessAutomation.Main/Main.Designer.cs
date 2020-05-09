@@ -39,6 +39,8 @@
             this.webLayout = new System.Windows.Forms.WebBrowser();
             this.tabReaMessage = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.lblErrorReadMessage = new System.Windows.Forms.Label();
             this.proBarReadMessage = new System.Windows.Forms.ProgressBar();
             this.btnStopReadMessage = new System.Windows.Forms.Button();
             this.btnStartReadMessage = new System.Windows.Forms.Button();
@@ -47,14 +49,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.SerialPortCombobox = new System.Windows.Forms.ComboBox();
             this.tabControl = new System.Windows.Forms.TabControl();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.lblErrorReadMessage = new System.Windows.Forms.Label();
             this.tabPayIn.SuspendLayout();
             this.tabReaMessage.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabControl.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabPayIn
@@ -135,6 +135,26 @@
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Đọc Tin Nhắn";
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToOrderColumns = true;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 169);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(1115, 481);
+            this.dataGridView1.TabIndex = 18;
+            // 
+            // lblErrorReadMessage
+            // 
+            this.lblErrorReadMessage.AutoSize = true;
+            this.lblErrorReadMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblErrorReadMessage.ForeColor = System.Drawing.Color.Red;
+            this.lblErrorReadMessage.Location = new System.Drawing.Point(8, 87);
+            this.lblErrorReadMessage.Name = "lblErrorReadMessage";
+            this.lblErrorReadMessage.Size = new System.Drawing.Size(86, 31);
+            this.lblErrorReadMessage.TabIndex = 17;
+            this.lblErrorReadMessage.Text = "label2";
             // 
             // proBarReadMessage
             // 
@@ -218,32 +238,13 @@
             this.tabControl.Size = new System.Drawing.Size(1133, 792);
             this.tabControl.TabIndex = 10;
             // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToOrderColumns = true;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 169);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(1115, 481);
-            this.dataGridView1.TabIndex = 18;
-            // 
-            // lblErrorReadMessage
-            // 
-            this.lblErrorReadMessage.AutoSize = true;
-            this.lblErrorReadMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblErrorReadMessage.ForeColor = System.Drawing.Color.Red;
-            this.lblErrorReadMessage.Location = new System.Drawing.Point(8, 87);
-            this.lblErrorReadMessage.Name = "lblErrorReadMessage";
-            this.lblErrorReadMessage.Size = new System.Drawing.Size(86, 31);
-            this.lblErrorReadMessage.TabIndex = 17;
-            this.lblErrorReadMessage.Text = "label2";
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1135, 793);
             this.Controls.Add(this.tabControl);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "Main";
             this.Text = "Main";
             this.Load += new System.EventHandler(this.Main_Load);
@@ -251,10 +252,10 @@
             this.tabReaMessage.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabControl.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
