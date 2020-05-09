@@ -6,6 +6,7 @@ using ProcessAutomation.Main.Ultility;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
+using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using System.Timers;
 using System.Windows.Forms;
@@ -148,67 +149,79 @@ namespace ProcessAutomation.Main
 
         private void Process(object sender, EventArgs e)
         {
-            if (listMessage.Count == 0)
+            try
             {
-                isCurrentPayInProcessDone = true;
-                timerCheckChildProcess.Stop();
-                return;
-            }
-                
-            if (listMessage.ContainsKey("cb") && listMessage["cb"].Count > 0)
-            {
-                if (iAutomationPayin == null || !(iAutomationPayin is CBSite))
+                if (listMessage.Count == 0)
                 {
-                    iAutomationPayin = new CBSite(new List<Message>(listMessage["cb"]), webLayout);
-                    iAutomationPayin.startPayIN();
+                    isCurrentPayInProcessDone = true;
+                    timerCheckChildProcess.Stop();
+                    return;
                 }
 
-                if (!iAutomationPayin.checkProcessDone())
-                    return;
-
-                listMessage.Remove("cb");
-                iAutomationPayin = null;
-            }
-            else if (listMessage.ContainsKey("hlc") && listMessage["hlc"].Count > 0)
-            {
-                if (iAutomationPayin == null || !(iAutomationPayin is HLCSite))
+                if (listMessage.ContainsKey("cb") && listMessage["cb"].Count > 0)
                 {
-                    iAutomationPayin = new HLCSite(new List<Message>(listMessage["hlc"]), webLayout);
-                    iAutomationPayin.startPayIN();
+                    if (iAutomationPayin == null || !(iAutomationPayin is CBSite))
+                    {
+                        iAutomationPayin = new CBSite(new List<Message>(listMessage["cb"]), webLayout);
+                        iAutomationPayin.startPayIN();
+                    }
+
+                    if (!iAutomationPayin.checkProcessDone())
+                        return;
+
+                    listMessage.Remove("cb");
+                    iAutomationPayin = null;
                 }
+                else if (listMessage.ContainsKey("hlc") && listMessage["hlc"].Count > 0)
+                {
+                    if (iAutomationPayin == null || !(iAutomationPayin is HLCSite))
+                    {
+                        iAutomationPayin = new HLCSite(new List<Message>(listMessage["hlc"]), webLayout);
+                        iAutomationPayin.startPayIN();
+                    }
 
-                if (!iAutomationPayin.checkProcessDone())
-                    return;
+                    if (!iAutomationPayin.checkProcessDone())
+                        return;
 
-                listMessage.Remove("hlc");
-                iAutomationPayin = null;
+                    listMessage.Remove("hlc");
+                    iAutomationPayin = null;
+                }
+                //else if (listMessage.ContainsKey("gd") && listMessage["gd"].Count > 0)
+                //{
+                //    if (iAutomationPayin == null || !(iAutomationPayin is GDSite))
+                //    {
+                //        iAutomationPayin = new GDSite(new List<Message>(listMessage["gd"]), webLayout);
+                //        iAutomationPayin.startPayIN();
+                //    }
+
+                //    if (!iAutomationPayin.checkProcessDone())
+                //        return;
+
+                //    listMessage.Remove("gd");
+                //}
+                //else if (listMessage["nt"] != null && listMessage["nt"].Count > 0)
+                //{
+                //    if (iAutomationPayin == null || !(iAutomationPayin is CBSite))
+                //    {
+                //        iAutomationPayin = new CBSite(listMessage["nt"], webLayout);
+                //        iAutomationPayin.startPayIN();
+                //    }
+
+                //    if (!iAutomationPayin.checkProcessDone())
+                //        return;
+
+                //    listMessage.Remove("nt");
+                //}
             }
-            //else if (listMessage.ContainsKey("gd") && listMessage["gd"].Count > 0)
-            //{
-            //    if (iAutomationPayin == null || !(iAutomationPayin is GDSite))
-            //    {
-            //        iAutomationPayin = new GDSite(new List<Message>(listMessage["gd"]), webLayout);
-            //        iAutomationPayin.startPayIN();
-            //    }
-
-            //    if (!iAutomationPayin.checkProcessDone())
-            //        return;
-
-            //    listMessage.Remove("gd");
-            //}
-            //else if (listMessage["nt"] != null && listMessage["nt"].Count > 0)
-            //{
-            //    if (iAutomationPayin == null || !(iAutomationPayin is CBSite))
-            //    {
-            //        iAutomationPayin = new CBSite(listMessage["nt"], webLayout);
-            //        iAutomationPayin.startPayIN();
-            //    }
-
-            //    if (!iAutomationPayin.checkProcessDone())
-            //        return;
-
-            //    listMessage.Remove("nt");
-            //}
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("không kết nối internet"))
+                {
+                    MessageBox.Show("Không có kết nối internet");
+                    timerCheckPayInProcess.Stop();
+                    timerCheckChildProcess.Stop();
+                }
+            }
         }
 
         private void AddPortsToCombobox()
