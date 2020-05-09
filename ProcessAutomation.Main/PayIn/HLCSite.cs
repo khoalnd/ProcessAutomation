@@ -425,7 +425,7 @@ namespace ProcessAutomation.Main.PayIn
 
         private void SendNotificationForError(string subject, string message)
         {
-            //mailService.SendEmail(subject, message);
+            mailService.SendEmail(subject, message);
         }
 
         private void SaveRecord(string error = "")
