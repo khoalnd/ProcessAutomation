@@ -187,6 +187,10 @@ namespace ProcessAutomation.Main.PayIn
                             }
                             else
                             {
+                                SendNotificationForError(
+                                    "Cộng tiền thành công",
+                                    $"{web_name} : Cộng tiền thành công account { currentMessage.Account }, " +
+                                    $"số tiền { currentMessage.Money }");
                                 SaveRecord();
                             }
 
@@ -360,7 +364,7 @@ namespace ProcessAutomation.Main.PayIn
 
         private void SendNotificationForError(string subject, string message)
         {
-            //mailService.SendEmail(subject, message);
+            mailService.SendEmail(subject, message);
         }
 
         private void SaveRecord(string error = "")

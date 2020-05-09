@@ -106,10 +106,10 @@ namespace ProcessAutomation.Main.Services
                     decimal outMoney = 0;
 
                     result.IsSatisfied = false;
-                    if (decimal.TryParse(money, out outMoney) && outMoney >= 20000)
-                    {
+                    if (decimal.TryParse(money, out outMoney))
+                    {   
                         result.Money = outMoney.ToString();
-                        result.IsSatisfied = true;
+                        result.IsSatisfied = outMoney >= 20000;
                     }
                 }
             }

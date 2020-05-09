@@ -1,5 +1,8 @@
-﻿using ProcessAutomation.Main.PayIn;
+﻿using MongoDB.Driver;
+using ProcessAutomation.DAL;
+using ProcessAutomation.Main.PayIn;
 using ProcessAutomation.Main.Services;
+using ProcessAutomation.Main.Ultility;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
@@ -17,7 +20,7 @@ namespace ProcessAutomation.Main
         IAutomationPayIn iAutomationPayin;
         bool isCurrentPayInProcessDone = true;
         Dictionary<string, List<Message>> listMessage = new Dictionary<string, List<Message>>(); 
-
+        
         public Main()
         {
             InitializeComponent();
@@ -44,9 +47,16 @@ namespace ProcessAutomation.Main
         }
         private void btnStartReadMessage_Click(object sender, EventArgs e)
         {
+            if (!serialPort.IsOpen)
+            {
+                MessageBox.Show("Chưa kết nối thiết bị");
+                return;
+            }
+
             lblErrorReadMessage.Hide();
             proBarReadMessage.Style = ProgressBarStyle.Marquee;
             proBarReadMessage.MarqueeAnimationSpeed = 1;
+
             if (!timerReadMessage.Enabled)
                 timerReadMessage.Start();
         }
@@ -90,11 +100,7 @@ namespace ProcessAutomation.Main
                 MessageBox.Show("Lỗi thiết bị, hãy kiểm tra lại");
                 return;
             }
-
-            //listMessage = new Dictionary<string, List<Message>>();
-            //listMessage = messageService.ReadMessage();
-
-            //Process(sender, e);
+            MessageBox.Show("Kết nối thiết bị thành công");
         }
 
         private void StartReadMessage(object sender, EventArgs e)
@@ -102,6 +108,11 @@ namespace ProcessAutomation.Main
             try
             {
                 messageService.StartReadMessage(serialPort);
+
+                //var database = new MongoDatabase<Message>(typeof(Message).Name);
+                //List<Message> listMessge = database.Query
+
+                //dataGridView1.DataSource = list
             }
             catch (Exception ex)
             {

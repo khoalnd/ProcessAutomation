@@ -185,6 +185,11 @@ namespace ProcessAutomation.Main.PayIn
                             }
                             else
                             {
+                                SendNotificationForError(
+                                    "Cộng tiền thành công",
+                                    $"{web_name} : Cộng tiền thành công account { currentMessage.Account }, " +
+                                    $"số tiền { currentMessage.Money }");
+
                                 //SaveRecord();
                             }
                             data.Remove(currentMessage);

@@ -14,6 +14,7 @@ namespace ProcessAutomation.Main.Services
             try
             {
                 serialPort.Write("AT" + Environment.NewLine);
+                //serialPort.Write("AT+CMGF=1" + Environment.NewLine);
                 System.Threading.Thread.Sleep(50);
                 var response = serialPort.ReadExisting();
                 return response.Contains("OK");
