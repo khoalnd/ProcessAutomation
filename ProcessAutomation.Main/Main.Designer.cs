@@ -83,19 +83,19 @@
             // 
             // proBarPayIn
             // 
-            this.proBarPayIn.Location = new System.Drawing.Point(458, 25);
+            this.proBarPayIn.Location = new System.Drawing.Point(222, 25);
             this.proBarPayIn.MarqueeAnimationSpeed = 1;
             this.proBarPayIn.Maximum = 10000;
             this.proBarPayIn.Name = "proBarPayIn";
-            this.proBarPayIn.Size = new System.Drawing.Size(848, 34);
+            this.proBarPayIn.Size = new System.Drawing.Size(1084, 34);
             this.proBarPayIn.Step = 1;
             this.proBarPayIn.TabIndex = 12;
             // 
             // btnStopPayIn
             // 
-            this.btnStopPayIn.Location = new System.Drawing.Point(217, 18);
+            this.btnStopPayIn.Location = new System.Drawing.Point(22, 18);
             this.btnStopPayIn.Name = "btnStopPayIn";
-            this.btnStopPayIn.Size = new System.Drawing.Size(216, 45);
+            this.btnStopPayIn.Size = new System.Drawing.Size(175, 45);
             this.btnStopPayIn.TabIndex = 11;
             this.btnStopPayIn.Text = "Dừng nạp tiền";
             this.btnStopPayIn.UseVisualStyleBackColor = true;
@@ -265,19 +265,19 @@
             // 
             // proBarReadMessage
             // 
-            this.proBarReadMessage.Location = new System.Drawing.Point(454, 41);
+            this.proBarReadMessage.Location = new System.Drawing.Point(230, 41);
             this.proBarReadMessage.MarqueeAnimationSpeed = 1;
             this.proBarReadMessage.Maximum = 10000;
             this.proBarReadMessage.Name = "proBarReadMessage";
-            this.proBarReadMessage.Size = new System.Drawing.Size(832, 27);
+            this.proBarReadMessage.Size = new System.Drawing.Size(1056, 27);
             this.proBarReadMessage.Step = 1;
             this.proBarReadMessage.TabIndex = 16;
             // 
             // btnStopReadMessage
             // 
-            this.btnStopReadMessage.Location = new System.Drawing.Point(238, 34);
+            this.btnStopReadMessage.Location = new System.Drawing.Point(6, 34);
             this.btnStopReadMessage.Name = "btnStopReadMessage";
-            this.btnStopReadMessage.Size = new System.Drawing.Size(197, 38);
+            this.btnStopReadMessage.Size = new System.Drawing.Size(207, 38);
             this.btnStopReadMessage.TabIndex = 15;
             this.btnStopReadMessage.Text = "Dừng đọc tin nhắn";
             this.btnStopReadMessage.UseVisualStyleBackColor = true;

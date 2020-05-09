@@ -47,6 +47,8 @@ namespace ProcessAutomation.Main
             timerCheckChildProcess.Tick += new EventHandler(Process);
 
             lblErrorReadMessage.Hide();
+            btnStopReadMessage.Hide();
+            btnStopPayIn.Hide();
         }
         private void btnStartReadMessage_Click(object sender, EventArgs e)
         {
@@ -59,6 +61,8 @@ namespace ProcessAutomation.Main
             lblErrorReadMessage.Hide();
             proBarReadMessage.Style = ProgressBarStyle.Marquee;
             proBarReadMessage.MarqueeAnimationSpeed = 1;
+            btnStopReadMessage.Show();
+            btnStartReadMessage.Hide();
 
             if (!timerReadMessage.Enabled)
                 timerReadMessage.Start();
@@ -69,17 +73,27 @@ namespace ProcessAutomation.Main
             proBarReadMessage.MarqueeAnimationSpeed = 0;
             proBarReadMessage.Style = ProgressBarStyle.Blocks;
             timerReadMessage.Stop();
+            btnStopReadMessage.Hide();
+            btnStartReadMessage.Show();
         }
 
         private void btnStartPayIn_Click(object sender, EventArgs e)
         {
+            btnStopPayIn.Show();
+            btnStartPayIn.Hide();
+            proBarPayIn.MarqueeAnimationSpeed = 0;
+            proBarPayIn.Style = ProgressBarStyle.Blocks;
             if (!timerCheckPayInProcess.Enabled)
                 timerCheckPayInProcess.Start();
         }
 
         private void btnStopPayIn_Click(object sender, EventArgs e)
         {
+            proBarPayIn.MarqueeAnimationSpeed = 0;
+            proBarPayIn.Style = ProgressBarStyle.Blocks;
             timerCheckPayInProcess.Stop();
+            btnStopPayIn.Hide();
+            btnStartPayIn.Show();
         }
 
         private void connectPortBtn_Click(object sender, EventArgs e)
@@ -114,6 +128,8 @@ namespace ProcessAutomation.Main
             }
             catch (Exception ex)
             {
+                btnStopReadMessage.Hide();
+                btnStartReadMessage.Show();
                 timerReadMessage.Stop();
                 lblErrorReadMessage.Text = "Có lỗi hệ thống: " + ex.Message
                     + Environment.NewLine + "Hãy kiểm tra và bắt đầu lại";
@@ -130,11 +146,7 @@ namespace ProcessAutomation.Main
                 listMessage = new Dictionary<string, List<Message>>();
                 listMessage = messageService.ReadMessage();
                 if (listMessage.Count == 0)
-                {
                     isCurrentPayInProcessDone = true;
-                    proBarPayIn.MarqueeAnimationSpeed = 0;
-                    proBarPayIn.Style = ProgressBarStyle.Blocks;
-                }
                 else
                 {
                     isCurrentPayInProcessDone = false;
@@ -148,6 +160,8 @@ namespace ProcessAutomation.Main
             }
             catch (Exception ex)
             {
+                btnStopPayIn.Hide();
+                btnStartPayIn.Show();
                 MessageBox.Show(ex.Message);
             }
         }
@@ -158,8 +172,6 @@ namespace ProcessAutomation.Main
             {
                 if (listMessage.Count == 0)
                 {
-                    proBarPayIn.MarqueeAnimationSpeed = 0;
-                    proBarPayIn.Style = ProgressBarStyle.Blocks;
                     isCurrentPayInProcessDone = true;
                     timerCheckChildProcess.Stop();
                     return;
