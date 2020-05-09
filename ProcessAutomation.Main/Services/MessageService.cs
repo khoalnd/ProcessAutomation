@@ -109,7 +109,7 @@ namespace ProcessAutomation.Main.Services
                     if (decimal.TryParse(money, out outMoney))
                     {   
                         result.Money = outMoney.ToString();
-                        result.IsSatisfied = outMoney >= 20000;
+                        result.IsSatisfied = outMoney >= Constant.SATISFIED_PAYIN;
                     }
                 }
             }

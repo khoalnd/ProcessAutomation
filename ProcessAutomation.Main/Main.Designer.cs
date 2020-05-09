@@ -33,13 +33,23 @@
             this.timerCheckChildProcess = new System.Windows.Forms.Timer(this.components);
             this.timerReadMessage = new System.Windows.Forms.Timer(this.components);
             this.tabPayIn = new System.Windows.Forms.TabPage();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.proBarPayIn = new System.Windows.Forms.ProgressBar();
             this.btnStopPayIn = new System.Windows.Forms.Button();
             this.btnStartPayIn = new System.Windows.Forms.Button();
             this.webLayout = new System.Windows.Forms.WebBrowser();
             this.tabReaMessage = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnShowHistory = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Web = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Account = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Money = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RecievedDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MessageContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsSatisfied = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsProcessed = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DateExcute = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Error = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblErrorReadMessage = new System.Windows.Forms.Label();
             this.proBarReadMessage = new System.Windows.Forms.ProgressBar();
             this.btnStopReadMessage = new System.Windows.Forms.Button();
@@ -59,27 +69,27 @@
             // 
             // tabPayIn
             // 
-            this.tabPayIn.Controls.Add(this.progressBar1);
+            this.tabPayIn.Controls.Add(this.proBarPayIn);
             this.tabPayIn.Controls.Add(this.btnStopPayIn);
             this.tabPayIn.Controls.Add(this.btnStartPayIn);
             this.tabPayIn.Controls.Add(this.webLayout);
             this.tabPayIn.Location = new System.Drawing.Point(4, 33);
             this.tabPayIn.Name = "tabPayIn";
             this.tabPayIn.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPayIn.Size = new System.Drawing.Size(1125, 755);
+            this.tabPayIn.Size = new System.Drawing.Size(1316, 755);
             this.tabPayIn.TabIndex = 1;
             this.tabPayIn.Text = "Nạp Tiền";
             this.tabPayIn.UseVisualStyleBackColor = true;
             // 
-            // progressBar1
+            // proBarPayIn
             // 
-            this.progressBar1.Location = new System.Drawing.Point(458, 25);
-            this.progressBar1.MarqueeAnimationSpeed = 1;
-            this.progressBar1.Maximum = 10000;
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(660, 34);
-            this.progressBar1.Step = 1;
-            this.progressBar1.TabIndex = 12;
+            this.proBarPayIn.Location = new System.Drawing.Point(458, 25);
+            this.proBarPayIn.MarqueeAnimationSpeed = 1;
+            this.proBarPayIn.Maximum = 10000;
+            this.proBarPayIn.Name = "proBarPayIn";
+            this.proBarPayIn.Size = new System.Drawing.Size(848, 34);
+            this.proBarPayIn.Step = 1;
+            this.proBarPayIn.TabIndex = 12;
             // 
             // btnStopPayIn
             // 
@@ -106,7 +116,7 @@
             this.webLayout.Location = new System.Drawing.Point(3, 89);
             this.webLayout.MinimumSize = new System.Drawing.Size(20, 20);
             this.webLayout.Name = "webLayout";
-            this.webLayout.Size = new System.Drawing.Size(1119, 666);
+            this.webLayout.Size = new System.Drawing.Size(1307, 666);
             this.webLayout.TabIndex = 9;
             // 
             // tabReaMessage
@@ -117,33 +127,130 @@
             this.tabReaMessage.Location = new System.Drawing.Point(4, 33);
             this.tabReaMessage.Name = "tabReaMessage";
             this.tabReaMessage.Padding = new System.Windows.Forms.Padding(3);
-            this.tabReaMessage.Size = new System.Drawing.Size(1125, 755);
+            this.tabReaMessage.Size = new System.Drawing.Size(1316, 755);
             this.tabReaMessage.TabIndex = 0;
             this.tabReaMessage.Text = "Đọc Tin Nhắn";
             this.tabReaMessage.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.btnShowHistory);
             this.groupBox2.Controls.Add(this.dataGridView1);
             this.groupBox2.Controls.Add(this.lblErrorReadMessage);
             this.groupBox2.Controls.Add(this.proBarReadMessage);
             this.groupBox2.Controls.Add(this.btnStopReadMessage);
             this.groupBox2.Controls.Add(this.btnStartReadMessage);
-            this.groupBox2.Location = new System.Drawing.Point(7, 96);
+            this.groupBox2.Location = new System.Drawing.Point(7, 90);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1115, 659);
+            this.groupBox2.Size = new System.Drawing.Size(1306, 659);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Đọc Tin Nhắn";
             // 
+            // btnShowHistory
+            // 
+            this.btnShowHistory.Location = new System.Drawing.Point(6, 130);
+            this.btnShowHistory.Name = "btnShowHistory";
+            this.btnShowHistory.Size = new System.Drawing.Size(162, 33);
+            this.btnShowHistory.TabIndex = 16;
+            this.btnShowHistory.Text = "Hiện lịch sử";
+            this.btnShowHistory.UseVisualStyleBackColor = true;
+            this.btnShowHistory.Click += new System.EventHandler(this.btnShowHistory_Click);
+            // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToOrderColumns = true;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Menu;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Web,
+            this.Account,
+            this.Money,
+            this.RecievedDate,
+            this.MessageContent,
+            this.IsSatisfied,
+            this.IsProcessed,
+            this.DateExcute,
+            this.Error});
             this.dataGridView1.Location = new System.Drawing.Point(0, 169);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(1115, 481);
+            this.dataGridView1.Size = new System.Drawing.Size(1306, 490);
             this.dataGridView1.TabIndex = 18;
+            this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
+            // 
+            // Web
+            // 
+            this.Web.DataPropertyName = "Web";
+            this.Web.FillWeight = 50.09074F;
+            this.Web.HeaderText = "Web";
+            this.Web.Name = "Web";
+            this.Web.ReadOnly = true;
+            this.Web.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // Account
+            // 
+            this.Account.DataPropertyName = "Account";
+            this.Account.FillWeight = 60.80748F;
+            this.Account.HeaderText = "Tài Khoản";
+            this.Account.Name = "Account";
+            this.Account.ReadOnly = true;
+            // 
+            // Money
+            // 
+            this.Money.DataPropertyName = "Money";
+            this.Money.FillWeight = 79.93161F;
+            this.Money.HeaderText = "Số tiền";
+            this.Money.Name = "Money";
+            this.Money.ReadOnly = true;
+            // 
+            // RecievedDate
+            // 
+            this.RecievedDate.DataPropertyName = "RecievedDate";
+            this.RecievedDate.FillWeight = 153.0869F;
+            this.RecievedDate.HeaderText = "Ngày Nhận";
+            this.RecievedDate.Name = "RecievedDate";
+            this.RecievedDate.ReadOnly = true;
+            // 
+            // MessageContent
+            // 
+            this.MessageContent.DataPropertyName = "MessageContent";
+            this.MessageContent.FillWeight = 153.0869F;
+            this.MessageContent.HeaderText = "Nội Dung";
+            this.MessageContent.Name = "MessageContent";
+            this.MessageContent.ReadOnly = true;
+            // 
+            // IsSatisfied
+            // 
+            this.IsSatisfied.DataPropertyName = "IsSatisfied";
+            this.IsSatisfied.FillWeight = 51.13712F;
+            this.IsSatisfied.HeaderText = "Hợp Lệ";
+            this.IsSatisfied.Name = "IsSatisfied";
+            this.IsSatisfied.ReadOnly = true;
+            // 
+            // IsProcessed
+            // 
+            this.IsProcessed.DataPropertyName = "IsProcessed";
+            this.IsProcessed.FillWeight = 45.68526F;
+            this.IsProcessed.HeaderText = "Đã Xử Lý";
+            this.IsProcessed.Name = "IsProcessed";
+            this.IsProcessed.ReadOnly = true;
+            // 
+            // DateExcute
+            // 
+            this.DateExcute.DataPropertyName = "DateExcute";
+            this.DateExcute.FillWeight = 153.0869F;
+            this.DateExcute.HeaderText = "Ngày Xử Lý";
+            this.DateExcute.Name = "DateExcute";
+            this.DateExcute.ReadOnly = true;
+            // 
+            // Error
+            // 
+            this.Error.DataPropertyName = "Error";
+            this.Error.FillWeight = 153.0869F;
+            this.Error.HeaderText = "Lỗi";
+            this.Error.Name = "Error";
+            this.Error.ReadOnly = true;
             // 
             // lblErrorReadMessage
             // 
@@ -158,11 +265,11 @@
             // 
             // proBarReadMessage
             // 
-            this.proBarReadMessage.Location = new System.Drawing.Point(454, 37);
+            this.proBarReadMessage.Location = new System.Drawing.Point(454, 41);
             this.proBarReadMessage.MarqueeAnimationSpeed = 1;
             this.proBarReadMessage.Maximum = 10000;
             this.proBarReadMessage.Name = "proBarReadMessage";
-            this.proBarReadMessage.Size = new System.Drawing.Size(638, 27);
+            this.proBarReadMessage.Size = new System.Drawing.Size(832, 27);
             this.proBarReadMessage.Step = 1;
             this.proBarReadMessage.TabIndex = 16;
             // 
@@ -193,7 +300,7 @@
             this.groupBox1.Controls.Add(this.SerialPortCombobox);
             this.groupBox1.Location = new System.Drawing.Point(7, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1115, 84);
+            this.groupBox1.Size = new System.Drawing.Size(1303, 84);
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Kết Nối Thiết Bị";
@@ -235,14 +342,14 @@
             this.tabControl.Location = new System.Drawing.Point(1, 2);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1133, 792);
+            this.tabControl.Size = new System.Drawing.Size(1324, 792);
             this.tabControl.TabIndex = 10;
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1135, 793);
+            this.ClientSize = new System.Drawing.Size(1323, 793);
             this.Controls.Add(this.tabControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "Main";
@@ -270,7 +377,7 @@
         private System.Windows.Forms.WebBrowser webLayout;
         private System.Windows.Forms.TabPage tabReaMessage;
         private System.Windows.Forms.TabControl tabControl;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar proBarPayIn;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button connectPortBtn;
         private System.Windows.Forms.Label label1;
@@ -281,5 +388,15 @@
         private System.Windows.Forms.Button btnStartReadMessage;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label lblErrorReadMessage;
+        private System.Windows.Forms.Button btnShowHistory;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Web;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Account;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Money;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RecievedDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MessageContent;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IsSatisfied;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IsProcessed;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DateExcute;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Error;
     }
 }

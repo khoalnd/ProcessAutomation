@@ -21,5 +21,11 @@ namespace ProcessAutomation.Main.Ultility
         public const string REG_EXTRACT_ACCOUNT = "( ND | do )+(cb|hlc|gd|nt)+(.*? )";
         public static List<string> WEBS_NAME = new List<string> { "cb", "hlc", "gd", "nt" };
         #endregion
+
+        #region Limitation
+        public const decimal SATISFIED_PAYIN = 20000;
+        public const decimal SATISFIED_AMOUNT_ACCOUNT = 0; //10000000, 50000000
+        public const decimal TEST_MONEY = 20000;
+        #endregion
     }
 }

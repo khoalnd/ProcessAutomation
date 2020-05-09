@@ -1,4 +1,6 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using ProcessAutomation.DAL;
 using ProcessAutomation.Main.PayIn;
 using ProcessAutomation.Main.Services;
@@ -6,6 +8,7 @@ using ProcessAutomation.Main.Ultility;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using System.Timers;
@@ -20,8 +23,8 @@ namespace ProcessAutomation.Main
         MessageService messageService = new MessageService();
         IAutomationPayIn iAutomationPayin;
         bool isCurrentPayInProcessDone = true;
-        Dictionary<string, List<Message>> listMessage = new Dictionary<string, List<Message>>(); 
-        
+        Dictionary<string, List<Message>> listMessage = new Dictionary<string, List<Message>>();
+
         public Main()
         {
             InitializeComponent();
@@ -29,7 +32,6 @@ namespace ProcessAutomation.Main
 
         private void Main_Load(object sender, EventArgs e)
         {
-            // add serial port com from computer
             AddPortsToCombobox();
 
             timerReadMessage = new System.Windows.Forms.Timer();
@@ -109,11 +111,6 @@ namespace ProcessAutomation.Main
             try
             {
                 messageService.StartReadMessage(serialPort);
-
-                //var database = new MongoDatabase<Message>(typeof(Message).Name);
-                //List<Message> listMessge = database.Query
-
-                //dataGridView1.DataSource = list
             }
             catch (Exception ex)
             {
@@ -133,12 +130,20 @@ namespace ProcessAutomation.Main
                 listMessage = new Dictionary<string, List<Message>>();
                 listMessage = messageService.ReadMessage();
                 if (listMessage.Count == 0)
+                {
                     isCurrentPayInProcessDone = true;
+                    proBarPayIn.MarqueeAnimationSpeed = 0;
+                    proBarPayIn.Style = ProgressBarStyle.Blocks;
+                }
                 else
                 {
                     isCurrentPayInProcessDone = false;
                     if (!timerCheckChildProcess.Enabled)
+                    {
+                        proBarPayIn.Style = ProgressBarStyle.Marquee;
+                        proBarPayIn.MarqueeAnimationSpeed = 1;
                         timerCheckChildProcess.Start();
+                    }
                 }
             }
             catch (Exception ex)
@@ -153,6 +158,8 @@ namespace ProcessAutomation.Main
             {
                 if (listMessage.Count == 0)
                 {
+                    proBarPayIn.MarqueeAnimationSpeed = 0;
+                    proBarPayIn.Style = ProgressBarStyle.Blocks;
                     isCurrentPayInProcessDone = true;
                     timerCheckChildProcess.Stop();
                     return;
@@ -186,41 +193,36 @@ namespace ProcessAutomation.Main
                     listMessage.Remove("hlc");
                     iAutomationPayin = null;
                 }
-                //else if (listMessage.ContainsKey("gd") && listMessage["gd"].Count > 0)
-                //{
-                //    if (iAutomationPayin == null || !(iAutomationPayin is GDSite))
-                //    {
-                //        iAutomationPayin = new GDSite(new List<Message>(listMessage["gd"]), webLayout);
-                //        iAutomationPayin.startPayIN();
-                //    }
+                else if (listMessage.ContainsKey("gd") && listMessage["gd"].Count > 0)
+                {
+                    //if (iAutomationPayin == null || !(iAutomationPayin is GDSite))
+                    //{
+                    //    iAutomationPayin = new GDSite(new List<Message>(listMessage["gd"]), webLayout);
+                    //    iAutomationPayin.startPayIN();
+                    //}
 
-                //    if (!iAutomationPayin.checkProcessDone())
-                //        return;
+                    //if (!iAutomationPayin.checkProcessDone())
+                    //    return;
 
-                //    listMessage.Remove("gd");
-                //}
-                //else if (listMessage["nt"] != null && listMessage["nt"].Count > 0)
-                //{
-                //    if (iAutomationPayin == null || !(iAutomationPayin is CBSite))
-                //    {
-                //        iAutomationPayin = new CBSite(listMessage["nt"], webLayout);
-                //        iAutomationPayin.startPayIN();
-                //    }
+                    listMessage.Remove("gd");
+                }
+                else if (listMessage["nt"] != null && listMessage["nt"].Count > 0)
+                {
+                    //if (iAutomationPayin == null || !(iAutomationPayin is CBSite))
+                    //{
+                    //    iAutomationPayin = new CBSite(listMessage["nt"], webLayout);
+                    //    iAutomationPayin.startPayIN();
+                    //}
 
-                //    if (!iAutomationPayin.checkProcessDone())
-                //        return;
+                    //if (!iAutomationPayin.checkProcessDone())
+                    //    return;
 
-                //    listMessage.Remove("nt");
-                //}
+                    listMessage.Remove("nt");
+                }
             }
             catch (Exception ex)
             {
-                if (ex.Message.Contains("không kết nối internet"))
-                {
-                    MessageBox.Show("Không có kết nối internet");
-                    timerCheckPayInProcess.Stop();
-                    timerCheckChildProcess.Stop();
-                }
+                throw ex;
             }
         }
 
@@ -231,6 +233,39 @@ namespace ProcessAutomation.Main
             {
                 SerialPortCombobox.Items.AddRange(portNames);
                 SerialPortCombobox.SelectedIndex = portNames.Length - 1;
+            }
+            else
+            {
+                MessageBox.Show("Hãy kết nối thiết bị");
+            }
+        }
+
+        private void btnShowHistory_Click(object sender, EventArgs e)
+        {
+            var database = new MongoDatabase<Message>(typeof(Message).Name);
+            List<Message> listMessge = database.Query.ToList();
+            dataGridView1.AutoGenerateColumns = false;
+            dataGridView1.DataSource = listMessge;
+        }
+
+        void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.ColumnIndex == 5)
+            {
+                if (e.Value != null && e.Value is bool)
+                {
+                    e.Value = (bool)e.Value ? "Hợp Lệ" : "Không";
+                    e.FormattingApplied = true;
+                }
+            }
+
+            if (e.ColumnIndex == 6)
+            {
+                if (e.Value != null && e.Value is bool)
+                {
+                    e.Value = (bool)e.Value ? "Rồi" : "Chưa";
+                    e.FormattingApplied = true;
+                }
             }
         }
     }

@@ -55,6 +55,7 @@ namespace ProcessAutomation.Main.PayIn
                     if (webLayout.DocumentText.Contains("res://ieframe.dll"))
                     {
                         tcs.SetException(new Exception("Lỗi không có kết nối internet"));
+                        return;
                     }
                     webLayout.DocumentCompleted -= documentComplete;
                     tcs.SetResult(v);
@@ -105,8 +106,21 @@ namespace ProcessAutomation.Main.PayIn
                                 process = "Finish";
                                 break;
                             }
-                            process = "AccessToDaily";
+                            process = "CheckAmountAccount";
 
+                            break;
+                        case "CheckAmountAccount":
+                            var isAmountEnough = CheckAmountAccount();
+                            await Task.Delay(3000);
+
+                            if (!isAmountEnough)
+                            {
+                                SendNotificationForError("Account không đủ số tiền tối thiểu",
+                                    $"{web_name} : Account admin không đủ số tiền tối thiểu");
+                                process = "Finish";
+                                break;
+                            }
+                            process = "AccessToDaily";
                             break;
                         case "AccessToDaily":
                             CreateSyncTask();
@@ -206,12 +220,14 @@ namespace ProcessAutomation.Main.PayIn
                             webLayout.Navigate("about:blank");
                             break;
                     }
-                } while (!isFinishProcess || !helper.CheckInternetConnection());
+                } while (!isFinishProcess);
             }
             catch (Exception ex)
             {
                 isFinishProcess = true;
-                webLayout.Navigate("about:blank");
+                if (ex.Message.Contains("Lỗi không có kết nối internet"))
+                    return;
+
                 SendNotificationForError(
                     "Lỗi không xác định",
                     $"{web_name} : {ex.Message}");
@@ -282,6 +298,47 @@ namespace ProcessAutomation.Main.PayIn
             return userAccount;
         }
 
+        private bool CheckAmountAccount()
+        {
+            try
+            {
+                HtmlElement tdResult = null;
+                var html = webLayout.Document;
+                var table = html.GetElementsByTagName("table")[0];
+                var trs = table.GetElementsByTagName("tr");
+                foreach (HtmlElement tr in trs)
+                {
+                    var tds = tr.GetElementsByTagName("td");
+                    foreach (HtmlElement td in tds)
+                    {
+                        try
+                        {
+                            string value = td.InnerText;
+                            if (value != null && value.Contains("SỐ DƯ TÀI KHOẢN"))
+                            {
+                                tdResult = tds[1]; //[1] is amount of money
+                                break;
+                            }
+                        }
+                        catch
+                        {
+                            continue;
+                        }
+                    }
+                }
+                if (tdResult != null)
+                {
+                    decimal outMoney = 0;
+                    return (decimal.TryParse(tdResult.InnerHtml.Replace("VNĐ", "").Trim(), out outMoney)
+                        && outMoney >= Constant.SATISFIED_AMOUNT_ACCOUNT);
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         private void AccessToPayIn(AccountData accountData)
         {
             HtmlElement trFound = null;
@@ -296,7 +353,7 @@ namespace ProcessAutomation.Main.PayIn
                     try
                     {
                         string value = td.InnerText;
-                        if (value == accountData.CB)
+                        if (value!= null && value == accountData.CB)
                         {
                             trFound = tr;
                             break;
@@ -325,23 +382,22 @@ namespace ProcessAutomation.Main.PayIn
 
         private void PayIn()
         {
-            //var html = webLayout.Document;
-            //var amount = html.GetElementById("Amount");
-            //var btnAdd = html.GetElementById("add_money_button");
-            //amount.SetAttribute("value", currentMessage.Money);
-            //btnAdd.InvokeMember("Click");
-            //Thread.Sleep(100);
             var html = webLayout.Document;
-            var amount = html.GetElementsByTagName("input");
-            foreach (HtmlElement item in amount)
-            {
-                var value = item.GetAttribute("value");
-                if (value == "BACK")
-                {
-                    item.InvokeMember("Click");
-                    break;
-                }
-            }
+            var amount = html.GetElementById("Amount");
+            var btnAdd = html.GetElementById("add_money_button");
+            amount.SetAttribute("value", Constant.TEST_MONEY.ToString()); //TODO
+            btnAdd.InvokeMember("Click");
+            //var html = webLayout.Document;
+            //var amount = html.GetElementsByTagName("input");
+            //foreach (HtmlElement item in amount)
+            //{
+            //    var value = item.GetAttribute("value");
+            //    if (value == "BACK")
+            //    {
+            //        item.InvokeMember("Click");
+            //        break;
+            //    }
+            //}
         }
 
         private string checkAccountAdmin(ref AdminAccount account)
@@ -363,7 +419,7 @@ namespace ProcessAutomation.Main.PayIn
 
         private void SendNotificationForError(string subject, string message)
         {
-            mailService.SendEmail(subject, message);
+            //mailService.SendEmail(subject, message);
         }
 
         private void SaveRecord(string error = "")
