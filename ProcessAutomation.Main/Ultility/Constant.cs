@@ -18,8 +18,8 @@ namespace ProcessAutomation.Main.Ultility
         #region Extract Message
         public const string REG_EXTRACT_MESSAGE = "(\\+CMGL: \\d+)+(,\".*?\",)+(\".*?\",)+(,\".*?\")+(\n|\r\n)+(.*)";
         public const string REG_EXTRACT_MONEY = "(tang)+(.*?VND)";
-        public const string REG_EXTRACT_ACCOUNT = "( ND | do )+(cb|hlc|gd|nt)+(.*? )";
-        public static List<string> WEBS_NAME = new List<string> { "cb", "hlc", "gd", "nt" };
+        public const string REG_EXTRACT_ACCOUNT = "( ND | do )+(cb|hl|gd|nt)+(.*? )";
+        public static List<string> WEBS_NAME = new List<string> { "cb", "hl", "gd", "nt" };
         #endregion
 
         #region Limitation

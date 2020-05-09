@@ -179,18 +179,18 @@ namespace ProcessAutomation.Main
                     listMessage.Remove("cb");
                     iAutomationPayin = null;
                 }
-                else if (listMessage.ContainsKey("hlc") && listMessage["hlc"].Count > 0)
+                else if (listMessage.ContainsKey("hl") && listMessage["hl"].Count > 0)
                 {
                     if (iAutomationPayin == null || !(iAutomationPayin is HLCSite))
                     {
-                        iAutomationPayin = new HLCSite(new List<Message>(listMessage["hlc"]), webLayout);
+                        iAutomationPayin = new HLCSite(new List<Message>(listMessage["hl"]), webLayout);
                         iAutomationPayin.startPayIN();
                     }
 
                     if (!iAutomationPayin.checkProcessDone())
                         return;
 
-                    listMessage.Remove("hlc");
+                    listMessage.Remove("hl");
                     iAutomationPayin = null;
                 }
                 else if (listMessage.ContainsKey("gd") && listMessage["gd"].Count > 0)
