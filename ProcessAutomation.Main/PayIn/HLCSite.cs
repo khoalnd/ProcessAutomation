@@ -55,6 +55,7 @@ namespace ProcessAutomation.Main.PayIn
                     if (webLayout.DocumentText.Contains("res://ieframe.dll"))
                     {
                         tcs.SetException(new Exception("Lỗi không có kết nối internet"));
+                        return;
                     }
                     webLayout.DocumentCompleted -= documentComplete;
                     tcs.SetResult(v);
@@ -77,7 +78,7 @@ namespace ProcessAutomation.Main.PayIn
                             process = "Login";
                             if (webLayout.Url.ToString() == user_URL)
                             {
-                                process = "AccessToDaily";
+                                process = "CheckAmountAccount";
                                 break;
                             }
 
@@ -226,7 +227,10 @@ namespace ProcessAutomation.Main.PayIn
             {
                 isFinishProcess = true;
                 if (ex.Message.Contains("Lỗi không có kết nối internet"))
-                    return;
+                {
+                    Application.Exit();
+                    
+                }
 
                 SendNotificationForError(
                     "Lỗi không xác định",

@@ -78,7 +78,7 @@ namespace ProcessAutomation.Main.PayIn
                             process = "Login";
                             if (webLayout.Url.ToString() == user_URL)
                             {
-                                process = "AccessToDaily";
+                                process = "CheckAmountAccount";
                                 break;
                             }
 
