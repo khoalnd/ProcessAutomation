@@ -175,6 +175,7 @@
             this.Error});
             this.dataGridView1.Location = new System.Drawing.Point(0, 169);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowTemplate.Height = 35;
             this.dataGridView1.Size = new System.Drawing.Size(1306, 490);
             this.dataGridView1.TabIndex = 18;
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
