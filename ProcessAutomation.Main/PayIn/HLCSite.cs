@@ -57,8 +57,11 @@ namespace ProcessAutomation.Main.PayIn
                         tcs.SetException(new Exception("Lỗi không có kết nối internet"));
                         return;
                     }
-                    webLayout.DocumentCompleted -= documentComplete;
-                    tcs.SetResult(v);
+                    if (!tcs.Task.IsCompleted)
+                    {
+                        webLayout.DocumentCompleted -= documentComplete;
+                        tcs.SetResult(v);
+                    }
                 });
                 isFinishProcess = false;
                 AccountData userAccount = new AccountData();
@@ -167,11 +170,11 @@ namespace ProcessAutomation.Main.PayIn
                             {
                                 var errorMessage = $"" +
                                     $"Truy cập trang cộng tiền web {web_name} bị lỗi hoặc" +
-                                    $" {web_name} : không tìm thấy account của User id {userAccount.IDAccount}";
-                                SendNotificationForError(
-                                    "Truy cập vào trang cộng tiền bị lỗi", errorMessage);
+                                    $" {web_name} : khôn tìm thấy account của User id {userAccount.IDAccount}";
 
                                 SaveRecord(errorMessage);
+                                SendNotificationForError(
+                                    "Truy cập vào trang cộng tiền bị lỗi", errorMessage);
                                 data.Remove(currentMessage);
                                 if (data.Count == 0)
                                 {
@@ -185,27 +188,30 @@ namespace ProcessAutomation.Main.PayIn
                             process = "PayIn";
                             break;
                         case "PayIn":
-                            CreateSyncTask();
                             PayIn();
+                            await Task.Delay(3000);
+
+                            CreateSyncTask();
+                            PayInSubmit();
                             await tcs.Task;
-                            await Task.Delay(5000);
+                            await Task.Delay(2000);
 
                             if (!webLayout.Url.ToString().Contains(agencies_URL))
                             {
                                 var errorMessage = $"Cộng tiền account { currentMessage.Account } bị lỗi";
+                                SaveRecord(errorMessage);
+
                                 SendNotificationForError(
                                     "Cộng tiền không thành công",
                                     $"{web_name} : Cộng tiền account { currentMessage.Account } bị lỗi");
-
-                                SaveRecord(errorMessage);
                             }
                             else
                             {
+                                SaveRecord();
                                 SendNotificationForError(
                                     "Cộng tiền thành công",
                                     $"{web_name} : Cộng tiền thành công account { currentMessage.Account }, " +
                                     $"số tiền { currentMessage.Money }");
-                                SaveRecord();
                             }
 
                             data.Remove(currentMessage);
@@ -228,8 +234,12 @@ namespace ProcessAutomation.Main.PayIn
                 isFinishProcess = true;
                 if (ex.Message.Contains("Lỗi không có kết nối internet"))
                 {
-                    Application.Exit();
-                    
+                    DialogResult dialog = MessageBox.Show("Hãy kiểm tra internet và thử lại."
+                     , "Mất kết nối internet", MessageBoxButtons.OK);
+                    if (dialog == DialogResult.OK)
+                    {
+                        Application.ExitThread();
+                    }
                 }
 
                 SendNotificationForError(
@@ -389,21 +399,14 @@ namespace ProcessAutomation.Main.PayIn
         {
             var html = webLayout.Document;
             var amount = html.GetElementById("Amount");
-            var btnAdd = html.GetElementById("add_money_button");
             amount.SetAttribute("value", Constant.TEST_MONEY.ToString()); //TODO
+        }
+
+        private void PayInSubmit()
+        {
+            var html = webLayout.Document;
+            var btnAdd = html.GetElementById("add_money_button");
             btnAdd.InvokeMember("Click");
-            //Thread.Sleep(100);
-            //var html = webLayout.Document;
-            //var amount = html.GetElementsByTagName("input");
-            //foreach (HtmlElement item in amount)
-            //{
-            //    var value = item.GetAttribute("value");
-            //    if (value == "BACK")
-            //    {
-            //        item.InvokeMember("Click");
-            //        break;
-            //    }
-            //}
         }
 
         private string checkAccountAdmin(ref AdminAccount account)
@@ -425,7 +428,14 @@ namespace ProcessAutomation.Main.PayIn
 
         private void SendNotificationForError(string subject, string message)
         {
-            mailService.SendEmail(subject, message);
+            try 
+            {
+                mailService.SendEmail(subject, message);
+            }
+            catch(Exception ex)
+            {
+                isFinishProcess = true;
+            }
         }
 
         private void SaveRecord(string error = "")
