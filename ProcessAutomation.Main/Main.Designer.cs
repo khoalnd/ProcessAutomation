@@ -567,7 +567,7 @@
             this.Controls.Add(this.tabControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "Main";
-            this.Text = "Main";
+            this.Text = "Nạp Tiền Tự Động";
             this.Load += new System.EventHandler(this.Main_Load);
             this.tabPayIn.ResumeLayout(false);
             this.tabReaMessage.ResumeLayout(false);
