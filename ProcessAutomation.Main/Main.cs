@@ -81,8 +81,8 @@ namespace ProcessAutomation.Main
         {
             btnStopPayIn.Show();
             btnStartPayIn.Hide();
-            proBarPayIn.MarqueeAnimationSpeed = 0;
-            proBarPayIn.Style = ProgressBarStyle.Blocks;
+            proBarPayIn.Style = ProgressBarStyle.Marquee;
+            proBarPayIn.MarqueeAnimationSpeed = 1;
             if (!timerCheckPayInProcess.Enabled)
                 timerCheckPayInProcess.Start();
         }
@@ -152,8 +152,6 @@ namespace ProcessAutomation.Main
                     isCurrentPayInProcessDone = false;
                     if (!timerCheckChildProcess.Enabled)
                     {
-                        proBarPayIn.Style = ProgressBarStyle.Marquee;
-                        proBarPayIn.MarqueeAnimationSpeed = 1;
                         timerCheckChildProcess.Start();
                     }
                 }
@@ -287,11 +285,6 @@ namespace ProcessAutomation.Main
                     e.Value = DateTime.Parse(e.Value.ToString()).ToString("dd/MM/yyyy HH:mm:ss");
                 }
             }
-        }
-
-        private void label8_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

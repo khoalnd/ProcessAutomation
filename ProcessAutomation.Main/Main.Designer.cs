@@ -265,7 +265,6 @@
             this.label9.Size = new System.Drawing.Size(35, 24);
             this.label9.TabIndex = 22;
             this.label9.Text = "Lỗi";
-            this.label9.Click += new System.EventHandler(this.label8_Click);
             // 
             // comboBox1
             // 
@@ -283,7 +282,6 @@
             this.label8.Size = new System.Drawing.Size(77, 24);
             this.label8.TabIndex = 22;
             this.label8.Text = "Đã xử lý";
-            this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // label5
             // 
