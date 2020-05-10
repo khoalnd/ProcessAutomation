@@ -7,6 +7,7 @@ using ProcessAutomation.Main.Services;
 using ProcessAutomation.Main.Ultility;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO.Ports;
 using System.Linq;
 using System.Linq.Expressions;
@@ -283,6 +284,17 @@ namespace ProcessAutomation.Main
                 if (e.Value != null && e.Value is BsonDateTime)
                 {
                     e.Value = DateTime.Parse(e.Value.ToString()).ToString("dd/MM/yyyy HH:mm:ss");
+                }
+            }
+
+            foreach (DataGridViewRow Myrow in dataGridView1.Rows)
+            {  
+                if ((Myrow.Cells[8].Value != null &&
+                    !string.IsNullOrEmpty(Myrow.Cells[8].Value.ToString())) ||
+                    (Myrow.Cells[5].Value != null &&
+                     Myrow.Cells[5].Value is bool && !((bool)Myrow.Cells[5].Value)))
+                {
+                    Myrow.DefaultCellStyle.BackColor = Color.Bisque;
                 }
             }
         }
