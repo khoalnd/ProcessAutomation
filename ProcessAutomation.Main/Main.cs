@@ -255,7 +255,7 @@ namespace ProcessAutomation.Main
             var database = new MongoDatabase<Message>(typeof(Message).Name);
             List<Message> listMessge = database.Query.ToList();
             dataGridView1.AutoGenerateColumns = false;
-            dataGridView1.DataSource = listMessge.OrderByDescending(x => x.Id).Take(3).ToList();
+            dataGridView1.DataSource = listMessge.OrderByDescending(x => x.Id).Take(100).ToList();
         }
 
         void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
