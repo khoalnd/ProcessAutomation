@@ -257,7 +257,7 @@ namespace ProcessAutomation.Main
             var database = new MongoDatabase<Message>(typeof(Message).Name);
             List<Message> listMessge = database.Query.ToList();
             dataGridView1.AutoGenerateColumns = false;
-            dataGridView1.DataSource = listMessge;
+            dataGridView1.DataSource = listMessge.OrderByDescending(x => x.Id).Take(3).ToList();
         }
 
         void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -277,6 +277,14 @@ namespace ProcessAutomation.Main
                 {
                     e.Value = (bool)e.Value ? "Rồi" : "Chưa";
                     e.FormattingApplied = true;
+                }
+            }
+
+            if (e.ColumnIndex == 7)
+            {
+                if (e.Value != null && e.Value is BsonDateTime)
+                {
+                    e.Value = DateTime.Parse(e.Value.ToString()).ToString("dd/MM/yyyy HH:mm:ss");
                 }
             }
         }
