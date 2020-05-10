@@ -38,8 +38,25 @@
             this.btnStartPayIn = new System.Windows.Forms.Button();
             this.webLayout = new System.Windows.Forms.WebBrowser();
             this.tabReaMessage = new System.Windows.Forms.TabPage();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnShowHistory = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Web = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Account = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -50,6 +67,9 @@
             this.IsProcessed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateExcute = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Error = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button2 = new System.Windows.Forms.Button();
+            this.btnShowHistory = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lblErrorReadMessage = new System.Windows.Forms.Label();
             this.proBarReadMessage = new System.Windows.Forms.ProgressBar();
             this.btnStopReadMessage = new System.Windows.Forms.Button();
@@ -59,10 +79,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.SerialPortCombobox = new System.Windows.Forms.ComboBox();
             this.tabControl = new System.Windows.Forms.TabControl();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.tabPayIn.SuspendLayout();
             this.tabReaMessage.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.SuspendLayout();
@@ -121,6 +145,7 @@
             // 
             // tabReaMessage
             // 
+            this.tabReaMessage.Controls.Add(this.groupBox3);
             this.tabReaMessage.Controls.Add(this.groupBox2);
             this.tabReaMessage.Controls.Add(this.groupBox1);
             this.tabReaMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -132,30 +157,188 @@
             this.tabReaMessage.Text = "Đọc Tin Nhắn";
             this.tabReaMessage.UseVisualStyleBackColor = true;
             // 
-            // groupBox2
+            // groupBox3
             // 
-            this.groupBox2.Controls.Add(this.btnShowHistory);
-            this.groupBox2.Controls.Add(this.dataGridView1);
-            this.groupBox2.Controls.Add(this.lblErrorReadMessage);
-            this.groupBox2.Controls.Add(this.proBarReadMessage);
-            this.groupBox2.Controls.Add(this.btnStopReadMessage);
-            this.groupBox2.Controls.Add(this.btnStartReadMessage);
-            this.groupBox2.Location = new System.Drawing.Point(7, 90);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1306, 659);
-            this.groupBox2.TabIndex = 15;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Đọc Tin Nhắn";
+            this.groupBox3.Controls.Add(this.dateTimePicker2);
+            this.groupBox3.Controls.Add(this.dateTimePicker1);
+            this.groupBox3.Controls.Add(this.numericUpDown2);
+            this.groupBox3.Controls.Add(this.numericUpDown1);
+            this.groupBox3.Controls.Add(this.textBox1);
+            this.groupBox3.Controls.Add(this.label3);
+            this.groupBox3.Controls.Add(this.comboBox4);
+            this.groupBox3.Controls.Add(this.comboBox3);
+            this.groupBox3.Controls.Add(this.comboBox2);
+            this.groupBox3.Controls.Add(this.label9);
+            this.groupBox3.Controls.Add(this.comboBox1);
+            this.groupBox3.Controls.Add(this.label8);
+            this.groupBox3.Controls.Add(this.label5);
+            this.groupBox3.Controls.Add(this.label7);
+            this.groupBox3.Controls.Add(this.label6);
+            this.groupBox3.Controls.Add(this.label4);
+            this.groupBox3.Controls.Add(this.label2);
+            this.groupBox3.Controls.Add(this.button1);
+            this.groupBox3.Controls.Add(this.dataGridView1);
+            this.groupBox3.Controls.Add(this.button2);
+            this.groupBox3.Controls.Add(this.btnShowHistory);
+            this.groupBox3.Location = new System.Drawing.Point(3, 121);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(1307, 634);
+            this.groupBox3.TabIndex = 21;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Tìm Kiếm";
             // 
-            // btnShowHistory
+            // dateTimePicker2
             // 
-            this.btnShowHistory.Location = new System.Drawing.Point(6, 130);
-            this.btnShowHistory.Name = "btnShowHistory";
-            this.btnShowHistory.Size = new System.Drawing.Size(162, 33);
-            this.btnShowHistory.TabIndex = 16;
-            this.btnShowHistory.Text = "Hiện lịch sử";
-            this.btnShowHistory.UseVisualStyleBackColor = true;
-            this.btnShowHistory.Click += new System.EventHandler(this.btnShowHistory_Click);
+            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePicker2.Location = new System.Drawing.Point(604, 30);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(159, 29);
+            this.dateTimePicker2.TabIndex = 27;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePicker1.Location = new System.Drawing.Point(439, 31);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(159, 29);
+            this.dateTimePicker1.TabIndex = 27;
+            // 
+            // numericUpDown2
+            // 
+            this.numericUpDown2.Location = new System.Drawing.Point(1016, 31);
+            this.numericUpDown2.Name = "numericUpDown2";
+            this.numericUpDown2.Size = new System.Drawing.Size(120, 29);
+            this.numericUpDown2.TabIndex = 26;
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(861, 31);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(116, 29);
+            this.numericUpDown1.TabIndex = 25;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(124, 85);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(189, 29);
+            this.textBox1.TabIndex = 24;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(14, 87);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(93, 24);
+            this.label3.TabIndex = 22;
+            this.label3.Text = "Tài khoản";
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Location = new System.Drawing.Point(959, 82);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(177, 32);
+            this.comboBox4.TabIndex = 23;
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(703, 84);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(177, 32);
+            this.comboBox3.TabIndex = 23;
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(414, 83);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(177, 32);
+            this.comboBox2.TabIndex = 23;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(905, 86);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(35, 24);
+            this.label9.TabIndex = 22;
+            this.label9.Text = "Lỗi";
+            this.label9.Click += new System.EventHandler(this.label8_Click);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(124, 34);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(189, 32);
+            this.comboBox1.TabIndex = 23;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(617, 88);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(77, 24);
+            this.label8.TabIndex = 22;
+            this.label8.Text = "Đã xử lý";
+            this.label8.Click += new System.EventHandler(this.label8_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(983, 35);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(27, 29);
+            this.label5.TabIndex = 22;
+            this.label5.Text = "~";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(334, 87);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(66, 24);
+            this.label7.TabIndex = 22;
+            this.label7.Text = "Hợp lệ";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(334, 34);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(98, 24);
+            this.label6.TabIndex = 22;
+            this.label6.Text = "Ngày xử lý";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(783, 34);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(68, 24);
+            this.label4.TabIndex = 22;
+            this.label4.Text = "Số tiền";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(14, 37);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(50, 24);
+            this.label2.TabIndex = 22;
+            this.label2.Text = "Web";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1556, 78);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(118, 33);
+            this.button1.TabIndex = 20;
+            this.button1.Text = "Tìm";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // dataGridView1
             // 
@@ -173,12 +356,11 @@
             this.IsProcessed,
             this.DateExcute,
             this.Error});
-            this.dataGridView1.Location = new System.Drawing.Point(0, 169);
+            this.dataGridView1.Location = new System.Drawing.Point(6, 130);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 35;
-            this.dataGridView1.Size = new System.Drawing.Size(1306, 490);
-            this.dataGridView1.TabIndex = 18;
-            this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
+            this.dataGridView1.Size = new System.Drawing.Size(1293, 498);
+            this.dataGridView1.TabIndex = 21;
             // 
             // Web
             // 
@@ -253,30 +435,62 @@
             this.Error.Name = "Error";
             this.Error.ReadOnly = true;
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(1172, 32);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(118, 33);
+            this.button2.TabIndex = 20;
+            this.button2.Text = "Reset";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // btnShowHistory
+            // 
+            this.btnShowHistory.Location = new System.Drawing.Point(1172, 84);
+            this.btnShowHistory.Name = "btnShowHistory";
+            this.btnShowHistory.Size = new System.Drawing.Size(118, 33);
+            this.btnShowHistory.TabIndex = 20;
+            this.btnShowHistory.Text = "Tìm";
+            this.btnShowHistory.UseVisualStyleBackColor = true;
+            this.btnShowHistory.Click += new System.EventHandler(this.btnShowHistory_Click);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.lblErrorReadMessage);
+            this.groupBox2.Controls.Add(this.proBarReadMessage);
+            this.groupBox2.Controls.Add(this.btnStopReadMessage);
+            this.groupBox2.Controls.Add(this.btnStartReadMessage);
+            this.groupBox2.Location = new System.Drawing.Point(600, 6);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(710, 109);
+            this.groupBox2.TabIndex = 15;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Đọc Tin Nhắn";
+            // 
             // lblErrorReadMessage
             // 
             this.lblErrorReadMessage.AutoSize = true;
-            this.lblErrorReadMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblErrorReadMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblErrorReadMessage.ForeColor = System.Drawing.Color.Red;
-            this.lblErrorReadMessage.Location = new System.Drawing.Point(8, 87);
+            this.lblErrorReadMessage.Location = new System.Drawing.Point(6, 75);
             this.lblErrorReadMessage.Name = "lblErrorReadMessage";
-            this.lblErrorReadMessage.Size = new System.Drawing.Size(86, 31);
+            this.lblErrorReadMessage.Size = new System.Drawing.Size(70, 25);
             this.lblErrorReadMessage.TabIndex = 17;
             this.lblErrorReadMessage.Text = "label2";
             // 
             // proBarReadMessage
             // 
-            this.proBarReadMessage.Location = new System.Drawing.Point(230, 41);
+            this.proBarReadMessage.Location = new System.Drawing.Point(230, 43);
             this.proBarReadMessage.MarqueeAnimationSpeed = 1;
             this.proBarReadMessage.Maximum = 10000;
             this.proBarReadMessage.Name = "proBarReadMessage";
-            this.proBarReadMessage.Size = new System.Drawing.Size(1056, 27);
+            this.proBarReadMessage.Size = new System.Drawing.Size(474, 27);
             this.proBarReadMessage.Step = 1;
             this.proBarReadMessage.TabIndex = 16;
             // 
             // btnStopReadMessage
             // 
-            this.btnStopReadMessage.Location = new System.Drawing.Point(6, 34);
+            this.btnStopReadMessage.Location = new System.Drawing.Point(6, 37);
             this.btnStopReadMessage.Name = "btnStopReadMessage";
             this.btnStopReadMessage.Size = new System.Drawing.Size(207, 38);
             this.btnStopReadMessage.TabIndex = 15;
@@ -286,7 +500,7 @@
             // 
             // btnStartReadMessage
             // 
-            this.btnStartReadMessage.Location = new System.Drawing.Point(6, 34);
+            this.btnStartReadMessage.Location = new System.Drawing.Point(6, 37);
             this.btnStartReadMessage.Name = "btnStartReadMessage";
             this.btnStartReadMessage.Size = new System.Drawing.Size(207, 38);
             this.btnStartReadMessage.TabIndex = 14;
@@ -301,14 +515,14 @@
             this.groupBox1.Controls.Add(this.SerialPortCombobox);
             this.groupBox1.Location = new System.Drawing.Point(7, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1303, 84);
+            this.groupBox1.Size = new System.Drawing.Size(587, 109);
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Kết Nối Thiết Bị";
             // 
             // connectPortBtn
             // 
-            this.connectPortBtn.Location = new System.Drawing.Point(483, 33);
+            this.connectPortBtn.Location = new System.Drawing.Point(435, 39);
             this.connectPortBtn.Name = "connectPortBtn";
             this.connectPortBtn.Size = new System.Drawing.Size(124, 33);
             this.connectPortBtn.TabIndex = 8;
@@ -320,7 +534,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(9, 33);
+            this.label1.Location = new System.Drawing.Point(9, 41);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(139, 25);
             this.label1.TabIndex = 7;
@@ -330,9 +544,9 @@
             // 
             this.SerialPortCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.SerialPortCombobox.FormattingEnabled = true;
-            this.SerialPortCombobox.Location = new System.Drawing.Point(154, 33);
+            this.SerialPortCombobox.Location = new System.Drawing.Point(154, 39);
             this.SerialPortCombobox.Name = "SerialPortCombobox";
-            this.SerialPortCombobox.Size = new System.Drawing.Size(304, 32);
+            this.SerialPortCombobox.Size = new System.Drawing.Size(261, 32);
             this.SerialPortCombobox.TabIndex = 6;
             // 
             // tabControl
@@ -350,7 +564,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1323, 793);
+            this.ClientSize = new System.Drawing.Size(1323, 791);
             this.Controls.Add(this.tabControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "Main";
@@ -358,9 +572,13 @@
             this.Load += new System.EventHandler(this.Main_Load);
             this.tabPayIn.ResumeLayout(false);
             this.tabReaMessage.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabControl.ResumeLayout(false);
@@ -387,9 +605,9 @@
         private System.Windows.Forms.ProgressBar proBarReadMessage;
         private System.Windows.Forms.Button btnStopReadMessage;
         private System.Windows.Forms.Button btnStartReadMessage;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label lblErrorReadMessage;
-        private System.Windows.Forms.Button btnShowHistory;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Web;
         private System.Windows.Forms.DataGridViewTextBoxColumn Account;
         private System.Windows.Forms.DataGridViewTextBoxColumn Money;
@@ -399,5 +617,26 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn IsProcessed;
         private System.Windows.Forms.DataGridViewTextBoxColumn DateExcute;
         private System.Windows.Forms.DataGridViewTextBoxColumn Error;
+        private System.Windows.Forms.Button btnShowHistory;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.Label label9;
     }
 }
