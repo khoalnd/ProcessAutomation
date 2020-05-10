@@ -103,11 +103,16 @@ namespace ProcessAutomation.Main.PayIn
 
                             if (webLayout.Url.ToString() == index_URL)
                             {
-                                SendNotificationForError("Account Admin Đăng Nhập Lỗi",
-                                    $"{web_name} : Account admin đăng nhập web bị lỗi");
+                                if (!Globals.isSentNotification_HL)
+                                {
+                                    Globals.isSentNotification_HL = true;
+                                    SendNotificationForError("Account Admin Đăng Nhập Lỗi",
+                                        $"{web_name} : Account admin đăng nhập web bị lỗi");
+                                }
                                 process = "Finish";
                                 break;
                             }
+                            Globals.isSentNotification_CB = false;
                             process = "CheckAmountAccount";
 
                             break;
@@ -117,11 +122,16 @@ namespace ProcessAutomation.Main.PayIn
 
                             if (!isAmountEnough)
                             {
-                                SendNotificationForError("Account không đủ số tiền tối thiểu",
-                                    $"{web_name} : Account admin không đủ số tiền tối thiểu");
+                                if (!Globals.isSentNotification_HL)
+                                {
+                                    Globals.isSentNotification_HL = true;
+                                    SendNotificationForError("Account không đủ số tiền tối thiểu",
+                                        $"{web_name} : Account admin không đủ số tiền tối thiểu");
+                                }
                                 process = "Finish";
                                 break;
                             }
+                            Globals.isSentNotification_CB = false;
                             process = "AccessToDaily";
                             break;
                         case "AccessToDaily":
