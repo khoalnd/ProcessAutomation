@@ -255,7 +255,13 @@ namespace ProcessAutomation.Main
         {
             var database = new MongoDatabase<Message>(typeof(Message).Name);
             List<Message> listMessge = database.Query.ToList();
+            dataGridView1.Columns[4].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
+            dataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridView1.Columns[8].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            dataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGridView1.AutoGenerateColumns = false;
+            dataGridView1.ScrollBars = ScrollBars.Both;
             dataGridView1.DataSource = listMessge.OrderByDescending(x => x.Id).Take(100).ToList();
         }
 

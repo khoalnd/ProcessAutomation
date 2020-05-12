@@ -425,7 +425,7 @@ namespace ProcessAutomation.Main.PayIn
         {
             var html = webLayout.Document;
             var amount = html.GetElementById("Amount");
-            amount.SetAttribute("value", Constant.TEST_MONEY.ToString()); //TODO
+            amount.SetAttribute("value", currentMessage.Money); //TODO
         }
 
         private void PayInSubmit()

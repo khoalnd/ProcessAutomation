@@ -45,8 +45,6 @@
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -58,15 +56,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Web = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Account = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Money = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RecievedDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MessageContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IsSatisfied = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IsProcessed = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DateExcute = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Error = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button2 = new System.Windows.Forms.Button();
             this.btnShowHistory = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -80,6 +69,17 @@
             this.SerialPortCombobox = new System.Windows.Forms.ComboBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.Web = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Account = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Money = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RecievedDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MessageContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsSatisfied = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsProcessed = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DateExcute = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Error = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.tabPayIn.SuspendLayout();
             this.tabReaMessage.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -100,7 +100,7 @@
             this.tabPayIn.Location = new System.Drawing.Point(4, 33);
             this.tabPayIn.Name = "tabPayIn";
             this.tabPayIn.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPayIn.Size = new System.Drawing.Size(1316, 755);
+            this.tabPayIn.Size = new System.Drawing.Size(1513, 809);
             this.tabPayIn.TabIndex = 1;
             this.tabPayIn.Text = "Nạp Tiền";
             this.tabPayIn.UseVisualStyleBackColor = true;
@@ -111,7 +111,7 @@
             this.proBarPayIn.MarqueeAnimationSpeed = 1;
             this.proBarPayIn.Maximum = 10000;
             this.proBarPayIn.Name = "proBarPayIn";
-            this.proBarPayIn.Size = new System.Drawing.Size(1084, 34);
+            this.proBarPayIn.Size = new System.Drawing.Size(1279, 34);
             this.proBarPayIn.Step = 1;
             this.proBarPayIn.TabIndex = 12;
             // 
@@ -140,7 +140,7 @@
             this.webLayout.Location = new System.Drawing.Point(3, 89);
             this.webLayout.MinimumSize = new System.Drawing.Size(20, 20);
             this.webLayout.Name = "webLayout";
-            this.webLayout.Size = new System.Drawing.Size(1307, 666);
+            this.webLayout.Size = new System.Drawing.Size(1504, 717);
             this.webLayout.TabIndex = 9;
             // 
             // tabReaMessage
@@ -152,7 +152,7 @@
             this.tabReaMessage.Location = new System.Drawing.Point(4, 33);
             this.tabReaMessage.Name = "tabReaMessage";
             this.tabReaMessage.Padding = new System.Windows.Forms.Padding(3);
-            this.tabReaMessage.Size = new System.Drawing.Size(1316, 755);
+            this.tabReaMessage.Size = new System.Drawing.Size(1513, 809);
             this.tabReaMessage.TabIndex = 0;
             this.tabReaMessage.Text = "Đọc Tin Nhắn";
             this.tabReaMessage.UseVisualStyleBackColor = true;
@@ -182,7 +182,7 @@
             this.groupBox3.Controls.Add(this.btnShowHistory);
             this.groupBox3.Location = new System.Drawing.Point(3, 121);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1307, 634);
+            this.groupBox3.Size = new System.Drawing.Size(1507, 688);
             this.groupBox3.TabIndex = 21;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Tìm Kiếm";
@@ -190,29 +190,29 @@
             // dateTimePicker2
             // 
             this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker2.Location = new System.Drawing.Point(604, 30);
+            this.dateTimePicker2.Location = new System.Drawing.Point(703, 30);
             this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(159, 29);
+            this.dateTimePicker2.Size = new System.Drawing.Size(188, 29);
             this.dateTimePicker2.TabIndex = 27;
             // 
             // dateTimePicker1
             // 
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(439, 31);
+            this.dateTimePicker1.Location = new System.Drawing.Point(502, 31);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(159, 29);
+            this.dateTimePicker1.Size = new System.Drawing.Size(180, 29);
             this.dateTimePicker1.TabIndex = 27;
             // 
             // numericUpDown2
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(1016, 31);
+            this.numericUpDown2.Location = new System.Drawing.Point(1174, 31);
             this.numericUpDown2.Name = "numericUpDown2";
             this.numericUpDown2.Size = new System.Drawing.Size(120, 29);
             this.numericUpDown2.TabIndex = 26;
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(861, 31);
+            this.numericUpDown1.Location = new System.Drawing.Point(1019, 31);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(116, 29);
             this.numericUpDown1.TabIndex = 25;
@@ -221,7 +221,7 @@
             // 
             this.textBox1.Location = new System.Drawing.Point(124, 85);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(189, 29);
+            this.textBox1.Size = new System.Drawing.Size(243, 29);
             this.textBox1.TabIndex = 24;
             // 
             // label3
@@ -233,34 +233,18 @@
             this.label3.TabIndex = 22;
             this.label3.Text = "Tài khoản";
             // 
-            // comboBox4
-            // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(959, 82);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(177, 32);
-            this.comboBox4.TabIndex = 23;
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(703, 84);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(177, 32);
-            this.comboBox3.TabIndex = 23;
-            // 
             // comboBox2
             // 
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(414, 83);
+            this.comboBox2.Location = new System.Drawing.Point(477, 83);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(177, 32);
+            this.comboBox2.Size = new System.Drawing.Size(205, 32);
             this.comboBox2.TabIndex = 23;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(905, 86);
+            this.label9.Location = new System.Drawing.Point(1045, 86);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(35, 24);
             this.label9.TabIndex = 22;
@@ -271,13 +255,13 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(124, 34);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(189, 32);
+            this.comboBox1.Size = new System.Drawing.Size(243, 32);
             this.comboBox1.TabIndex = 23;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(617, 88);
+            this.label8.Location = new System.Drawing.Point(731, 88);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(77, 24);
             this.label8.TabIndex = 22;
@@ -287,7 +271,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(983, 35);
+            this.label5.Location = new System.Drawing.Point(1141, 35);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(27, 29);
             this.label5.TabIndex = 22;
@@ -296,7 +280,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(334, 87);
+            this.label7.Location = new System.Drawing.Point(397, 87);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(66, 24);
             this.label7.TabIndex = 22;
@@ -305,7 +289,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(334, 34);
+            this.label6.Location = new System.Drawing.Point(397, 34);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(98, 24);
             this.label6.TabIndex = 22;
@@ -314,7 +298,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(783, 34);
+            this.label4.Location = new System.Drawing.Point(941, 34);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(68, 24);
             this.label4.TabIndex = 22;
@@ -343,6 +327,8 @@
             this.dataGridView1.AllowUserToOrderColumns = true;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Menu;
+            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dataGridView1.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.Disable;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Web,
@@ -356,87 +342,15 @@
             this.Error});
             this.dataGridView1.Location = new System.Drawing.Point(6, 130);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridView1.RowTemplate.Height = 35;
-            this.dataGridView1.Size = new System.Drawing.Size(1293, 498);
+            this.dataGridView1.Size = new System.Drawing.Size(1498, 555);
             this.dataGridView1.TabIndex = 21;
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
             // 
-            // Web
-            // 
-            this.Web.DataPropertyName = "Web";
-            this.Web.FillWeight = 50.09074F;
-            this.Web.HeaderText = "Web";
-            this.Web.Name = "Web";
-            this.Web.ReadOnly = true;
-            this.Web.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // Account
-            // 
-            this.Account.DataPropertyName = "Account";
-            this.Account.FillWeight = 60.80748F;
-            this.Account.HeaderText = "Tài Khoản";
-            this.Account.Name = "Account";
-            this.Account.ReadOnly = true;
-            // 
-            // Money
-            // 
-            this.Money.DataPropertyName = "Money";
-            this.Money.FillWeight = 79.93161F;
-            this.Money.HeaderText = "Số tiền";
-            this.Money.Name = "Money";
-            this.Money.ReadOnly = true;
-            // 
-            // RecievedDate
-            // 
-            this.RecievedDate.DataPropertyName = "RecievedDate";
-            this.RecievedDate.FillWeight = 153.0869F;
-            this.RecievedDate.HeaderText = "Ngày Nhận";
-            this.RecievedDate.Name = "RecievedDate";
-            this.RecievedDate.ReadOnly = true;
-            // 
-            // MessageContent
-            // 
-            this.MessageContent.DataPropertyName = "MessageContent";
-            this.MessageContent.FillWeight = 153.0869F;
-            this.MessageContent.HeaderText = "Nội Dung";
-            this.MessageContent.Name = "MessageContent";
-            this.MessageContent.ReadOnly = true;
-            // 
-            // IsSatisfied
-            // 
-            this.IsSatisfied.DataPropertyName = "IsSatisfied";
-            this.IsSatisfied.FillWeight = 51.13712F;
-            this.IsSatisfied.HeaderText = "Hợp Lệ";
-            this.IsSatisfied.Name = "IsSatisfied";
-            this.IsSatisfied.ReadOnly = true;
-            // 
-            // IsProcessed
-            // 
-            this.IsProcessed.DataPropertyName = "IsProcessed";
-            this.IsProcessed.FillWeight = 45.68526F;
-            this.IsProcessed.HeaderText = "Đã Xử Lý";
-            this.IsProcessed.Name = "IsProcessed";
-            this.IsProcessed.ReadOnly = true;
-            // 
-            // DateExcute
-            // 
-            this.DateExcute.DataPropertyName = "DateExcute";
-            this.DateExcute.FillWeight = 153.0869F;
-            this.DateExcute.HeaderText = "Ngày Xử Lý";
-            this.DateExcute.Name = "DateExcute";
-            this.DateExcute.ReadOnly = true;
-            // 
-            // Error
-            // 
-            this.Error.DataPropertyName = "Error";
-            this.Error.FillWeight = 153.0869F;
-            this.Error.HeaderText = "Lỗi";
-            this.Error.Name = "Error";
-            this.Error.ReadOnly = true;
-            // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(1172, 32);
+            this.button2.Location = new System.Drawing.Point(1330, 32);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(118, 33);
             this.button2.TabIndex = 20;
@@ -445,7 +359,7 @@
             // 
             // btnShowHistory
             // 
-            this.btnShowHistory.Location = new System.Drawing.Point(1172, 84);
+            this.btnShowHistory.Location = new System.Drawing.Point(1330, 86);
             this.btnShowHistory.Name = "btnShowHistory";
             this.btnShowHistory.Size = new System.Drawing.Size(118, 33);
             this.btnShowHistory.TabIndex = 20;
@@ -556,16 +470,107 @@
             this.tabControl.Location = new System.Drawing.Point(1, 2);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1324, 792);
+            this.tabControl.Size = new System.Drawing.Size(1521, 846);
             this.tabControl.TabIndex = 10;
+            // 
+            // Web
+            // 
+            this.Web.DataPropertyName = "Web";
+            this.Web.FillWeight = 50.09074F;
+            this.Web.HeaderText = "Web";
+            this.Web.Name = "Web";
+            this.Web.ReadOnly = true;
+            this.Web.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // Account
+            // 
+            this.Account.DataPropertyName = "Account";
+            this.Account.FillWeight = 60.80748F;
+            this.Account.HeaderText = "Tài Khoản";
+            this.Account.Name = "Account";
+            this.Account.ReadOnly = true;
+            // 
+            // Money
+            // 
+            this.Money.DataPropertyName = "Money";
+            this.Money.FillWeight = 79.93161F;
+            this.Money.HeaderText = "Số tiền";
+            this.Money.Name = "Money";
+            this.Money.ReadOnly = true;
+            // 
+            // RecievedDate
+            // 
+            this.RecievedDate.DataPropertyName = "RecievedDate";
+            this.RecievedDate.FillWeight = 153.0869F;
+            this.RecievedDate.HeaderText = "Ngày Nhận";
+            this.RecievedDate.Name = "RecievedDate";
+            this.RecievedDate.ReadOnly = true;
+            // 
+            // MessageContent
+            // 
+            this.MessageContent.DataPropertyName = "MessageContent";
+            this.MessageContent.FillWeight = 153.0869F;
+            this.MessageContent.HeaderText = "Nội Dung";
+            this.MessageContent.Name = "MessageContent";
+            this.MessageContent.ReadOnly = true;
+            // 
+            // IsSatisfied
+            // 
+            this.IsSatisfied.DataPropertyName = "IsSatisfied";
+            this.IsSatisfied.FillWeight = 51.13712F;
+            this.IsSatisfied.HeaderText = "Hợp Lệ";
+            this.IsSatisfied.Name = "IsSatisfied";
+            this.IsSatisfied.ReadOnly = true;
+            // 
+            // IsProcessed
+            // 
+            this.IsProcessed.DataPropertyName = "IsProcessed";
+            this.IsProcessed.FillWeight = 45.68526F;
+            this.IsProcessed.HeaderText = "Đã Xử Lý";
+            this.IsProcessed.Name = "IsProcessed";
+            this.IsProcessed.ReadOnly = true;
+            // 
+            // DateExcute
+            // 
+            this.DateExcute.DataPropertyName = "DateExcute";
+            this.DateExcute.FillWeight = 153.0869F;
+            this.DateExcute.HeaderText = "Ngày Xử Lý";
+            this.DateExcute.Name = "DateExcute";
+            this.DateExcute.ReadOnly = true;
+            // 
+            // Error
+            // 
+            this.Error.DataPropertyName = "Error";
+            this.Error.FillWeight = 153.0869F;
+            this.Error.HeaderText = "Lỗi";
+            this.Error.Name = "Error";
+            this.Error.ReadOnly = true;
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(814, 82);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(205, 32);
+            this.comboBox3.TabIndex = 23;
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Location = new System.Drawing.Point(1101, 83);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(205, 32);
+            this.comboBox4.TabIndex = 23;
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1323, 791);
+            this.ClientSize = new System.Drawing.Size(1518, 848);
             this.Controls.Add(this.tabControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Main";
             this.Text = "Nạp Tiền Tự Động";
             this.Load += new System.EventHandler(this.Main_Load);
@@ -607,15 +612,6 @@
         private System.Windows.Forms.Label lblErrorReadMessage;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Web;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Account;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Money;
-        private System.Windows.Forms.DataGridViewTextBoxColumn RecievedDate;
-        private System.Windows.Forms.DataGridViewTextBoxColumn MessageContent;
-        private System.Windows.Forms.DataGridViewTextBoxColumn IsSatisfied;
-        private System.Windows.Forms.DataGridViewTextBoxColumn IsProcessed;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DateExcute;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Error;
         private System.Windows.Forms.Button btnShowHistory;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.ComboBox comboBox1;
@@ -633,9 +629,18 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
-        private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.ComboBox comboBox4;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Web;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Account;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Money;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RecievedDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn MessageContent;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IsSatisfied;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IsProcessed;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DateExcute;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Error;
+        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.ComboBox comboBox3;
     }
 }
