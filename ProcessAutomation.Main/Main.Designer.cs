@@ -570,7 +570,6 @@
             this.Controls.Add(this.tabControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "Main";
             this.Text = "Nạp Tiền Tự Động";
             this.Load += new System.EventHandler(this.Main_Load);
