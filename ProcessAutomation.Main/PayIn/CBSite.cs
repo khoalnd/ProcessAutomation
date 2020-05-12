@@ -154,7 +154,7 @@ namespace ProcessAutomation.Main.PayIn
                         case "SearchUser":
                             currentMessage = data.FirstOrDefault();
                             userAccount = SearchUser();
-                            if(userAccount == null)
+                            if (userAccount == null)
                             {
                                 // save record
                                 SaveRecord($"Không tìm thấy user {web_name} : user id {currentMessage.Account}");
@@ -168,13 +168,17 @@ namespace ProcessAutomation.Main.PayIn
                                 process = "OpenWeb";
                                 break;
                             }
+
+                            CreateSyncTask();
+                            SearchUserClick(userAccount);
+                            await tcs.Task;
+                            await Task.Delay(2000);
+
                             process = "AccessToPayIn";
                             break;
                         case "AccessToPayIn":
-                            AccessToPayIn(userAccount);
-                            await Task.Delay(5000);
-
-                            if (!webLayout.Url.ToString().Contains(addMoney_URL))
+                            var userRow = FindAccountOnResult(userAccount);
+                            if(userRow == null)
                             {
                                 var errorMessage = $"" +
                                     $"Truy cập trang cộng tiền web {web_name} bị lỗi hoặc" +
@@ -192,7 +196,12 @@ namespace ProcessAutomation.Main.PayIn
                                 }
                                 process = "OpenWeb";
                                 break;
-                            }
+                            } 
+
+                            CreateSyncTask();
+                            AccessToPayIn(userRow);
+                            await tcs.Task;
+                            await Task.Delay(5000);
 
                             process = "PayIn";
                             break;
@@ -304,7 +313,11 @@ namespace ProcessAutomation.Main.PayIn
 
             if (userAccount == null || string.IsNullOrEmpty(userAccount.CB))
                 return null;
+            return userAccount;
+        }
 
+        private void SearchUserClick(AccountData userAccount)
+        {
             var html = webLayout.Document;
             var userFilter = html.GetElementById("phone");
             userFilter.SetAttribute("value", userAccount.CB);
@@ -314,11 +327,10 @@ namespace ProcessAutomation.Main.PayIn
                 var btnTimKiem = item.InnerHtml;
                 if (btnTimKiem == "TÌM KIẾM")
                 {
-                    item.InvokeMember("Click");
+                    item.InvokeMember("onclick");
                     break;
                 }
             }
-            return userAccount;
         }
 
         private bool CheckAmountAccount()
@@ -362,7 +374,8 @@ namespace ProcessAutomation.Main.PayIn
                 return false;
             }
         }
-        private void AccessToPayIn(AccountData accountData)
+
+        private HtmlElement FindAccountOnResult(AccountData accountData)
         {
             HtmlElement trFound = null;
             var html = webLayout.Document;
@@ -376,7 +389,7 @@ namespace ProcessAutomation.Main.PayIn
                     try
                     {
                         string value = td.InnerText;
-                        if (value!= null && value == accountData.CB)
+                        if (value != null && value == accountData.CB)
                         {
                             trFound = tr;
                             break;
@@ -388,9 +401,14 @@ namespace ProcessAutomation.Main.PayIn
                     }
                 }
             }
-            if (trFound != null)
+            return trFound;
+        }
+
+        private void AccessToPayIn(HtmlElement userRow)
+        {
+            if (userRow != null)
             {
-                var aTag = trFound.GetElementsByTagName("a");
+                var aTag = userRow.GetElementsByTagName("a");
                 foreach (HtmlElement item in aTag)
                 {
                     var btnTimKiem = item.InnerHtml;

@@ -112,7 +112,7 @@ namespace ProcessAutomation.Main.PayIn
                                 process = "Finish";
                                 break;
                             }
-                            Globals.isSentNotification_CB = false;
+                            Globals.isSentNotification_HL = false;
                             process = "CheckAmountAccount";
 
                             break;
@@ -131,7 +131,7 @@ namespace ProcessAutomation.Main.PayIn
                                 process = "Finish";
                                 break;
                             }
-                            Globals.isSentNotification_CB = false;
+                            Globals.isSentNotification_HL = false;
                             process = "AccessToDaily";
                             break;
                         case "AccessToDaily":
@@ -157,8 +157,7 @@ namespace ProcessAutomation.Main.PayIn
                             if (userAccount == null)
                             {
                                 // save record
-                                SaveRecord($"Không tìm thấy user " +
-                                $"{web_name} : user id {currentMessage.Account}");
+                                SaveRecord($"Không tìm thấy user {web_name} : user id {currentMessage.Account}");
 
                                 data.Remove(currentMessage);
                                 if (data.Count == 0)
@@ -169,21 +168,26 @@ namespace ProcessAutomation.Main.PayIn
                                 process = "OpenWeb";
                                 break;
                             }
+
+                            CreateSyncTask();
+                            SearchUserClick(userAccount);
+                            await tcs.Task;
+                            await Task.Delay(2000);
+
                             process = "AccessToPayIn";
                             break;
                         case "AccessToPayIn":
-                            AccessToPayIn(userAccount);
-                            await Task.Delay(5000);
-
-                            if (!webLayout.Url.ToString().Contains(addMoney_URL))
+                            var userRow = FindAccountOnResult(userAccount);
+                            if (userRow == null)
                             {
                                 var errorMessage = $"" +
                                     $"Truy cập trang cộng tiền web {web_name} bị lỗi hoặc" +
-                                    $" {web_name} : khôn tìm thấy account của User id {userAccount.IDAccount}";
+                                    $" {web_name} : không tìm thấy account của User id {userAccount.IDAccount}";
 
                                 SaveRecord(errorMessage);
                                 SendNotificationForError(
                                     "Truy cập vào trang cộng tiền bị lỗi", errorMessage);
+
                                 data.Remove(currentMessage);
                                 if (data.Count == 0)
                                 {
@@ -193,6 +197,11 @@ namespace ProcessAutomation.Main.PayIn
                                 process = "OpenWeb";
                                 break;
                             }
+
+                            CreateSyncTask();
+                            AccessToPayIn(userRow);
+                            await tcs.Task;
+                            await Task.Delay(5000);
 
                             process = "PayIn";
                             break;
@@ -304,7 +313,11 @@ namespace ProcessAutomation.Main.PayIn
 
             if (userAccount == null || string.IsNullOrEmpty(userAccount.HLC))
                 return null;
+            return userAccount;
+        }
 
+        private void SearchUserClick(AccountData userAccount)
+        {
             var html = webLayout.Document;
             var userFilter = html.GetElementById("phone");
             userFilter.SetAttribute("value", userAccount.HLC);
@@ -314,11 +327,10 @@ namespace ProcessAutomation.Main.PayIn
                 var btnTimKiem = item.InnerHtml;
                 if (btnTimKiem == "TÌM KIẾM")
                 {
-                    item.InvokeMember("Click");
+                    item.InvokeMember("onclick");
                     break;
                 }
             }
-            return userAccount;
         }
 
         private bool CheckAmountAccount()
@@ -352,7 +364,7 @@ namespace ProcessAutomation.Main.PayIn
                 if (tdResult != null)
                 {
                     decimal outMoney = 0;
-                    return (decimal.TryParse(tdResult.InnerHtml.Replace("VNĐ", "").Trim(), out outMoney) 
+                    return (decimal.TryParse(tdResult.InnerHtml.Replace("VNĐ", "").Trim(), out outMoney)
                         && outMoney >= Constant.SATISFIED_AMOUNT_ACCOUNT);
                 }
                 return false;
@@ -363,7 +375,7 @@ namespace ProcessAutomation.Main.PayIn
             }
         }
 
-        private void AccessToPayIn(AccountData accountData)
+        private HtmlElement FindAccountOnResult(AccountData accountData)
         {
             HtmlElement trFound = null;
             var html = webLayout.Document;
@@ -389,9 +401,14 @@ namespace ProcessAutomation.Main.PayIn
                     }
                 }
             }
-            if (trFound != null)
+            return trFound;
+        }
+
+        private void AccessToPayIn(HtmlElement userRow)
+        {
+            if (userRow != null)
             {
-                var aTag = trFound.GetElementsByTagName("a");
+                var aTag = userRow.GetElementsByTagName("a");
                 foreach (HtmlElement item in aTag)
                 {
                     var btnTimKiem = item.InnerHtml;
@@ -437,11 +454,11 @@ namespace ProcessAutomation.Main.PayIn
 
         private void SendNotificationForError(string subject, string message)
         {
-            try 
+            try
             {
                 mailService.SendEmail(subject, message);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 isFinishProcess = true;
             }
