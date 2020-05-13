@@ -309,7 +309,7 @@ namespace ProcessAutomation.Main.PayIn
         {
             MongoDatabase<AccountData> accountData = new MongoDatabase<AccountData>(typeof(AccountData).Name);
             var userAccount = accountData.
-                Query.Where(x => x.IDAccount == currentMessage.Account).FirstOrDefault();
+                Query.Where(x => x.IDAccount.Trim() == currentMessage.Account.Trim()).FirstOrDefault();
 
             if (userAccount == null || string.IsNullOrEmpty(userAccount.HLC))
                 return null;
@@ -320,7 +320,7 @@ namespace ProcessAutomation.Main.PayIn
         {
             var html = webLayout.Document;
             var userFilter = html.GetElementById("phone");
-            userFilter.SetAttribute("value", userAccount.HLC);
+            userFilter.SetAttribute("value", userAccount.HLC.Trim());
             var aTag = html.GetElementsByTagName("a");
             foreach (HtmlElement item in aTag)
             {
@@ -389,7 +389,7 @@ namespace ProcessAutomation.Main.PayIn
                     try
                     {
                         string value = td.InnerText;
-                        if (value != null && value == accountData.HLC)
+                        if (value != null && value.Trim() == accountData.HLC.Trim())
                         {
                             trFound = tr;
                             break;
