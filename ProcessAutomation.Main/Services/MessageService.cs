@@ -77,17 +77,16 @@ namespace ProcessAutomation.Main.Services
             {
                 if (matches.Count > 0)
                 {
-                    var dataToWrite = new StringBuilder();
-                    List<Message> messages = new List<Message>();
                     foreach (Match match in matches)
                     {
-                        //player.Stop();
+                        var dataToWrite = new StringBuilder();
                         var mess = AnalyzeMessage(match.Groups[6].ToString());
                         mess.RecievedDate = string.Join(
                             string.Empty, match.Groups[4].Value.Trim()
                             .Replace("+00", "")
                             .Replace("\"", "")
                             .Skip(1));
+
                         if (database.Query.Any(x =>
                             x.RecievedDate.Equals(mess.RecievedDate) &&
                             x.Account.Equals(mess.Account) &&
@@ -108,10 +107,12 @@ namespace ProcessAutomation.Main.Services
                             mess.Error,
                             mess.MessageContent + Environment.NewLine
                         );
-                        messages.Add(mess);
+                        //messages.Add(mess);
+                        database.InsertOne(mess);
+                        csvHelper.WriteToFile(dataToWrite, $"{DateTime.Now.ToString("dd-MM-yyyy")}.csv");
                     }
-                    csvHelper.WriteToFile(dataToWrite, $"{DateTime.Now.ToString("dd-MM-yyyy")}.csv");
-                    database.InsertMany(messages);
+                   // csvHelper.WriteToFile(dataToWrite, $"{DateTime.Now.ToString("dd-MM-yyyy")}.csv");
+                    //database.InsertMany(messages);
                 }
             }
             catch (Exception)
