@@ -8,27 +8,59 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using MongoDB.Driver;
 using ProcessAutomation.DAL;
+using System.Media;
 
 namespace ProcessAutomation.Main.Services
 {
     public class MessageService
     {
         MongoDatabase<Message> database = new MongoDatabase<Message>(typeof(Message).Name);
+        MongoDatabase<MessageFromDevice> messFromDevice = new MongoDatabase<MessageFromDevice>(typeof(MessageFromDevice).Name);
         CSV csvHelper = new CSV();
-        public void StartReadMessage(SerialPort serialPort)
+
+        public void ReadMessageFromDevice(SerialPort serialPort)
         {
             serialPort.Write("AT+CMGF=1" + Environment.NewLine);
             serialPort.Write("AT+CMGL=\"ALL\"" + Environment.NewLine);
-            System.Threading.Thread.Sleep(1000);
-            var response = serialPort.ReadExisting();
-            var rule = new Regex(Constant.REG_EXTRACT_MESSAGE);
-            var matches = rule.Matches(response);
-
-            //Delele message after read from sim
-            serialPort.Write("AT+CMGD=,4" + Environment.NewLine);
             System.Threading.Thread.Sleep(50);
-            serialPort.ReadExisting();
-            SaveMessage(matches);
+            var response = serialPort.ReadExisting();
+            if (!string.IsNullOrEmpty(response) &&
+                response.Contains("REC UNREAD"))
+            {
+                SaveMessageFromDevice(response);
+                System.Threading.Thread.Sleep(50);
+
+                //Delele message after read from sim
+                serialPort.Write("AT+CMGD=,4" + Environment.NewLine);
+                System.Threading.Thread.Sleep(50);
+                serialPort.ReadExisting();
+            }
+        }
+        private void SaveMessageFromDevice(string fullMessage)
+        {
+            try
+            {
+                messFromDevice.InsertOne(new MessageFromDevice { Message = fullMessage, IsProcessed = false }); ;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void StartReadMessage()
+        {
+            var messages = messFromDevice.Query.Where(x => x.IsProcessed == false).ToList();
+            foreach (var mess in messages)
+            {
+                var rule = new Regex(Constant.REG_EXTRACT_MESSAGE);
+                var matches = rule.Matches(mess.Message);
+                SaveMessage(matches);
+
+                var updateOption = Builders<MessageFromDevice>.Update
+                .Set(p => p.IsProcessed, true);
+                messFromDevice.UpdateOne(x => x.Id == mess.Id, updateOption);
+            } 
         }
 
         public Dictionary<string, List<Message>> ReadMessage()
@@ -49,14 +81,22 @@ namespace ProcessAutomation.Main.Services
                     List<Message> messages = new List<Message>();
                     foreach (Match match in matches)
                     {
+                        //player.Stop();
                         var mess = AnalyzeMessage(match.Groups[6].ToString());
                         mess.RecievedDate = string.Join(
                             string.Empty, match.Groups[4].Value.Trim()
                             .Replace("+00", "")
                             .Replace("\"", "")
                             .Skip(1));
-                        mess.MessageContent = match.Groups[6].Value.Trim();
+                        if (database.Query.Any(x =>
+                            x.RecievedDate.Equals(mess.RecievedDate) &&
+                            x.Account.Equals(mess.Account) &&
+                            x.Web.Equals(mess.Web) &&
+                            x.Money.Equals(mess.Money))) {
+                            continue;
+                        }
 
+                        mess.MessageContent = match.Groups[6].Value.Trim();
                         dataToWrite.AppendFormat(
                             "{0},{1},{2},{3},{4},{5},{6},{7}",
                             mess.Account,
@@ -76,7 +116,6 @@ namespace ProcessAutomation.Main.Services
             }
             catch (Exception)
             {
-                throw;
             }
         }
 

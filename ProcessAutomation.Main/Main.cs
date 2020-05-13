@@ -26,7 +26,8 @@ namespace ProcessAutomation.Main
         IAutomationPayIn iAutomationPayin;
         bool isCurrentPayInProcessDone = true;
         Dictionary<string, List<Message>> listMessage = new Dictionary<string, List<Message>>();
-        System.Timers.Timer timerReadMessage1;
+        System.Timers.Timer timerAnalyzeMessage;
+        System.Timers.Timer timerReadMessageFromDevice;
 
         public Main()
         {
@@ -37,9 +38,13 @@ namespace ProcessAutomation.Main
         {
             AddPortsToCombobox();
 
-            timerReadMessage1 = new System.Timers.Timer(10000);
-            timerReadMessage1.AutoReset = false;
-            timerReadMessage1.Elapsed += new ElapsedEventHandler(this.StartReadMessage);
+            timerReadMessageFromDevice = new System.Timers.Timer(500);
+            timerReadMessageFromDevice.AutoReset = true;
+            timerReadMessageFromDevice.Elapsed += new ElapsedEventHandler(this.StartReadMessageFromDevice);
+
+            timerAnalyzeMessage = new System.Timers.Timer(10000);
+            timerAnalyzeMessage.AutoReset = false;
+            timerAnalyzeMessage.Elapsed += new ElapsedEventHandler(this.StartReadMessage);
 
             timerCheckPayInProcess = new System.Windows.Forms.Timer();
             timerCheckPayInProcess.Interval = (10000);
@@ -70,8 +75,8 @@ namespace ProcessAutomation.Main
             btnStopReadMessage.Show();
             btnStartReadMessage.Hide();
 
-            if (!timerReadMessage1.Enabled)
-                timerReadMessage1.Start();
+            if (!timerAnalyzeMessage.Enabled)
+                timerAnalyzeMessage.Start();
         }
 
         private void btnStopReadMessage_Click(object sender, EventArgs e)
@@ -79,7 +84,7 @@ namespace ProcessAutomation.Main
             //proBarReadMessage.MarqueeAnimationSpeed = 0;
             //proBarReadMessage.Style = ProgressBarStyle.Blocks;
             lblReadMessageProgress.Hide();
-            timerReadMessage1.Stop();
+            timerAnalyzeMessage.Stop();
             btnStopReadMessage.Hide();
             btnStartReadMessage.Show();
         }
@@ -127,15 +132,15 @@ namespace ProcessAutomation.Main
                 return;
             }
             MessageBox.Show("Kết nối thiết bị thành công");
+            timerReadMessageFromDevice.Start();
         }
 
-        private void StartReadMessage(object sender, ElapsedEventArgs e)
+        private void StartReadMessageFromDevice(object sender, ElapsedEventArgs e)
         {
             try
             {
-                timerReadMessage1.Stop();
-                Thread.Sleep(2000);
-                messageService.StartReadMessage(serialPort);
+                timerReadMessageFromDevice.Stop();
+                messageService.ReadMessageFromDevice(serialPort);
             }
             catch (Exception ex)
             {
@@ -143,14 +148,40 @@ namespace ProcessAutomation.Main
                 {
                     btnStopReadMessage.Hide();
                     btnStartReadMessage.Show();
-                    timerReadMessage1.Stop();
-                    lblErrorReadMessage.Text = "Có lỗi hệ thống: " + ex.Message
+                    timerReadMessageFromDevice.Stop();
+                    lblErrorReadMessage.Text = "Có lỗi hệ thống khi đọc tin nhắn: " + ex.Message
                         + Environment.NewLine + "Hãy kiểm tra và bắt đầu lại";
                 }));
             }
             finally
             {
-                timerReadMessage1.Start();
+                timerReadMessageFromDevice.Start();
+            }
+        }
+
+
+        private void StartReadMessage(object sender, ElapsedEventArgs e)
+        {
+            try
+            {
+                timerAnalyzeMessage.Stop();
+                Thread.Sleep(2000);
+                messageService.StartReadMessage();
+            }
+            catch (Exception ex)
+            {
+                Invoke(new MethodInvoker(() =>
+                {
+                    btnStopReadMessage.Hide();
+                    btnStartReadMessage.Show();
+                    timerAnalyzeMessage.Stop();
+                    lblErrorReadMessage.Text = "Có lỗi hệ thống khi phân tích tin nhắn: " + ex.Message
+                        + Environment.NewLine + "Hãy kiểm tra và bắt đầu lại";
+                }));
+            }
+            finally
+            {
+                timerAnalyzeMessage.Start();
             }
         }
 
