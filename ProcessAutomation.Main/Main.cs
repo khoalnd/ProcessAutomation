@@ -12,6 +12,7 @@ using System.IO.Ports;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
 
@@ -37,7 +38,7 @@ namespace ProcessAutomation.Main
             AddPortsToCombobox();
 
             timerReadMessage1 = new System.Timers.Timer(10000);
-            timerReadMessage1.AutoReset = true;
+            timerReadMessage1.AutoReset = false;
             timerReadMessage1.Elapsed += new ElapsedEventHandler(this.StartReadMessage);
 
             timerCheckPayInProcess = new System.Windows.Forms.Timer();
@@ -132,15 +133,24 @@ namespace ProcessAutomation.Main
         {
             try
             {
+                timerReadMessage1.Stop();
+                Thread.Sleep(2000);
                 messageService.StartReadMessage(serialPort);
             }
             catch (Exception ex)
             {
-                btnStopReadMessage.Hide();
-                btnStartReadMessage.Show();
-                timerReadMessage1.Stop();
-                lblErrorReadMessage.Text = "Có lỗi hệ thống: " + ex.Message
-                    + Environment.NewLine + "Hãy kiểm tra và bắt đầu lại";
+                Invoke(new MethodInvoker(() =>
+                {
+                    btnStopReadMessage.Hide();
+                    btnStartReadMessage.Show();
+                    timerReadMessage1.Stop();
+                    lblErrorReadMessage.Text = "Có lỗi hệ thống: " + ex.Message
+                        + Environment.NewLine + "Hãy kiểm tra và bắt đầu lại";
+                }));
+            }
+            finally
+            {
+                timerReadMessage1.Start();
             }
         }
 

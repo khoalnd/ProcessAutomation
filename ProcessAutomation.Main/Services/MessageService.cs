@@ -23,12 +23,12 @@ namespace ProcessAutomation.Main.Services
             var response = serialPort.ReadExisting();
             var rule = new Regex(Constant.REG_EXTRACT_MESSAGE);
             var matches = rule.Matches(response);
-            SaveMessage(matches);
 
             //Delele message after read from sim
             serialPort.Write("AT+CMGD=,4" + Environment.NewLine);
             System.Threading.Thread.Sleep(50);
             serialPort.ReadExisting();
+            SaveMessage(matches);
         }
 
         public Dictionary<string, List<Message>> ReadMessage()
