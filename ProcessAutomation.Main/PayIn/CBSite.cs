@@ -241,8 +241,11 @@ namespace ProcessAutomation.Main.PayIn
                             process = "OpenWeb";
                             break;
                         case "Finish":
+                            //CreateSyncTask();
+                            //webLayout.Navigate("about:blank");
+                            //await tcs.Task;
+                            //await Task.Delay(1000);
                             isFinishProcess = true;
-                            webLayout.Navigate("about:blank");
                             break;
                     }
                 } while (!isFinishProcess);
@@ -309,7 +312,7 @@ namespace ProcessAutomation.Main.PayIn
         {
             MongoDatabase<AccountData> accountData = new MongoDatabase<AccountData>(typeof(AccountData).Name);
             var userAccount = accountData.
-                Query.Where(x => x.IDAccount.Trim() == currentMessage.Account.Trim()).FirstOrDefault();
+                Query.Where(x => x.IDAccount == currentMessage.Account.Trim()).FirstOrDefault();
 
             if (userAccount == null || string.IsNullOrEmpty(userAccount.CB))
                 return null;
@@ -365,7 +368,7 @@ namespace ProcessAutomation.Main.PayIn
                 {
                     decimal outMoney = 0;
                     return (decimal.TryParse(tdResult.InnerHtml.Replace("VNĐ", "").Trim(), out outMoney)
-                        && outMoney >= Constant.SATISFIED_AMOUNT_ACCOUNT);
+                        && outMoney >= Constant.AMOUNT_ACCOUNT_CB);
                 }
                 return false;
             }

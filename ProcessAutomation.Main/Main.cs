@@ -25,6 +25,7 @@ namespace ProcessAutomation.Main
         IAutomationPayIn iAutomationPayin;
         bool isCurrentPayInProcessDone = true;
         Dictionary<string, List<Message>> listMessage = new Dictionary<string, List<Message>>();
+        System.Timers.Timer timerReadMessage1;
 
         public Main()
         {
@@ -35,9 +36,9 @@ namespace ProcessAutomation.Main
         {
             AddPortsToCombobox();
 
-            timerReadMessage = new System.Windows.Forms.Timer();
-            timerReadMessage.Interval = (10000);
-            timerReadMessage.Tick += new EventHandler(StartReadMessage);
+            timerReadMessage1 = new System.Timers.Timer(10000);
+            timerReadMessage1.AutoReset = true;
+            timerReadMessage1.Elapsed += new ElapsedEventHandler(this.StartReadMessage);
 
             timerCheckPayInProcess = new System.Windows.Forms.Timer();
             timerCheckPayInProcess.Interval = (10000);
@@ -50,6 +51,8 @@ namespace ProcessAutomation.Main
             lblErrorReadMessage.Hide();
             btnStopReadMessage.Hide();
             btnStopPayIn.Hide();
+            lblReadMessageProgress.Hide();
+            lblPayInProgress.Hide();
         }
         private void btnStartReadMessage_Click(object sender, EventArgs e)
         {
@@ -60,20 +63,22 @@ namespace ProcessAutomation.Main
             }
 
             lblErrorReadMessage.Hide();
-            proBarReadMessage.Style = ProgressBarStyle.Marquee;
-            proBarReadMessage.MarqueeAnimationSpeed = 1;
+            lblReadMessageProgress.Show();
+            //proBarReadMessage.Style = ProgressBarStyle.Marquee;
+            //proBarReadMessage.MarqueeAnimationSpeed = 1;
             btnStopReadMessage.Show();
             btnStartReadMessage.Hide();
 
-            if (!timerReadMessage.Enabled)
-                timerReadMessage.Start();
+            if (!timerReadMessage1.Enabled)
+                timerReadMessage1.Start();
         }
 
         private void btnStopReadMessage_Click(object sender, EventArgs e)
         {
-            proBarReadMessage.MarqueeAnimationSpeed = 0;
-            proBarReadMessage.Style = ProgressBarStyle.Blocks;
-            timerReadMessage.Stop();
+            //proBarReadMessage.MarqueeAnimationSpeed = 0;
+            //proBarReadMessage.Style = ProgressBarStyle.Blocks;
+            lblReadMessageProgress.Hide();
+            timerReadMessage1.Stop();
             btnStopReadMessage.Hide();
             btnStartReadMessage.Show();
         }
@@ -82,16 +87,18 @@ namespace ProcessAutomation.Main
         {
             btnStopPayIn.Show();
             btnStartPayIn.Hide();
-            proBarPayIn.Style = ProgressBarStyle.Marquee;
-            proBarPayIn.MarqueeAnimationSpeed = 1;
+            lblPayInProgress.Show();
+            //proBarPayIn.Style = ProgressBarStyle.Marquee;
+            //proBarPayIn.MarqueeAnimationSpeed = 1;
             if (!timerCheckPayInProcess.Enabled)
                 timerCheckPayInProcess.Start();
         }
 
         private void btnStopPayIn_Click(object sender, EventArgs e)
         {
-            proBarPayIn.MarqueeAnimationSpeed = 0;
-            proBarPayIn.Style = ProgressBarStyle.Blocks;
+            //proBarPayIn.MarqueeAnimationSpeed = 0;
+            //proBarPayIn.Style = ProgressBarStyle.Blocks;
+            lblPayInProgress.Hide();
             timerCheckPayInProcess.Stop();
             btnStopPayIn.Hide();
             btnStartPayIn.Show();
@@ -121,7 +128,7 @@ namespace ProcessAutomation.Main
             MessageBox.Show("Kết nối thiết bị thành công");
         }
 
-        private void StartReadMessage(object sender, EventArgs e)
+        private void StartReadMessage(object sender, ElapsedEventArgs e)
         {
             try
             {
@@ -131,7 +138,7 @@ namespace ProcessAutomation.Main
             {
                 btnStopReadMessage.Hide();
                 btnStartReadMessage.Show();
-                timerReadMessage.Stop();
+                timerReadMessage1.Stop();
                 lblErrorReadMessage.Text = "Có lỗi hệ thống: " + ex.Message
                     + Environment.NewLine + "Hãy kiểm tra và bắt đầu lại";
             }
@@ -256,11 +263,14 @@ namespace ProcessAutomation.Main
             var database = new MongoDatabase<Message>(typeof(Message).Name);
             List<Message> listMessge = database.Query.ToList();
             dataGridView1.Columns[4].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            dataGridView1.Columns[4].Frozen = false;
             dataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridView1.Columns[8].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            //dataGridView1.Columns[8].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            //dataGridView1.Columns[8].Frozen = false;
+            //dataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
             dataGridView1.AutoGenerateColumns = false;
+            dataGridView1.DefaultCellStyle.Font = new Font("Tahoma", 12);
             dataGridView1.ScrollBars = ScrollBars.Both;
             dataGridView1.DataSource = listMessge.OrderByDescending(x => x.Id).Take(100).ToList();
         }

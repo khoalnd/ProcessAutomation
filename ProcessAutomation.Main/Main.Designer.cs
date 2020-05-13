@@ -33,7 +33,6 @@
             this.timerCheckChildProcess = new System.Windows.Forms.Timer(this.components);
             this.timerReadMessage = new System.Windows.Forms.Timer(this.components);
             this.tabPayIn = new System.Windows.Forms.TabPage();
-            this.proBarPayIn = new System.Windows.Forms.ProgressBar();
             this.btnStopPayIn = new System.Windows.Forms.Button();
             this.btnStartPayIn = new System.Windows.Forms.Button();
             this.webLayout = new System.Windows.Forms.WebBrowser();
@@ -45,6 +44,8 @@
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -60,7 +61,6 @@
             this.btnShowHistory = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lblErrorReadMessage = new System.Windows.Forms.Label();
-            this.proBarReadMessage = new System.Windows.Forms.ProgressBar();
             this.btnStopReadMessage = new System.Windows.Forms.Button();
             this.btnStartReadMessage = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -78,8 +78,8 @@
             this.IsProcessed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateExcute = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Error = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.lblReadMessageProgress = new System.Windows.Forms.Label();
+            this.lblPayInProgress = new System.Windows.Forms.Label();
             this.tabPayIn.SuspendLayout();
             this.tabReaMessage.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -93,27 +93,17 @@
             // 
             // tabPayIn
             // 
-            this.tabPayIn.Controls.Add(this.proBarPayIn);
+            this.tabPayIn.Controls.Add(this.lblPayInProgress);
             this.tabPayIn.Controls.Add(this.btnStopPayIn);
             this.tabPayIn.Controls.Add(this.btnStartPayIn);
             this.tabPayIn.Controls.Add(this.webLayout);
             this.tabPayIn.Location = new System.Drawing.Point(4, 33);
             this.tabPayIn.Name = "tabPayIn";
             this.tabPayIn.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPayIn.Size = new System.Drawing.Size(1513, 809);
+            this.tabPayIn.Size = new System.Drawing.Size(1513, 806);
             this.tabPayIn.TabIndex = 1;
             this.tabPayIn.Text = "Nạp Tiền";
             this.tabPayIn.UseVisualStyleBackColor = true;
-            // 
-            // proBarPayIn
-            // 
-            this.proBarPayIn.Location = new System.Drawing.Point(222, 25);
-            this.proBarPayIn.MarqueeAnimationSpeed = 1;
-            this.proBarPayIn.Maximum = 10000;
-            this.proBarPayIn.Name = "proBarPayIn";
-            this.proBarPayIn.Size = new System.Drawing.Size(1279, 34);
-            this.proBarPayIn.Step = 1;
-            this.proBarPayIn.TabIndex = 12;
             // 
             // btnStopPayIn
             // 
@@ -152,7 +142,7 @@
             this.tabReaMessage.Location = new System.Drawing.Point(4, 33);
             this.tabReaMessage.Name = "tabReaMessage";
             this.tabReaMessage.Padding = new System.Windows.Forms.Padding(3);
-            this.tabReaMessage.Size = new System.Drawing.Size(1513, 809);
+            this.tabReaMessage.Size = new System.Drawing.Size(1513, 806);
             this.tabReaMessage.TabIndex = 0;
             this.tabReaMessage.Text = "Đọc Tin Nhắn";
             this.tabReaMessage.UseVisualStyleBackColor = true;
@@ -232,6 +222,22 @@
             this.label3.Size = new System.Drawing.Size(93, 24);
             this.label3.TabIndex = 22;
             this.label3.Text = "Tài khoản";
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Location = new System.Drawing.Point(1101, 83);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(205, 32);
+            this.comboBox4.TabIndex = 23;
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(814, 82);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(205, 32);
+            this.comboBox3.TabIndex = 23;
             // 
             // comboBox2
             // 
@@ -344,7 +350,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridView1.RowTemplate.Height = 35;
-            this.dataGridView1.Size = new System.Drawing.Size(1498, 555);
+            this.dataGridView1.Size = new System.Drawing.Size(1498, 552);
             this.dataGridView1.TabIndex = 21;
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
             // 
@@ -369,8 +375,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.lblReadMessageProgress);
             this.groupBox2.Controls.Add(this.lblErrorReadMessage);
-            this.groupBox2.Controls.Add(this.proBarReadMessage);
             this.groupBox2.Controls.Add(this.btnStopReadMessage);
             this.groupBox2.Controls.Add(this.btnStartReadMessage);
             this.groupBox2.Location = new System.Drawing.Point(600, 6);
@@ -390,16 +396,6 @@
             this.lblErrorReadMessage.Size = new System.Drawing.Size(70, 25);
             this.lblErrorReadMessage.TabIndex = 17;
             this.lblErrorReadMessage.Text = "label2";
-            // 
-            // proBarReadMessage
-            // 
-            this.proBarReadMessage.Location = new System.Drawing.Point(230, 43);
-            this.proBarReadMessage.MarqueeAnimationSpeed = 1;
-            this.proBarReadMessage.Maximum = 10000;
-            this.proBarReadMessage.Name = "proBarReadMessage";
-            this.proBarReadMessage.Size = new System.Drawing.Size(474, 27);
-            this.proBarReadMessage.Step = 1;
-            this.proBarReadMessage.TabIndex = 16;
             // 
             // btnStopReadMessage
             // 
@@ -467,100 +463,130 @@
             this.tabControl.Controls.Add(this.tabReaMessage);
             this.tabControl.Controls.Add(this.tabPayIn);
             this.tabControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabControl.Location = new System.Drawing.Point(1, 2);
+            this.tabControl.Location = new System.Drawing.Point(1, 5);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1521, 846);
+            this.tabControl.Size = new System.Drawing.Size(1521, 843);
             this.tabControl.TabIndex = 10;
             // 
             // Web
             // 
+            this.Web.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.Web.DataPropertyName = "Web";
             this.Web.FillWeight = 50.09074F;
+            this.Web.Frozen = true;
             this.Web.HeaderText = "Web";
             this.Web.Name = "Web";
             this.Web.ReadOnly = true;
             this.Web.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Web.Width = 50;
             // 
             // Account
             // 
+            this.Account.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.Account.DataPropertyName = "Account";
-            this.Account.FillWeight = 60.80748F;
+            this.Account.FillWeight = 289.0847F;
+            this.Account.Frozen = true;
             this.Account.HeaderText = "Tài Khoản";
             this.Account.Name = "Account";
             this.Account.ReadOnly = true;
+            this.Account.Width = 70;
             // 
             // Money
             // 
+            this.Money.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.Money.DataPropertyName = "Money";
-            this.Money.FillWeight = 79.93161F;
+            this.Money.FillWeight = 56.80839F;
+            this.Money.Frozen = true;
             this.Money.HeaderText = "Số tiền";
             this.Money.Name = "Money";
             this.Money.ReadOnly = true;
+            this.Money.Width = 80;
             // 
             // RecievedDate
             // 
+            this.RecievedDate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.RecievedDate.DataPropertyName = "RecievedDate";
-            this.RecievedDate.FillWeight = 153.0869F;
+            this.RecievedDate.FillWeight = 108.8008F;
+            this.RecievedDate.Frozen = true;
             this.RecievedDate.HeaderText = "Ngày Nhận";
             this.RecievedDate.Name = "RecievedDate";
             this.RecievedDate.ReadOnly = true;
+            this.RecievedDate.Width = 150;
             // 
             // MessageContent
             // 
+            this.MessageContent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.MessageContent.DataPropertyName = "MessageContent";
-            this.MessageContent.FillWeight = 153.0869F;
+            this.MessageContent.FillWeight = 108.8008F;
+            this.MessageContent.Frozen = true;
             this.MessageContent.HeaderText = "Nội Dung";
             this.MessageContent.Name = "MessageContent";
             this.MessageContent.ReadOnly = true;
+            this.MessageContent.Width = 298;
             // 
             // IsSatisfied
             // 
+            this.IsSatisfied.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.IsSatisfied.DataPropertyName = "IsSatisfied";
-            this.IsSatisfied.FillWeight = 51.13712F;
+            this.IsSatisfied.FillWeight = 36.34379F;
+            this.IsSatisfied.Frozen = true;
             this.IsSatisfied.HeaderText = "Hợp Lệ";
             this.IsSatisfied.Name = "IsSatisfied";
             this.IsSatisfied.ReadOnly = true;
+            this.IsSatisfied.Width = 70;
             // 
             // IsProcessed
             // 
+            this.IsProcessed.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.IsProcessed.DataPropertyName = "IsProcessed";
-            this.IsProcessed.FillWeight = 45.68526F;
+            this.IsProcessed.FillWeight = 32.46909F;
+            this.IsProcessed.Frozen = true;
             this.IsProcessed.HeaderText = "Đã Xử Lý";
             this.IsProcessed.Name = "IsProcessed";
             this.IsProcessed.ReadOnly = true;
+            this.IsProcessed.Width = 70;
             // 
             // DateExcute
             // 
+            this.DateExcute.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
             this.DateExcute.DataPropertyName = "DateExcute";
-            this.DateExcute.FillWeight = 153.0869F;
+            this.DateExcute.FillWeight = 108.8008F;
+            this.DateExcute.Frozen = true;
             this.DateExcute.HeaderText = "Ngày Xử Lý";
             this.DateExcute.Name = "DateExcute";
             this.DateExcute.ReadOnly = true;
+            this.DateExcute.Width = 150;
             // 
             // Error
             // 
             this.Error.DataPropertyName = "Error";
-            this.Error.FillWeight = 153.0869F;
+            this.Error.FillWeight = 108.8008F;
             this.Error.HeaderText = "Lỗi";
             this.Error.Name = "Error";
             this.Error.ReadOnly = true;
             // 
-            // comboBox3
+            // lblReadMessageProgress
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(814, 82);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(205, 32);
-            this.comboBox3.TabIndex = 23;
+            this.lblReadMessageProgress.AutoSize = true;
+            this.lblReadMessageProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblReadMessageProgress.ForeColor = System.Drawing.Color.SeaGreen;
+            this.lblReadMessageProgress.Location = new System.Drawing.Point(231, 43);
+            this.lblReadMessageProgress.Name = "lblReadMessageProgress";
+            this.lblReadMessageProgress.Size = new System.Drawing.Size(211, 25);
+            this.lblReadMessageProgress.TabIndex = 18;
+            this.lblReadMessageProgress.Text = "Đang đọc tin nhắn ...";
             // 
-            // comboBox4
+            // lblPayInProgress
             // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(1101, 83);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(205, 32);
-            this.comboBox4.TabIndex = 23;
+            this.lblPayInProgress.AutoSize = true;
+            this.lblPayInProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPayInProgress.ForeColor = System.Drawing.Color.SeaGreen;
+            this.lblPayInProgress.Location = new System.Drawing.Point(219, 27);
+            this.lblPayInProgress.Name = "lblPayInProgress";
+            this.lblPayInProgress.Size = new System.Drawing.Size(170, 25);
+            this.lblPayInProgress.TabIndex = 19;
+            this.lblPayInProgress.Text = "Đang nạp tiền ...";
             // 
             // Main
             // 
@@ -574,6 +600,7 @@
             this.Text = "Nạp Tiền Tự Động";
             this.Load += new System.EventHandler(this.Main_Load);
             this.tabPayIn.ResumeLayout(false);
+            this.tabPayIn.PerformLayout();
             this.tabReaMessage.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
@@ -599,13 +626,11 @@
         private System.Windows.Forms.WebBrowser webLayout;
         private System.Windows.Forms.TabPage tabReaMessage;
         private System.Windows.Forms.TabControl tabControl;
-        private System.Windows.Forms.ProgressBar proBarPayIn;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button connectPortBtn;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox SerialPortCombobox;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.ProgressBar proBarReadMessage;
         private System.Windows.Forms.Button btnStopReadMessage;
         private System.Windows.Forms.Button btnStartReadMessage;
         private System.Windows.Forms.Label lblErrorReadMessage;
@@ -630,6 +655,8 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Web;
         private System.Windows.Forms.DataGridViewTextBoxColumn Account;
         private System.Windows.Forms.DataGridViewTextBoxColumn Money;
@@ -639,7 +666,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn IsProcessed;
         private System.Windows.Forms.DataGridViewTextBoxColumn DateExcute;
         private System.Windows.Forms.DataGridViewTextBoxColumn Error;
-        private System.Windows.Forms.ComboBox comboBox4;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.Label lblReadMessageProgress;
+        private System.Windows.Forms.Label lblPayInProgress;
     }
 }

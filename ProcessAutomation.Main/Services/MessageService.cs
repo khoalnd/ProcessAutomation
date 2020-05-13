@@ -19,7 +19,7 @@ namespace ProcessAutomation.Main.Services
         {
             serialPort.Write("AT+CMGF=1" + Environment.NewLine);
             serialPort.Write("AT+CMGL=\"ALL\"" + Environment.NewLine);
-            System.Threading.Thread.Sleep(500);
+            System.Threading.Thread.Sleep(1000);
             var response = serialPort.ReadExisting();
             var rule = new Regex(Constant.REG_EXTRACT_MESSAGE);
             var matches = rule.Matches(response);
