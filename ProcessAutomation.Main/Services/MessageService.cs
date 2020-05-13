@@ -128,8 +128,8 @@ namespace ProcessAutomation.Main.Services
                 var matches = new Regex(Constant.REG_EXTRACT_ACCOUNT, RegexOptions.IgnoreCase).Match(mess).Groups;
                 if (matches.Count > 0 && matches[1].Value != "")
                 {
-                    result.Web = matches[2].ToString().Trim().ToLower();
-                    result.Account = Regex.Replace(matches[3].ToString().Trim(), @"[^0-9a-zA-Z]+", "");
+                    result.Web = matches[1].ToString().Trim().ToLower();
+                    result.Account = Regex.Replace(matches[2].ToString().Trim(), @"[^0-9a-zA-Z]+", "");
                     result.IsSatisfied = Constant.WEBS_NAME
                     .Any(x => result.Web.Contains(x));
                 }
