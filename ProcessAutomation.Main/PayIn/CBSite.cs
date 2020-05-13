@@ -309,7 +309,7 @@ namespace ProcessAutomation.Main.PayIn
         {
             MongoDatabase<AccountData> accountData = new MongoDatabase<AccountData>(typeof(AccountData).Name);
             var userAccount = accountData.
-                Query.Where(x => x.IDAccount == currentMessage.Account).FirstOrDefault();
+                Query.Where(x => x.IDAccount.Trim() == currentMessage.Account.Trim()).FirstOrDefault();
 
             if (userAccount == null || string.IsNullOrEmpty(userAccount.CB))
                 return null;
@@ -389,7 +389,7 @@ namespace ProcessAutomation.Main.PayIn
                     try
                     {
                         string value = td.InnerText;
-                        if (value != null && value == accountData.CB)
+                        if (value != null && value.Trim() == accountData.CB.Trim())
                         {
                             trFound = tr;
                             break;

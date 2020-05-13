@@ -9,12 +9,15 @@ namespace ProcessAutomation.Main.Services
 {
     public class CSV
     {
-        private string PATH = AppDomain.CurrentDomain.BaseDirectory;
+        private string PATH = "C:/LogTinNhan";
         private StringBuilder HEADER = new StringBuilder(
             "taikhoan, sotien, web, ngaynhan, hople, daxuly, loi, noidung " + Environment.NewLine);
 
         public void WriteToFile(StringBuilder data, string fileName)
         {
+            if (!Directory.Exists(@"C:/LogTinNhan"))
+                Directory.CreateDirectory(@"C:/LogTinNhan");
+
             StringBuilder dataToWrite = data;
             string filePath = Path.Combine(PATH, $"{fileName}");
             if (!File.Exists(filePath))
