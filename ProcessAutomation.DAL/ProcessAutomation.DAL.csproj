@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Entities\Setting.cs" />
+    <Compile Include="Entities\AdminSetting.cs" />
     <Compile Include="Entities\AdminAccount.cs" />
     <Compile Include="Entities\AccountData.cs" />
     <Compile Include="Entities\MessageFromDevice.cs" />

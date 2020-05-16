@@ -366,9 +366,13 @@ namespace ProcessAutomation.Main.PayIn
                 }
                 if (tdResult != null)
                 {
+                    var setting = new MongoDatabase<AdminSetting>(typeof(AdminSetting).Name);
+                    var minimumMoney = setting.Query.Where(x => x.Name == Constant.MINIMUM_MONEY_NAME
+                                                            && x.Key == Constant.HANHLANG).FirstOrDefault();
+
                     decimal outMoney = 0;
                     return (decimal.TryParse(tdResult.InnerHtml.Replace("VNĐ", "").Trim(), out outMoney)
-                        && outMoney >= Constant.AMOUNT_ACCOUNT_HL);
+                        && outMoney >= decimal.Parse(minimumMoney.Value));
                 }
                 return false;
             }

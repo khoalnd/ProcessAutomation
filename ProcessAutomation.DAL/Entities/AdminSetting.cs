@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-public class Setting
+public class AdminSetting
 {
-    public Setting()
+    public AdminSetting()
     {
         Id = new ObjectId();
         Name = string.Empty;

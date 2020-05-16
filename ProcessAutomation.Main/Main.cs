@@ -62,8 +62,6 @@ namespace ProcessAutomation.Main
 
         private void btnStopReadMessage_Click(object sender, EventArgs e)
         {
-            //proBarReadMessage.MarqueeAnimationSpeed = 0;
-            //proBarReadMessage.Style = ProgressBarStyle.Blocks;
             lblReadMessageProgress.Hide();
             timerAnalyzeMessage.Stop();
             btnStopReadMessage.Hide();
@@ -75,16 +73,12 @@ namespace ProcessAutomation.Main
             btnStopPayIn.Show();
             btnStartPayIn.Hide();
             lblPayInProgress.Show();
-            //proBarPayIn.Style = ProgressBarStyle.Marquee;
-            //proBarPayIn.MarqueeAnimationSpeed = 1;
             if (!timerCheckPayInProcess.Enabled)
                 timerCheckPayInProcess.Start();
         }
 
         private void btnStopPayIn_Click(object sender, EventArgs e)
         {
-            //proBarPayIn.MarqueeAnimationSpeed = 0;
-            //proBarPayIn.Style = ProgressBarStyle.Blocks;
             lblPayInProgress.Hide();
             timerCheckPayInProcess.Stop();
             btnStopPayIn.Hide();

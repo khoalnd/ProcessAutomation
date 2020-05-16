@@ -223,6 +223,7 @@ namespace ProcessAutomation.Main.PayIn
 
                                 SaveRecord();
                             }
+
                             data.Remove(currentMessage);
                             if (data.Count == 0)
                             {
@@ -331,9 +332,12 @@ namespace ProcessAutomation.Main.PayIn
                 var totalMoney = html.GetElementById("totalMoney");
                 if (totalMoney != null)
                 {
+                    var setting = new MongoDatabase<AdminSetting>(typeof(AdminSetting).Name);
+                    var minimumMoney = setting.Query.Where(x => x.Name == Constant.MINIMUM_MONEY_NAME
+                                                            && x.Key == Constant.GIADINHVN).FirstOrDefault();
                     decimal outMoney = 0;
                     return (decimal.TryParse(totalMoney.InnerHtml.Replace("VNĐ", "").Trim(), out outMoney)
-                        && outMoney >= Constant.AMOUNT_ACCOUNT_GD);
+                        && outMoney >= decimal.Parse(minimumMoney.Value));
                 }
                 return false;
             }

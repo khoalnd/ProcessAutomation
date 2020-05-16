@@ -29,6 +29,7 @@ namespace ProcessAutomation.Main.Ultility
         public const decimal AMOUNT_ACCOUNT_GD = 0; //10000000
         public const decimal AMOUNT_ACCOUNT_NT = 0; //10000000
         public const decimal TEST_MONEY = 20000;
+        public const string MINIMUM_MONEY_NAME = "MinimumMoney";
         #endregion
 
         #region WebName
