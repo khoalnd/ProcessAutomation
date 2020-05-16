@@ -33,9 +33,12 @@
             this.timerCheckChildProcess = new System.Windows.Forms.Timer(this.components);
             this.timerReadMessage = new System.Windows.Forms.Timer(this.components);
             this.tabPayIn = new System.Windows.Forms.TabPage();
+            this.lblPayInProgress = new System.Windows.Forms.Label();
             this.btnStopPayIn = new System.Windows.Forms.Button();
             this.btnStartPayIn = new System.Windows.Forms.Button();
             this.webLayout = new System.Windows.Forms.WebBrowser();
+            this.menuStrip2 = new System.Windows.Forms.MenuStrip();
+            this.SettingToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabReaMessage = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
@@ -55,20 +58,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.button2 = new System.Windows.Forms.Button();
-            this.btnShowHistory = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.lblErrorReadMessage = new System.Windows.Forms.Label();
-            this.btnStopReadMessage = new System.Windows.Forms.Button();
-            this.btnStartReadMessage = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.connectPortBtn = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.SerialPortCombobox = new System.Windows.Forms.ComboBox();
-            this.tabControl = new System.Windows.Forms.TabControl();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.Web = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Account = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Money = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -78,9 +68,23 @@
             this.IsProcessed = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateExcute = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Error = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button2 = new System.Windows.Forms.Button();
+            this.btnShowHistory = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lblReadMessageProgress = new System.Windows.Forms.Label();
-            this.lblPayInProgress = new System.Windows.Forms.Label();
+            this.lblErrorReadMessage = new System.Windows.Forms.Label();
+            this.btnStopReadMessage = new System.Windows.Forms.Button();
+            this.btnStartReadMessage = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.connectPortBtn = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.SerialPortCombobox = new System.Windows.Forms.ComboBox();
+            this.tabControl = new System.Windows.Forms.TabControl();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.SettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPayIn.SuspendLayout();
+            this.menuStrip2.SuspendLayout();
             this.tabReaMessage.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
@@ -89,6 +93,7 @@
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabControl.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPayIn
@@ -97,17 +102,29 @@
             this.tabPayIn.Controls.Add(this.btnStopPayIn);
             this.tabPayIn.Controls.Add(this.btnStartPayIn);
             this.tabPayIn.Controls.Add(this.webLayout);
+            this.tabPayIn.Controls.Add(this.menuStrip2);
             this.tabPayIn.Location = new System.Drawing.Point(4, 33);
             this.tabPayIn.Name = "tabPayIn";
             this.tabPayIn.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPayIn.Size = new System.Drawing.Size(1513, 806);
+            this.tabPayIn.Size = new System.Drawing.Size(1446, 761);
             this.tabPayIn.TabIndex = 1;
             this.tabPayIn.Text = "Nạp Tiền";
             this.tabPayIn.UseVisualStyleBackColor = true;
             // 
+            // lblPayInProgress
+            // 
+            this.lblPayInProgress.AutoSize = true;
+            this.lblPayInProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPayInProgress.ForeColor = System.Drawing.Color.SeaGreen;
+            this.lblPayInProgress.Location = new System.Drawing.Point(219, 54);
+            this.lblPayInProgress.Name = "lblPayInProgress";
+            this.lblPayInProgress.Size = new System.Drawing.Size(170, 25);
+            this.lblPayInProgress.TabIndex = 19;
+            this.lblPayInProgress.Text = "Đang nạp tiền ...";
+            // 
             // btnStopPayIn
             // 
-            this.btnStopPayIn.Location = new System.Drawing.Point(22, 18);
+            this.btnStopPayIn.Location = new System.Drawing.Point(22, 42);
             this.btnStopPayIn.Name = "btnStopPayIn";
             this.btnStopPayIn.Size = new System.Drawing.Size(175, 45);
             this.btnStopPayIn.TabIndex = 11;
@@ -117,7 +134,7 @@
             // 
             // btnStartPayIn
             // 
-            this.btnStartPayIn.Location = new System.Drawing.Point(22, 18);
+            this.btnStartPayIn.Location = new System.Drawing.Point(22, 42);
             this.btnStartPayIn.Name = "btnStartPayIn";
             this.btnStartPayIn.Size = new System.Drawing.Size(175, 45);
             this.btnStartPayIn.TabIndex = 10;
@@ -127,11 +144,30 @@
             // 
             // webLayout
             // 
-            this.webLayout.Location = new System.Drawing.Point(3, 89);
+            this.webLayout.Location = new System.Drawing.Point(3, 126);
             this.webLayout.MinimumSize = new System.Drawing.Size(20, 20);
             this.webLayout.Name = "webLayout";
-            this.webLayout.Size = new System.Drawing.Size(1504, 717);
+            this.webLayout.Size = new System.Drawing.Size(1440, 639);
             this.webLayout.TabIndex = 9;
+            // 
+            // menuStrip2
+            // 
+            this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SettingToolStripMenuItem1});
+            this.menuStrip2.Location = new System.Drawing.Point(3, 3);
+            this.menuStrip2.Name = "menuStrip2";
+            this.menuStrip2.Size = new System.Drawing.Size(1440, 33);
+            this.menuStrip2.TabIndex = 20;
+            this.menuStrip2.Text = "menuStrip2";
+            // 
+            // SettingToolStripMenuItem1
+            // 
+            this.SettingToolStripMenuItem1.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.SettingToolStripMenuItem1.ImageTransparentColor = System.Drawing.Color.Black;
+            this.SettingToolStripMenuItem1.Name = "SettingToolStripMenuItem1";
+            this.SettingToolStripMenuItem1.Size = new System.Drawing.Size(85, 29);
+            this.SettingToolStripMenuItem1.Text = "Cài Đặt";
+            this.SettingToolStripMenuItem1.Click += new System.EventHandler(this.SettingToolStripMenuItem_Click);
             // 
             // tabReaMessage
             // 
@@ -142,7 +178,7 @@
             this.tabReaMessage.Location = new System.Drawing.Point(4, 33);
             this.tabReaMessage.Name = "tabReaMessage";
             this.tabReaMessage.Padding = new System.Windows.Forms.Padding(3);
-            this.tabReaMessage.Size = new System.Drawing.Size(1513, 806);
+            this.tabReaMessage.Size = new System.Drawing.Size(1446, 761);
             this.tabReaMessage.TabIndex = 0;
             this.tabReaMessage.Text = "Đọc Tin Nhắn";
             this.tabReaMessage.UseVisualStyleBackColor = true;
@@ -166,13 +202,12 @@
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.label2);
-            this.groupBox3.Controls.Add(this.button1);
             this.groupBox3.Controls.Add(this.dataGridView1);
             this.groupBox3.Controls.Add(this.button2);
             this.groupBox3.Controls.Add(this.btnShowHistory);
             this.groupBox3.Location = new System.Drawing.Point(3, 121);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1507, 688);
+            this.groupBox3.Size = new System.Drawing.Size(1439, 755);
             this.groupBox3.TabIndex = 21;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Tìm Kiếm";
@@ -319,15 +354,6 @@
             this.label2.TabIndex = 22;
             this.label2.Text = "Web";
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(1556, 78);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(118, 33);
-            this.button1.TabIndex = 20;
-            this.button1.Text = "Tìm";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToOrderColumns = true;
@@ -346,17 +372,117 @@
             this.IsProcessed,
             this.DateExcute,
             this.Error});
-            this.dataGridView1.Location = new System.Drawing.Point(6, 130);
+            this.dataGridView1.Location = new System.Drawing.Point(4, 132);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridView1.RowTemplate.Height = 35;
-            this.dataGridView1.Size = new System.Drawing.Size(1498, 552);
+            this.dataGridView1.Size = new System.Drawing.Size(1430, 502);
             this.dataGridView1.TabIndex = 21;
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
             // 
+            // Web
+            // 
+            this.Web.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Web.DataPropertyName = "Web";
+            this.Web.FillWeight = 50.09074F;
+            this.Web.Frozen = true;
+            this.Web.HeaderText = "Web";
+            this.Web.Name = "Web";
+            this.Web.ReadOnly = true;
+            this.Web.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Web.Width = 50;
+            // 
+            // Account
+            // 
+            this.Account.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Account.DataPropertyName = "Account";
+            this.Account.FillWeight = 289.0847F;
+            this.Account.Frozen = true;
+            this.Account.HeaderText = "Tài Khoản";
+            this.Account.Name = "Account";
+            this.Account.ReadOnly = true;
+            this.Account.Width = 60;
+            // 
+            // Money
+            // 
+            this.Money.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Money.DataPropertyName = "Money";
+            this.Money.FillWeight = 56.80839F;
+            this.Money.Frozen = true;
+            this.Money.HeaderText = "Số tiền";
+            this.Money.Name = "Money";
+            this.Money.ReadOnly = true;
+            this.Money.Width = 70;
+            // 
+            // RecievedDate
+            // 
+            this.RecievedDate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.RecievedDate.DataPropertyName = "RecievedDate";
+            this.RecievedDate.FillWeight = 108.8008F;
+            this.RecievedDate.Frozen = true;
+            this.RecievedDate.HeaderText = "Ngày Nhận";
+            this.RecievedDate.Name = "RecievedDate";
+            this.RecievedDate.ReadOnly = true;
+            this.RecievedDate.Width = 120;
+            // 
+            // MessageContent
+            // 
+            this.MessageContent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.MessageContent.DataPropertyName = "MessageContent";
+            this.MessageContent.FillWeight = 108.8008F;
+            this.MessageContent.Frozen = true;
+            this.MessageContent.HeaderText = "Nội Dung";
+            this.MessageContent.Name = "MessageContent";
+            this.MessageContent.ReadOnly = true;
+            this.MessageContent.Width = 600;
+            // 
+            // IsSatisfied
+            // 
+            this.IsSatisfied.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.IsSatisfied.DataPropertyName = "IsSatisfied";
+            this.IsSatisfied.FillWeight = 36.34379F;
+            this.IsSatisfied.Frozen = true;
+            this.IsSatisfied.HeaderText = "Hợp Lệ";
+            this.IsSatisfied.Name = "IsSatisfied";
+            this.IsSatisfied.ReadOnly = true;
+            this.IsSatisfied.Width = 70;
+            // 
+            // IsProcessed
+            // 
+            this.IsProcessed.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.IsProcessed.DataPropertyName = "IsProcessed";
+            this.IsProcessed.FillWeight = 32.46909F;
+            this.IsProcessed.Frozen = true;
+            this.IsProcessed.HeaderText = "Đã Xử Lý";
+            this.IsProcessed.Name = "IsProcessed";
+            this.IsProcessed.ReadOnly = true;
+            this.IsProcessed.Width = 70;
+            // 
+            // DateExcute
+            // 
+            this.DateExcute.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.DateExcute.DataPropertyName = "DateExcute";
+            this.DateExcute.FillWeight = 108.8008F;
+            this.DateExcute.Frozen = true;
+            this.DateExcute.HeaderText = "Ngày Xử Lý";
+            this.DateExcute.Name = "DateExcute";
+            this.DateExcute.ReadOnly = true;
+            this.DateExcute.Width = 160;
+            // 
+            // Error
+            // 
+            this.Error.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.Error.DataPropertyName = "Error";
+            this.Error.FillWeight = 108.8008F;
+            this.Error.Frozen = true;
+            this.Error.HeaderText = "Lỗi";
+            this.Error.Name = "Error";
+            this.Error.ReadOnly = true;
+            this.Error.Width = 250;
+            // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(1330, 32);
+            this.button2.Location = new System.Drawing.Point(1318, 31);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(118, 33);
             this.button2.TabIndex = 20;
@@ -365,7 +491,7 @@
             // 
             // btnShowHistory
             // 
-            this.btnShowHistory.Location = new System.Drawing.Point(1330, 86);
+            this.btnShowHistory.Location = new System.Drawing.Point(1318, 82);
             this.btnShowHistory.Name = "btnShowHistory";
             this.btnShowHistory.Size = new System.Drawing.Size(118, 33);
             this.btnShowHistory.TabIndex = 20;
@@ -385,6 +511,17 @@
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Đọc Tin Nhắn";
+            // 
+            // lblReadMessageProgress
+            // 
+            this.lblReadMessageProgress.AutoSize = true;
+            this.lblReadMessageProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblReadMessageProgress.ForeColor = System.Drawing.Color.SeaGreen;
+            this.lblReadMessageProgress.Location = new System.Drawing.Point(231, 43);
+            this.lblReadMessageProgress.Name = "lblReadMessageProgress";
+            this.lblReadMessageProgress.Size = new System.Drawing.Size(211, 25);
+            this.lblReadMessageProgress.TabIndex = 18;
+            this.lblReadMessageProgress.Text = "Đang đọc tin nhắn ...";
             // 
             // lblErrorReadMessage
             // 
@@ -466,141 +603,41 @@
             this.tabControl.Location = new System.Drawing.Point(1, 5);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1521, 843);
+            this.tabControl.Size = new System.Drawing.Size(1454, 798);
             this.tabControl.TabIndex = 10;
             // 
-            // Web
+            // menuStrip1
             // 
-            this.Web.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Web.DataPropertyName = "Web";
-            this.Web.FillWeight = 50.09074F;
-            this.Web.Frozen = true;
-            this.Web.HeaderText = "Web";
-            this.Web.Name = "Web";
-            this.Web.ReadOnly = true;
-            this.Web.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Web.Width = 50;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.SettingToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(3, 3);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1440, 33);
+            this.menuStrip1.TabIndex = 21;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // Account
+            // SettingToolStripMenuItem
             // 
-            this.Account.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Account.DataPropertyName = "Account";
-            this.Account.FillWeight = 289.0847F;
-            this.Account.Frozen = true;
-            this.Account.HeaderText = "Tài Khoản";
-            this.Account.Name = "Account";
-            this.Account.ReadOnly = true;
-            this.Account.Width = 70;
-            // 
-            // Money
-            // 
-            this.Money.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.Money.DataPropertyName = "Money";
-            this.Money.FillWeight = 56.80839F;
-            this.Money.Frozen = true;
-            this.Money.HeaderText = "Số tiền";
-            this.Money.Name = "Money";
-            this.Money.ReadOnly = true;
-            this.Money.Width = 80;
-            // 
-            // RecievedDate
-            // 
-            this.RecievedDate.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.RecievedDate.DataPropertyName = "RecievedDate";
-            this.RecievedDate.FillWeight = 108.8008F;
-            this.RecievedDate.Frozen = true;
-            this.RecievedDate.HeaderText = "Ngày Nhận";
-            this.RecievedDate.Name = "RecievedDate";
-            this.RecievedDate.ReadOnly = true;
-            this.RecievedDate.Width = 150;
-            // 
-            // MessageContent
-            // 
-            this.MessageContent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.MessageContent.DataPropertyName = "MessageContent";
-            this.MessageContent.FillWeight = 108.8008F;
-            this.MessageContent.Frozen = true;
-            this.MessageContent.HeaderText = "Nội Dung";
-            this.MessageContent.Name = "MessageContent";
-            this.MessageContent.ReadOnly = true;
-            this.MessageContent.Width = 298;
-            // 
-            // IsSatisfied
-            // 
-            this.IsSatisfied.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.IsSatisfied.DataPropertyName = "IsSatisfied";
-            this.IsSatisfied.FillWeight = 36.34379F;
-            this.IsSatisfied.Frozen = true;
-            this.IsSatisfied.HeaderText = "Hợp Lệ";
-            this.IsSatisfied.Name = "IsSatisfied";
-            this.IsSatisfied.ReadOnly = true;
-            this.IsSatisfied.Width = 70;
-            // 
-            // IsProcessed
-            // 
-            this.IsProcessed.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.IsProcessed.DataPropertyName = "IsProcessed";
-            this.IsProcessed.FillWeight = 32.46909F;
-            this.IsProcessed.Frozen = true;
-            this.IsProcessed.HeaderText = "Đã Xử Lý";
-            this.IsProcessed.Name = "IsProcessed";
-            this.IsProcessed.ReadOnly = true;
-            this.IsProcessed.Width = 70;
-            // 
-            // DateExcute
-            // 
-            this.DateExcute.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.DateExcute.DataPropertyName = "DateExcute";
-            this.DateExcute.FillWeight = 108.8008F;
-            this.DateExcute.Frozen = true;
-            this.DateExcute.HeaderText = "Ngày Xử Lý";
-            this.DateExcute.Name = "DateExcute";
-            this.DateExcute.ReadOnly = true;
-            this.DateExcute.Width = 150;
-            // 
-            // Error
-            // 
-            this.Error.DataPropertyName = "Error";
-            this.Error.FillWeight = 108.8008F;
-            this.Error.HeaderText = "Lỗi";
-            this.Error.Name = "Error";
-            this.Error.ReadOnly = true;
-            // 
-            // lblReadMessageProgress
-            // 
-            this.lblReadMessageProgress.AutoSize = true;
-            this.lblReadMessageProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblReadMessageProgress.ForeColor = System.Drawing.Color.SeaGreen;
-            this.lblReadMessageProgress.Location = new System.Drawing.Point(231, 43);
-            this.lblReadMessageProgress.Name = "lblReadMessageProgress";
-            this.lblReadMessageProgress.Size = new System.Drawing.Size(211, 25);
-            this.lblReadMessageProgress.TabIndex = 18;
-            this.lblReadMessageProgress.Text = "Đang đọc tin nhắn ...";
-            // 
-            // lblPayInProgress
-            // 
-            this.lblPayInProgress.AutoSize = true;
-            this.lblPayInProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPayInProgress.ForeColor = System.Drawing.Color.SeaGreen;
-            this.lblPayInProgress.Location = new System.Drawing.Point(219, 27);
-            this.lblPayInProgress.Name = "lblPayInProgress";
-            this.lblPayInProgress.Size = new System.Drawing.Size(170, 25);
-            this.lblPayInProgress.TabIndex = 19;
-            this.lblPayInProgress.Text = "Đang nạp tiền ...";
+            this.SettingToolStripMenuItem.Name = "SettingToolStripMenuItem";
+            this.SettingToolStripMenuItem.Size = new System.Drawing.Size(12, 29);
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1518, 848);
+            this.ClientSize = new System.Drawing.Size(1452, 802);
             this.Controls.Add(this.tabControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MainMenuStrip = this.menuStrip1;
             this.MaximizeBox = false;
             this.Name = "Main";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Nạp Tiền Tự Động";
             this.Load += new System.EventHandler(this.Main_Load);
             this.tabPayIn.ResumeLayout(false);
             this.tabPayIn.PerformLayout();
+            this.menuStrip2.ResumeLayout(false);
+            this.menuStrip2.PerformLayout();
             this.tabReaMessage.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
@@ -612,6 +649,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabControl.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -646,7 +685,6 @@
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.ComboBox comboBox2;
@@ -657,6 +695,10 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox comboBox4;
         private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.Label lblReadMessageProgress;
+        private System.Windows.Forms.Label lblPayInProgress;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem SettingToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn Web;
         private System.Windows.Forms.DataGridViewTextBoxColumn Account;
         private System.Windows.Forms.DataGridViewTextBoxColumn Money;
@@ -666,7 +708,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn IsProcessed;
         private System.Windows.Forms.DataGridViewTextBoxColumn DateExcute;
         private System.Windows.Forms.DataGridViewTextBoxColumn Error;
-        private System.Windows.Forms.Label lblReadMessageProgress;
-        private System.Windows.Forms.Label lblPayInProgress;
+        private System.Windows.Forms.MenuStrip menuStrip2;
+        private System.Windows.Forms.ToolStripMenuItem SettingToolStripMenuItem1;
     }
 }

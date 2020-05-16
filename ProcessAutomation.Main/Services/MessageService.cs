@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using MongoDB.Driver;
 using ProcessAutomation.DAL;
 using System.Media;
+using ProcessAutomation.Main.PayIn;
 
 namespace ProcessAutomation.Main.Services
 {
@@ -63,10 +64,12 @@ namespace ProcessAutomation.Main.Services
             } 
         }
 
-        public Dictionary<string, List<Message>> ReadMessage()
+        public Dictionary<string, List<Message>> ReadMessage(MessageContition messageCondition)
         {
             return database.Query
-               .Where(x => x.IsProcessed == false && x.IsSatisfied == true).ToList()
+               .Where(x => x.IsProcessed == false && x.IsSatisfied == true)
+               .Where(x => messageCondition.WebSRun.Contains(x.Web))
+               .ToList()
                .GroupBy(x => x.Web)
                .ToDictionary(x => x.Key, x => x.ToList());
         }

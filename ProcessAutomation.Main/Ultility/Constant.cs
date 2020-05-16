@@ -30,5 +30,12 @@ namespace ProcessAutomation.Main.Ultility
         public const decimal AMOUNT_ACCOUNT_NT = 0; //10000000
         public const decimal TEST_MONEY = 20000;
         #endregion
+
+        #region WebName
+        public const string CAYBANG = "cb";
+        public const string HANHLANG = "hl";
+        public const string GIADINHVN = "gd";
+        public const string NT30s = "nt";
+        #endregion
     }
 }

@@ -28,6 +28,7 @@ namespace ProcessAutomation.Main
         Dictionary<string, List<Message>> listMessage = new Dictionary<string, List<Message>>();
         System.Timers.Timer timerAnalyzeMessage;
         System.Timers.Timer timerReadMessageFromDevice;
+        MessageContition messageContition = new MessageContition();
 
         public Main()
         {
@@ -37,28 +38,8 @@ namespace ProcessAutomation.Main
         private void Main_Load(object sender, EventArgs e)
         {
             AddPortsToCombobox();
-
-            timerReadMessageFromDevice = new System.Timers.Timer(500);
-            timerReadMessageFromDevice.AutoReset = true;
-            timerReadMessageFromDevice.Elapsed += new ElapsedEventHandler(this.StartReadMessageFromDevice);
-
-            timerAnalyzeMessage = new System.Timers.Timer(10000);
-            timerAnalyzeMessage.AutoReset = false;
-            timerAnalyzeMessage.Elapsed += new ElapsedEventHandler(this.StartReadMessage);
-
-            timerCheckPayInProcess = new System.Windows.Forms.Timer();
-            timerCheckPayInProcess.Interval = (10000);
-            timerCheckPayInProcess.Tick += new EventHandler(StartPayIn);
-
-            timerCheckChildProcess = new System.Windows.Forms.Timer();
-            timerCheckChildProcess.Interval = (5000);
-            timerCheckChildProcess.Tick += new EventHandler(Process);
-
-            lblErrorReadMessage.Hide();
-            btnStopReadMessage.Hide();
-            btnStopPayIn.Hide();
-            lblReadMessageProgress.Hide();
-            lblPayInProgress.Hide();
+            InitAllTimer();
+            InitControl();
         }
         private void btnStartReadMessage_Click(object sender, EventArgs e)
         {
@@ -192,8 +173,7 @@ namespace ProcessAutomation.Main
                 if (!isCurrentPayInProcessDone)
                     return;
 
-                listMessage = new Dictionary<string, List<Message>>();
-                listMessage = messageService.ReadMessage();
+                listMessage = GetMessageToRun();
                 if (listMessage.Count == 0)
                     isCurrentPayInProcessDone = true;
                 else
@@ -224,60 +204,60 @@ namespace ProcessAutomation.Main
                     return;
                 }
 
-                if (listMessage.ContainsKey("cb") && listMessage["cb"].Count > 0)
+                if (listMessage.ContainsKey(Constant.CAYBANG) && listMessage[Constant.CAYBANG].Count > 0)
                 {
                     if (iAutomationPayin == null || !(iAutomationPayin is CBSite))
                     {
-                        iAutomationPayin = new CBSite(new List<Message>(listMessage["cb"]), webLayout);
+                        iAutomationPayin = new CBSite(new List<Message>(listMessage[Constant.CAYBANG]), webLayout);
                         iAutomationPayin.startPayIN();
                     }
 
                     if (!iAutomationPayin.checkProcessDone())
                         return;
 
-                    listMessage.Remove("cb");
+                    listMessage.Remove(Constant.CAYBANG);
                     iAutomationPayin = null;
                 }
-                else if (listMessage.ContainsKey("hl") && listMessage["hl"].Count > 0)
+                else if (listMessage.ContainsKey(Constant.HANHLANG) && listMessage[Constant.HANHLANG].Count > 0)
                 {
                     if (iAutomationPayin == null || !(iAutomationPayin is HLCSite))
                     {
-                        iAutomationPayin = new HLCSite(new List<Message>(listMessage["hl"]), webLayout);
+                        iAutomationPayin = new HLCSite(new List<Message>(listMessage[Constant.HANHLANG]), webLayout);
                         iAutomationPayin.startPayIN();
                     }
 
                     if (!iAutomationPayin.checkProcessDone())
                         return;
 
-                    listMessage.Remove("hl");
+                    listMessage.Remove(Constant.HANHLANG);
                     iAutomationPayin = null;
                 }
-                else if (listMessage.ContainsKey("gd") && listMessage["gd"].Count > 0)
+                else if (listMessage.ContainsKey(Constant.GIADINHVN) && listMessage[Constant.GIADINHVN].Count > 0)
                 {
                     if (iAutomationPayin == null || !(iAutomationPayin is GDSite))
                     {
-                        iAutomationPayin = new GDSite(new List<Message>(listMessage["gd"]), webLayout);
+                        iAutomationPayin = new GDSite(new List<Message>(listMessage[Constant.GIADINHVN]), webLayout);
                         iAutomationPayin.startPayIN();
                     }
 
                     if (!iAutomationPayin.checkProcessDone())
                         return;
 
-                    listMessage.Remove("gd");
+                    listMessage.Remove(Constant.GIADINHVN);
                     iAutomationPayin = null;
                 }
-                else if (listMessage["nt"] != null && listMessage["nt"].Count > 0)
+                else if (listMessage[Constant.NT30s] != null && listMessage[Constant.NT30s].Count > 0)
                 {
                     //if (iAutomationPayin == null || !(iAutomationPayin is CBSite))
                     //{
-                    //    iAutomationPayin = new CBSite(listMessage["nt"], webLayout);
+                    //    iAutomationPayin = new CBSite(listMessage[Constant.NT30s], webLayout);
                     //    iAutomationPayin.startPayIN();
                     //}
 
                     //if (!iAutomationPayin.checkProcessDone())
                     //    return;
 
-                    listMessage.Remove("nt");
+                    listMessage.Remove(Constant.NT30s);
                 }
             }
             catch (Exception ex)
@@ -317,7 +297,7 @@ namespace ProcessAutomation.Main
             dataGridView1.DataSource = listMessge.OrderByDescending(x => x.Id).Take(100).ToList();
         }
 
-        void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.ColumnIndex == 5)
             {
@@ -357,6 +337,57 @@ namespace ProcessAutomation.Main
                 else
                 {
                     Myrow.DefaultCellStyle.BackColor = Color.White;
+                }
+            }
+        }
+
+        private Dictionary<string,List<Message>> GetMessageToRun()
+        {
+            return messageService.ReadMessage(messageContition);
+        }
+
+        private void InitAllTimer()
+        {
+            timerReadMessageFromDevice = new System.Timers.Timer(500);
+            timerReadMessageFromDevice.AutoReset = true;
+            timerReadMessageFromDevice.Elapsed += new ElapsedEventHandler(this.StartReadMessageFromDevice);
+
+            timerAnalyzeMessage = new System.Timers.Timer(10000);
+            timerAnalyzeMessage.AutoReset = false;
+            timerAnalyzeMessage.Elapsed += new ElapsedEventHandler(this.StartReadMessage);
+
+            timerCheckPayInProcess = new System.Windows.Forms.Timer();
+            timerCheckPayInProcess.Interval = (10000);
+            timerCheckPayInProcess.Tick += new EventHandler(StartPayIn);
+
+            timerCheckChildProcess = new System.Windows.Forms.Timer();
+            timerCheckChildProcess.Interval = (5000);
+            timerCheckChildProcess.Tick += new EventHandler(Process);
+        }
+
+        private void InitControl()
+        {
+            lblErrorReadMessage.Hide();
+            btnStopReadMessage.Hide();
+            btnStopPayIn.Hide();
+            lblReadMessageProgress.Hide();
+            lblPayInProgress.Hide();
+
+            messageContition.WebSRun.Add(Constant.CAYBANG);
+            messageContition.WebSRun.Add(Constant.NT30s);
+            messageContition.WebSRun.Add(Constant.HANHLANG);
+            messageContition.WebSRun.Add(Constant.GIADINHVN);
+        }
+
+        private void SettingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (Setting formSetting = new Setting())
+            {
+                formSetting.webToRun = messageContition.WebSRun;
+                if (formSetting.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    messageContition.WebSRun = formSetting.webToRun;
+                    formSetting.Close();
                 }
             }
         }
