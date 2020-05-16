@@ -241,10 +241,6 @@ namespace ProcessAutomation.Main.PayIn
                             process = "OpenWeb";
                             break;
                         case "Finish":
-                            //CreateSyncTask();
-                            //webLayout.Navigate("about:blank");
-                            //await tcs.Task;
-                            //await Task.Delay(1000);
                             isFinishProcess = true;
                             break;
                     }

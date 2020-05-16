@@ -254,16 +254,17 @@ namespace ProcessAutomation.Main
                 }
                 else if (listMessage.ContainsKey("gd") && listMessage["gd"].Count > 0)
                 {
-                    //if (iAutomationPayin == null || !(iAutomationPayin is GDSite))
-                    //{
-                    //    iAutomationPayin = new GDSite(new List<Message>(listMessage["gd"]), webLayout);
-                    //    iAutomationPayin.startPayIN();
-                    //}
+                    if (iAutomationPayin == null || !(iAutomationPayin is GDSite))
+                    {
+                        iAutomationPayin = new GDSite(new List<Message>(listMessage["gd"]), webLayout);
+                        iAutomationPayin.startPayIN();
+                    }
 
-                    //if (!iAutomationPayin.checkProcessDone())
-                    //    return;
+                    if (!iAutomationPayin.checkProcessDone())
+                        return;
 
                     listMessage.Remove("gd");
+                    iAutomationPayin = null;
                 }
                 else if (listMessage["nt"] != null && listMessage["nt"].Count > 0)
                 {

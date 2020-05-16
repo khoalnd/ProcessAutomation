@@ -18,7 +18,7 @@ namespace ProcessAutomation.Main.Ultility
         #region Extract Message
         public const string REG_EXTRACT_MESSAGE = "(\\+CMGL: \\d+)+(,\".*?\",)+(\".*?\",)+(,\".*?\")+(\n|\r\n)+(.*)";
         public const string REG_EXTRACT_MONEY = "(tang)+(.*?VND)";
-        public const string REG_EXTRACT_ACCOUNT = "(cb|hl|gd|nt | c b| h l| g d| n t)+(.*?(?=-|\.| ))";
+        public const string REG_EXTRACT_ACCOUNT = @"(cb|hl|gd|nt| c b| h l| g d| n t)+(\d\d\d\d)";/*"(cb|hl|gd|nt| c b| h l| g d| n t)+(.*?(?=[.]))";*/
         public static List<string> WEBS_NAME = new List<string> { "cb", "hl", "gd", "nt" };
         #endregion
 
@@ -26,6 +26,8 @@ namespace ProcessAutomation.Main.Ultility
         public const decimal SATISFIED_PAYIN = 20000;
         public const decimal AMOUNT_ACCOUNT_CB = 1000000; //10000000
         public const decimal AMOUNT_ACCOUNT_HL = 1000000; //5000000
+        public const decimal AMOUNT_ACCOUNT_GD = 0; //10000000
+        public const decimal AMOUNT_ACCOUNT_NT = 0; //10000000
         public const decimal TEST_MONEY = 20000;
         #endregion
     }
