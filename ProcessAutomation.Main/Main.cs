@@ -251,6 +251,7 @@ namespace ProcessAutomation.Main
                         return;
 
                     listMessage.Remove(Constant.NT30s);
+                    iAutomationPayin = null;
                 }
             }
             catch (Exception ex)
