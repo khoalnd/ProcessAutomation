@@ -11,10 +11,12 @@ using System.Drawing;
 using System.IO.Ports;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
+using MongoDB.Bson.IO;
 
 namespace ProcessAutomation.Main
 {
@@ -37,10 +39,43 @@ namespace ProcessAutomation.Main
 
         private void Main_Load(object sender, EventArgs e)
         {
-            AddPortsToCombobox();
-            InitAllTimer();
-            InitControl();
+            if(checkLicense())
+            {
+                AddPortsToCombobox();
+                InitAllTimer();
+                InitControl();
+            }
+            else
+            {
+                tabControl.Hide();
+                // Creating and setting the label 
+                Label illegaLabel = new Label();
+                illegaLabel.Text = "Eyyyyy! Đừng Xài Lậu Chứ Fen :)";
+                illegaLabel.Location = new Point(300, 300);
+                illegaLabel.AutoSize = true;
+                illegaLabel.Font = new Font("Calibri", 50);
+                illegaLabel.ForeColor = Color.Red;
+
+                // Adding this control to the form 
+                this.Controls.Add(illegaLabel);
+                
+            }
         }
+
+        private bool checkLicense()
+        {
+            var macAddr =
+            (
+                from nic in NetworkInterface.GetAllNetworkInterfaces()
+                where nic.OperationalStatus == OperationalStatus.Up
+                select nic.GetPhysicalAddress().ToString()
+            ).FirstOrDefault();
+
+            var database = new MongoDatabase<AdminSetting>(typeof(AdminSetting).Name);
+            string license = database.Query.Where(x => x.Name == "License").FirstOrDefault().Value;
+            return license == GetStringSha256Hash(macAddr + DateTime.Now.Year.ToString());
+        }
+
         private void btnStartReadMessage_Click(object sender, EventArgs e)
         {
             if (!serialPort.IsOpen)
@@ -427,6 +462,18 @@ namespace ProcessAutomation.Main
 
                 database.UpdateOne(x => x.Id == id, updateOption);
             } 
+        }
+        internal static string GetStringSha256Hash(string text)
+        {
+            if (String.IsNullOrEmpty(text))
+                return String.Empty;
+
+            using (var sha = new System.Security.Cryptography.SHA256Managed())
+            {
+                byte[] textData = System.Text.Encoding.UTF8.GetBytes(text);
+                byte[] hash = sha.ComputeHash(textData);
+                return BitConverter.ToString(hash).Replace("-", String.Empty).ToLower();
+            }
         }
     }
 }
