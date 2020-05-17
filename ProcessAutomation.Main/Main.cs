@@ -276,9 +276,9 @@ namespace ProcessAutomation.Main
                 }
                 else if (listMessage[Constant.NT30s] != null && listMessage[Constant.NT30s].Count > 0)
                 {
-                    if (iAutomationPayin == null || !(iAutomationPayin is CBSite))
+                    if (iAutomationPayin == null || !(iAutomationPayin is NT30sSite))
                     {
-                        iAutomationPayin = new CBSite(listMessage[Constant.NT30s], webLayout);
+                        iAutomationPayin = new NT30sSite(listMessage[Constant.NT30s], webLayout);
                         iAutomationPayin.startPayIN();
                     }
 

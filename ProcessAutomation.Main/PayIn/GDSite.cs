@@ -208,20 +208,18 @@ namespace ProcessAutomation.Main.PayIn
                             if (!webLayout.Url.ToString().Contains(agencies_URL))
                             {
                                 var errorMessage = $"Cộng tiền account { currentMessage.Account } bị lỗi";
+                                SaveRecord(errorMessage);
                                 SendNotificationForError(
                                     "Cộng tiền không thành công",
                                     $"{web_name} : Cộng tiền account { currentMessage.Account } bị lỗi");
-
-                                SaveRecord(errorMessage);
                             }
                             else
                             {
+                                SaveRecord();
                                 SendNotificationForError(
                                     "Cộng tiền thành công",
                                     $"{web_name} : Cộng tiền thành công account { currentMessage.Account }, " +
                                     $"số tiền { currentMessage.Money }");
-
-                                SaveRecord();
                             }
 
                             data.Remove(currentMessage);
