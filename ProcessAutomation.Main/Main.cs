@@ -73,7 +73,7 @@ namespace ProcessAutomation.Main
 
             var database = new MongoDatabase<AdminSetting>(typeof(AdminSetting).Name);
             string license = database.Query.Where(x => x.Name == "License").FirstOrDefault().Value;
-            return license == GetStringSha256Hash(macAddr + DateTime.Now.Year.ToString());
+            return license.ToLower() == GetStringSha256Hash(macAddr + DateTime.Now.Year.ToString());
         }
 
         private void btnStartReadMessage_Click(object sender, EventArgs e)
@@ -429,6 +429,7 @@ namespace ProcessAutomation.Main
                 dataGridView1.ReadOnly = false;
                 dataGridView1.Columns[7].ReadOnly = true;
                 dataGridView1.Columns[3].ReadOnly = true;
+                dataGridView1.Columns[4].ReadOnly = true;
                 dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.White;
                 dataGridView1.EnableHeadersVisualStyles = false;
             }
@@ -445,7 +446,6 @@ namespace ProcessAutomation.Main
                 decimal money = 0;
                 if (decimal.TryParse(row.Cells[2].Value == null ? "" : row.Cells[2].Value.ToString(), out money)) {
                 }
-                var Content = row.Cells[4].Value == null ? "" : row.Cells[4].Value.ToString().Trim();
                 var IsSatisfied = (bool)row.Cells[5].Value;
                 var IsProcessed = (bool)row.Cells[6].Value;
                 var Error = row.Cells[8].Value == null ? "" : row.Cells[8].Value.ToString().Trim();
@@ -455,7 +455,6 @@ namespace ProcessAutomation.Main
                 .Set(p => p.Web, web)
                 .Set(p => p.Account, account)
                 .Set(p => p.Money, money.ToString())
-                .Set(p => p.MessageContent, Content)
                 .Set(p => p.IsProcessed, IsProcessed)
                 .Set(p => p.IsSatisfied, IsSatisfied)
                 .Set(p => p.Error, Error);
