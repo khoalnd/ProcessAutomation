@@ -85,7 +85,6 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.SettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label10 = new System.Windows.Forms.Label();
             this.tabPayIn.SuspendLayout();
             this.menuStrip2.SuspendLayout();
             this.tabReaMessage.SuspendLayout();
@@ -174,7 +173,6 @@
             // 
             // tabReaMessage
             // 
-            this.tabReaMessage.Controls.Add(this.label10);
             this.tabReaMessage.Controls.Add(this.groupBox3);
             this.tabReaMessage.Controls.Add(this.groupBox2);
             this.tabReaMessage.Controls.Add(this.groupBox1);
@@ -650,15 +648,6 @@
             this.SettingToolStripMenuItem.Name = "SettingToolStripMenuItem";
             this.SettingToolStripMenuItem.Size = new System.Drawing.Size(12, 29);
             // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(9, 13);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(70, 24);
-            this.label10.TabIndex = 22;
-            this.label10.Text = "label10";
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -677,7 +666,6 @@
             this.menuStrip2.ResumeLayout(false);
             this.menuStrip2.PerformLayout();
             this.tabReaMessage.ResumeLayout(false);
-            this.tabReaMessage.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
@@ -751,6 +739,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn DateExcute;
         private System.Windows.Forms.DataGridViewTextBoxColumn Error;
         private System.Windows.Forms.DataGridViewTextBoxColumn Id;
-        private System.Windows.Forms.Label label10;
     }
 }
