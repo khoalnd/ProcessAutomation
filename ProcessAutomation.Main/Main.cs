@@ -274,11 +274,11 @@ namespace ProcessAutomation.Main
                     listMessage.Remove(Constant.GIADINHVN);
                     iAutomationPayin = null;
                 }
-                else if (listMessage[Constant.NT30s] != null && listMessage[Constant.NT30s].Count > 0)
+                else if (listMessage.ContainsKey(Constant.NT30s) && listMessage[Constant.NT30s].Count > 0)
                 {
                     if (iAutomationPayin == null || !(iAutomationPayin is NT30sSite))
                     {
-                        iAutomationPayin = new NT30sSite(listMessage[Constant.NT30s], webLayout);
+                        iAutomationPayin = new NT30sSite(new List<Message>(listMessage[Constant.NT30s]), webLayout);
                         iAutomationPayin.startPayIN();
                     }
 
