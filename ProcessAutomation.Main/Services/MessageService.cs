@@ -51,14 +51,16 @@ namespace ProcessAutomation.Main.Services
 
         public void StartReadMessage()
         {
-            var messages = messFromDevice.Query.Where(x => x.Id != null).ToList();
+            var messages = messFromDevice.Query.Where(x => x.IsProcessed == false).ToList();
             foreach (var mess in messages)
             {
                 var rule = new Regex(Constant.REG_EXTRACT_MESSAGE);
                 var matches = rule.Matches(mess.Message);
                 SaveMessage(matches);
 
-                messFromDevice.DeleteOne(x => x.Id == mess.Id);
+                var updateOption = Builders<MessageFromDevice>.Update
+                .Set(p => p.IsProcessed, true);
+                messFromDevice.UpdateOne(x => x.Id == mess.Id, updateOption);
             } 
         }
 
