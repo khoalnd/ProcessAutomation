@@ -44,8 +44,6 @@
             this.cbStopAutoLoadMess = new System.Windows.Forms.CheckBox();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.comboBox4 = new System.Windows.Forms.ComboBox();
@@ -85,12 +83,12 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.SettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.txtMoney_GD = new System.Windows.Forms.TextBox();
+            this.txtMoney_HL = new System.Windows.Forms.TextBox();
             this.tabPayIn.SuspendLayout();
             this.menuStrip2.SuspendLayout();
             this.tabReaMessage.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -187,11 +185,11 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.txtMoney_GD);
+            this.groupBox3.Controls.Add(this.txtMoney_HL);
             this.groupBox3.Controls.Add(this.cbStopAutoLoadMess);
             this.groupBox3.Controls.Add(this.dateTimePicker2);
             this.groupBox3.Controls.Add(this.dateTimePicker1);
-            this.groupBox3.Controls.Add(this.numericUpDown2);
-            this.groupBox3.Controls.Add(this.numericUpDown1);
             this.groupBox3.Controls.Add(this.textBox1);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.comboBox4);
@@ -241,20 +239,6 @@
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(180, 29);
             this.dateTimePicker1.TabIndex = 27;
-            // 
-            // numericUpDown2
-            // 
-            this.numericUpDown2.Location = new System.Drawing.Point(1087, 31);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(120, 29);
-            this.numericUpDown2.TabIndex = 26;
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(932, 31);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(116, 29);
-            this.numericUpDown1.TabIndex = 25;
             // 
             // textBox1
             // 
@@ -648,6 +632,20 @@
             this.SettingToolStripMenuItem.Name = "SettingToolStripMenuItem";
             this.SettingToolStripMenuItem.Size = new System.Drawing.Size(12, 29);
             // 
+            // txtMoney_GD
+            // 
+            this.txtMoney_GD.Location = new System.Drawing.Point(1089, 31);
+            this.txtMoney_GD.Name = "txtMoney_GD";
+            this.txtMoney_GD.Size = new System.Drawing.Size(134, 29);
+            this.txtMoney_GD.TabIndex = 29;
+            // 
+            // txtMoney_HL
+            // 
+            this.txtMoney_HL.Location = new System.Drawing.Point(926, 31);
+            this.txtMoney_HL.Name = "txtMoney_HL";
+            this.txtMoney_HL.Size = new System.Drawing.Size(124, 29);
+            this.txtMoney_HL.TabIndex = 30;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -668,8 +666,6 @@
             this.tabReaMessage.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -708,8 +704,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label6;
@@ -739,5 +733,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn DateExcute;
         private System.Windows.Forms.DataGridViewTextBoxColumn Error;
         private System.Windows.Forms.DataGridViewTextBoxColumn Id;
+        private System.Windows.Forms.TextBox txtMoney_GD;
+        private System.Windows.Forms.TextBox txtMoney_HL;
     }
 }
