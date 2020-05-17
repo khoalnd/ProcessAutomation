@@ -51,8 +51,6 @@ namespace ProcessAutomation.Main
 
             lblErrorReadMessage.Hide();
             lblReadMessageProgress.Show();
-            //proBarReadMessage.Style = ProgressBarStyle.Marquee;
-            //proBarReadMessage.MarqueeAnimationSpeed = 1;
             btnStopReadMessage.Show();
             btnStartReadMessage.Hide();
 
@@ -156,6 +154,7 @@ namespace ProcessAutomation.Main
             }
             finally
             {
+                if (cbStopAutoLoadMess.Checked) showSearchMessage();
                 timerAnalyzeMessage.Start();
             }
         }
@@ -242,14 +241,14 @@ namespace ProcessAutomation.Main
                 }
                 else if (listMessage[Constant.NT30s] != null && listMessage[Constant.NT30s].Count > 0)
                 {
-                    //if (iAutomationPayin == null || !(iAutomationPayin is CBSite))
-                    //{
-                    //    iAutomationPayin = new CBSite(listMessage[Constant.NT30s], webLayout);
-                    //    iAutomationPayin.startPayIN();
-                    //}
+                    if (iAutomationPayin == null || !(iAutomationPayin is CBSite))
+                    {
+                        iAutomationPayin = new CBSite(listMessage[Constant.NT30s], webLayout);
+                        iAutomationPayin.startPayIN();
+                    }
 
-                    //if (!iAutomationPayin.checkProcessDone())
-                    //    return;
+                    if (!iAutomationPayin.checkProcessDone())
+                        return;
 
                     listMessage.Remove(Constant.NT30s);
                 }
@@ -276,41 +275,30 @@ namespace ProcessAutomation.Main
 
         private void btnShowHistory_Click(object sender, EventArgs e)
         {
-            var database = new MongoDatabase<Message>(typeof(Message).Name);
-            List<Message> listMessge = database.Query.ToList();
-            dataGridView1.Columns[4].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            dataGridView1.Columns[4].Frozen = false;
-            dataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            //dataGridView1.Columns[8].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            //dataGridView1.Columns[8].Frozen = false;
-            //dataGridView1.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
-            dataGridView1.AutoGenerateColumns = false;
-            dataGridView1.DefaultCellStyle.Font = new Font("Tahoma", 12);
-            dataGridView1.ScrollBars = ScrollBars.Both;
-            dataGridView1.DataSource = listMessge.OrderByDescending(x => x.Id).Take(100).ToList();
+            showSearchMessage();
+        }
+
+        private void showSearchMessage()
+        {
+            this.Invoke(new Action(() =>
+            {
+                var database = new MongoDatabase<Message>(typeof(Message).Name);
+                List<Message> listMessge = database.Query.ToList();
+                dataGridView1.Columns[4].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                dataGridView1.Columns[4].Frozen = false;
+                dataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
+                dataGridView1.AutoGenerateColumns = false;
+                dataGridView1.DefaultCellStyle.Font = new Font("Tahoma", 12);
+                dataGridView1.ScrollBars = ScrollBars.Both;
+                dataGridView1.DataSource = listMessge.OrderByDescending(x => x.Id).Take(100).ToList();
+            }));
+
+         
         }
 
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (e.ColumnIndex == 5)
-            {
-                if (e.Value != null && e.Value is bool)
-                {
-                    e.Value = (bool)e.Value ? "Hợp Lệ" : "Không";
-                    e.FormattingApplied = true;
-                }
-            }
-
-            if (e.ColumnIndex == 6)
-            {
-                if (e.Value != null && e.Value is bool)
-                {
-                    e.Value = (bool)e.Value ? "Rồi" : "Chưa";
-                    e.FormattingApplied = true;
-                }
-            }
-
             if (e.ColumnIndex == 7)
             {
                 if (e.Value != null && e.Value is BsonDateTime)
@@ -371,6 +359,8 @@ namespace ProcessAutomation.Main
             messageContition.WebSRun.Add(Constant.NT30s);
             messageContition.WebSRun.Add(Constant.HANHLANG);
             messageContition.WebSRun.Add(Constant.GIADINHVN);
+            cbStopAutoLoadMess.Checked = true;
+            showSearchMessage();
         }
 
         private void SettingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -384,6 +374,58 @@ namespace ProcessAutomation.Main
                     formSetting.Close();
                 }
             }
+        }
+
+        private void cbStopAutoLoadMess_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbStopAutoLoadMess.Checked)
+            {
+                btnShowHistory.Enabled = false;
+                btnResetFilter.Enabled = false;
+                dataGridView1.ReadOnly = true;
+                dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.LightGray;
+                dataGridView1.EnableHeadersVisualStyles = false;
+            }
+            else
+            {
+                btnShowHistory.Enabled = true;
+                btnResetFilter.Enabled = true;
+                dataGridView1.ReadOnly = false;
+                dataGridView1.Columns[7].ReadOnly = true;
+                dataGridView1.Columns[3].ReadOnly = true;
+                dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.White;
+                dataGridView1.EnableHeadersVisualStyles = false;
+            }
+        }
+
+        private void dataGridView1_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            var row = dataGridView1.Rows[e.RowIndex];
+            if (row != null)
+            {
+                var id = (ObjectId)row.Cells["id"].Value;
+                var web = row.Cells[0].Value == null ? "" : row.Cells[0].Value.ToString().Trim();
+                var account = row.Cells[1].Value == null ? "" : row.Cells[1].Value.ToString().Trim();
+                decimal money = 0;
+                if (decimal.TryParse(row.Cells[2].Value == null ? "" : row.Cells[2].Value.ToString(), out money)) {
+                }
+                var Content = row.Cells[4].Value == null ? "" : row.Cells[4].Value.ToString().Trim();
+                var IsSatisfied = (bool)row.Cells[5].Value;
+                var IsProcessed = (bool)row.Cells[6].Value;
+                var Error = row.Cells[8].Value == null ? "" : row.Cells[8].Value.ToString().Trim();
+
+                MongoDatabase<Message> database = new MongoDatabase<Message>(typeof(Message).Name);
+                var updateOption = Builders<Message>.Update
+                .Set(p => p.Web, web)
+                .Set(p => p.Account, account)
+                .Set(p => p.Money, money.ToString())
+                .Set(p => p.MessageContent, Content)
+                .Set(p => p.IsProcessed, IsProcessed)
+                .Set(p => p.IsSatisfied, IsSatisfied)
+                .Set(p => p.Error, Error);
+
+                database.UpdateOne(x => x.Id == id, updateOption);
+            } 
         }
     }
 }

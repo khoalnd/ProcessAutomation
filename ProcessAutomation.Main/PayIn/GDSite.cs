@@ -360,7 +360,7 @@ namespace ProcessAutomation.Main.PayIn
                 }
                 else if (value == "txt_gia")
                 {
-                    item.SetAttribute("value", Constant.TEST_MONEY.ToString());
+                    item.SetAttribute("value", currentMessage.Money);
                 }
             }
            

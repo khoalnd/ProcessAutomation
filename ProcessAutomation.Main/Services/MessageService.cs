@@ -114,8 +114,6 @@ namespace ProcessAutomation.Main.Services
                         database.InsertOne(mess);
                         csvHelper.WriteToFile(dataToWrite, $"{DateTime.Now.ToString("dd-MM-yyyy")}.csv");
                     }
-                   // csvHelper.WriteToFile(dataToWrite, $"{DateTime.Now.ToString("dd-MM-yyyy")}.csv");
-                    //database.InsertMany(messages);
                 }
             }
             catch (Exception)

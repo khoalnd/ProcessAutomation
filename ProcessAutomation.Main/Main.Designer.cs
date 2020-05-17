@@ -41,6 +41,7 @@
             this.SettingToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabReaMessage = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.cbStopAutoLoadMess = new System.Windows.Forms.CheckBox();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
@@ -64,11 +65,12 @@
             this.Money = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RecievedDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MessageContent = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IsSatisfied = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IsProcessed = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsSatisfied = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.IsProcessed = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.DateExcute = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Error = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button2 = new System.Windows.Forms.Button();
+            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnResetFilter = new System.Windows.Forms.Button();
             this.btnShowHistory = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lblReadMessageProgress = new System.Windows.Forms.Label();
@@ -185,6 +187,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.cbStopAutoLoadMess);
             this.groupBox3.Controls.Add(this.dateTimePicker2);
             this.groupBox3.Controls.Add(this.dateTimePicker1);
             this.groupBox3.Controls.Add(this.numericUpDown2);
@@ -203,7 +206,7 @@
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.dataGridView1);
-            this.groupBox3.Controls.Add(this.button2);
+            this.groupBox3.Controls.Add(this.btnResetFilter);
             this.groupBox3.Controls.Add(this.btnShowHistory);
             this.groupBox3.Location = new System.Drawing.Point(3, 121);
             this.groupBox3.Name = "groupBox3";
@@ -212,10 +215,21 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Tìm Kiếm";
             // 
+            // cbStopAutoLoadMess
+            // 
+            this.cbStopAutoLoadMess.AutoSize = true;
+            this.cbStopAutoLoadMess.Location = new System.Drawing.Point(1122, 82);
+            this.cbStopAutoLoadMess.Name = "cbStopAutoLoadMess";
+            this.cbStopAutoLoadMess.Size = new System.Drawing.Size(167, 28);
+            this.cbStopAutoLoadMess.TabIndex = 28;
+            this.cbStopAutoLoadMess.Text = "Tự động load tin";
+            this.cbStopAutoLoadMess.UseVisualStyleBackColor = true;
+            this.cbStopAutoLoadMess.CheckedChanged += new System.EventHandler(this.cbStopAutoLoadMess_CheckedChanged);
+            // 
             // dateTimePicker2
             // 
             this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker2.Location = new System.Drawing.Point(703, 30);
+            this.dateTimePicker2.Location = new System.Drawing.Point(631, 30);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.Size = new System.Drawing.Size(188, 29);
             this.dateTimePicker2.TabIndex = 27;
@@ -223,21 +237,21 @@
             // dateTimePicker1
             // 
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(502, 31);
+            this.dateTimePicker1.Location = new System.Drawing.Point(430, 31);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(180, 29);
             this.dateTimePicker1.TabIndex = 27;
             // 
             // numericUpDown2
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(1174, 31);
+            this.numericUpDown2.Location = new System.Drawing.Point(1087, 31);
             this.numericUpDown2.Name = "numericUpDown2";
             this.numericUpDown2.Size = new System.Drawing.Size(120, 29);
             this.numericUpDown2.TabIndex = 26;
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(1019, 31);
+            this.numericUpDown1.Location = new System.Drawing.Point(932, 31);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(116, 29);
             this.numericUpDown1.TabIndex = 25;
@@ -246,7 +260,7 @@
             // 
             this.textBox1.Location = new System.Drawing.Point(124, 85);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(243, 29);
+            this.textBox1.Size = new System.Drawing.Size(174, 29);
             this.textBox1.TabIndex = 24;
             // 
             // label3
@@ -261,31 +275,31 @@
             // comboBox4
             // 
             this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(1101, 83);
+            this.comboBox4.Location = new System.Drawing.Point(926, 80);
             this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(205, 32);
+            this.comboBox4.Size = new System.Drawing.Size(158, 32);
             this.comboBox4.TabIndex = 23;
             // 
             // comboBox3
             // 
             this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(814, 82);
+            this.comboBox3.Location = new System.Drawing.Point(684, 82);
             this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(205, 32);
+            this.comboBox3.Size = new System.Drawing.Size(158, 32);
             this.comboBox3.TabIndex = 23;
             // 
             // comboBox2
             // 
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(477, 83);
+            this.comboBox2.Location = new System.Drawing.Point(405, 83);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(205, 32);
+            this.comboBox2.Size = new System.Drawing.Size(158, 32);
             this.comboBox2.TabIndex = 23;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(1045, 86);
+            this.label9.Location = new System.Drawing.Point(874, 86);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(35, 24);
             this.label9.TabIndex = 22;
@@ -296,13 +310,13 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(124, 34);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(243, 32);
+            this.comboBox1.Size = new System.Drawing.Size(174, 32);
             this.comboBox1.TabIndex = 23;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(731, 88);
+            this.label8.Location = new System.Drawing.Point(591, 88);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(77, 24);
             this.label8.TabIndex = 22;
@@ -312,7 +326,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(1141, 35);
+            this.label5.Location = new System.Drawing.Point(1056, 35);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(27, 29);
             this.label5.TabIndex = 22;
@@ -321,7 +335,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(397, 87);
+            this.label7.Location = new System.Drawing.Point(325, 87);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(66, 24);
             this.label7.TabIndex = 22;
@@ -330,7 +344,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(397, 34);
+            this.label6.Location = new System.Drawing.Point(325, 34);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(98, 24);
             this.label6.TabIndex = 22;
@@ -339,7 +353,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(941, 34);
+            this.label4.Location = new System.Drawing.Point(854, 34);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(68, 24);
             this.label4.TabIndex = 22;
@@ -371,13 +385,15 @@
             this.IsSatisfied,
             this.IsProcessed,
             this.DateExcute,
-            this.Error});
+            this.Error,
+            this.Id});
             this.dataGridView1.Location = new System.Drawing.Point(4, 132);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridView1.RowTemplate.Height = 35;
-            this.dataGridView1.Size = new System.Drawing.Size(1430, 502);
+            this.dataGridView1.Size = new System.Drawing.Size(1429, 502);
             this.dataGridView1.TabIndex = 21;
+            this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
             // 
             // Web
@@ -445,6 +461,8 @@
             this.IsSatisfied.HeaderText = "Hợp Lệ";
             this.IsSatisfied.Name = "IsSatisfied";
             this.IsSatisfied.ReadOnly = true;
+            this.IsSatisfied.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.IsSatisfied.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.IsSatisfied.Width = 70;
             // 
             // IsProcessed
@@ -456,6 +474,8 @@
             this.IsProcessed.HeaderText = "Đã Xử Lý";
             this.IsProcessed.Name = "IsProcessed";
             this.IsProcessed.ReadOnly = true;
+            this.IsProcessed.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.IsProcessed.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.IsProcessed.Width = 70;
             // 
             // DateExcute
@@ -480,14 +500,21 @@
             this.Error.ReadOnly = true;
             this.Error.Width = 250;
             // 
-            // button2
+            // Id
             // 
-            this.button2.Location = new System.Drawing.Point(1318, 31);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(118, 33);
-            this.button2.TabIndex = 20;
-            this.button2.Text = "Reset";
-            this.button2.UseVisualStyleBackColor = true;
+            this.Id.DataPropertyName = "Id";
+            this.Id.HeaderText = "Id";
+            this.Id.Name = "Id";
+            this.Id.Visible = false;
+            // 
+            // btnResetFilter
+            // 
+            this.btnResetFilter.Location = new System.Drawing.Point(1318, 31);
+            this.btnResetFilter.Name = "btnResetFilter";
+            this.btnResetFilter.Size = new System.Drawing.Size(118, 33);
+            this.btnResetFilter.TabIndex = 20;
+            this.btnResetFilter.Text = "Reset";
+            this.btnResetFilter.UseVisualStyleBackColor = true;
             // 
             // btnShowHistory
             // 
@@ -689,26 +716,28 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnResetFilter;
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ComboBox comboBox4;
-        private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Label lblReadMessageProgress;
         private System.Windows.Forms.Label lblPayInProgress;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem SettingToolStripMenuItem;
+        private System.Windows.Forms.MenuStrip menuStrip2;
+        private System.Windows.Forms.ToolStripMenuItem SettingToolStripMenuItem1;
+        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckBox cbStopAutoLoadMess;
         private System.Windows.Forms.DataGridViewTextBoxColumn Web;
         private System.Windows.Forms.DataGridViewTextBoxColumn Account;
         private System.Windows.Forms.DataGridViewTextBoxColumn Money;
         private System.Windows.Forms.DataGridViewTextBoxColumn RecievedDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn MessageContent;
-        private System.Windows.Forms.DataGridViewTextBoxColumn IsSatisfied;
-        private System.Windows.Forms.DataGridViewTextBoxColumn IsProcessed;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsSatisfied;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsProcessed;
         private System.Windows.Forms.DataGridViewTextBoxColumn DateExcute;
         private System.Windows.Forms.DataGridViewTextBoxColumn Error;
-        private System.Windows.Forms.MenuStrip menuStrip2;
-        private System.Windows.Forms.ToolStripMenuItem SettingToolStripMenuItem1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
     }
 }
