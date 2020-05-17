@@ -245,6 +245,7 @@ namespace ProcessAutomation.Main
 
                     listMessage.Remove(Constant.CAYBANG);
                     iAutomationPayin = null;
+                    showSearchMessage();
                 }
                 else if (listMessage.ContainsKey(Constant.HANHLANG) && listMessage[Constant.HANHLANG].Count > 0)
                 {
@@ -259,6 +260,7 @@ namespace ProcessAutomation.Main
 
                     listMessage.Remove(Constant.HANHLANG);
                     iAutomationPayin = null;
+                    showSearchMessage();
                 }
                 else if (listMessage.ContainsKey(Constant.GIADINHVN) && listMessage[Constant.GIADINHVN].Count > 0)
                 {
@@ -273,6 +275,7 @@ namespace ProcessAutomation.Main
 
                     listMessage.Remove(Constant.GIADINHVN);
                     iAutomationPayin = null;
+                    showSearchMessage();
                 }
                 else if (listMessage.ContainsKey(Constant.NT30s) && listMessage[Constant.NT30s].Count > 0)
                 {
@@ -287,6 +290,7 @@ namespace ProcessAutomation.Main
 
                     listMessage.Remove(Constant.NT30s);
                     iAutomationPayin = null;
+                    showSearchMessage();
                 }
             }
             catch (Exception ex)
