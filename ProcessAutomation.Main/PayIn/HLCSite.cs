@@ -26,6 +26,7 @@ namespace ProcessAutomation.Main.PayIn
         Void v;
         TaskCompletionSource<Void> tcs = null;
         WebBrowserDocumentCompletedEventHandler documentComplete = null;
+        MongoDatabase<AdminSetting> adminSetting = new MongoDatabase<AdminSetting>(typeof(AdminSetting).Name);
 
         public HLCSite(List<Message> data, WebBrowser web)
         {
@@ -283,12 +284,16 @@ namespace ProcessAutomation.Main.PayIn
             var htmlLogin = webLayout.Document;
             var inputUserName = htmlLogin.GetElementById("Username");
             var inputPassword = htmlLogin.GetElementById("Password");
+            var inputOTP = htmlLogin.GetElementById("OTP");
             var btnLogin = htmlLogin.GetElementById("login");
+            var otpSetting = adminSetting.Query.Where(x => x.Name == "OTP" && x.Key.ToLower() == Constant.HANHLANG).FirstOrDefault();
+            var otpValue = otpSetting.Value ?? string.Empty;
 
             if (inputUserName != null && inputPassword != null)
             {
                 inputUserName.SetAttribute("value", adminAccount.AccountName);
                 inputPassword.SetAttribute("value", adminAccount.Password);
+                inputOTP.SetAttribute("value", otpValue);
                 btnLogin.InvokeMember("Click");
             }
         }
@@ -366,8 +371,7 @@ namespace ProcessAutomation.Main.PayIn
                 }
                 if (tdResult != null)
                 {
-                    var setting = new MongoDatabase<AdminSetting>(typeof(AdminSetting).Name);
-                    var minimumMoney = setting.Query.Where(x => x.Name == Constant.MINIMUM_MONEY_NAME
+                    var minimumMoney = adminSetting.Query.Where(x => x.Name == Constant.MINIMUM_MONEY_NAME
                                                             && x.Key == Constant.HANHLANG).FirstOrDefault();
 
                     decimal outMoney = 0;
