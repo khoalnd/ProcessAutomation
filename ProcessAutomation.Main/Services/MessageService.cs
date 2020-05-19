@@ -139,7 +139,12 @@ namespace ProcessAutomation.Main.Services
                 // Check money
                 if (result.IsSatisfied)
                 {
-                    var match = new Regex(Constant.REG_EXTRACT_MONEY).Match(mess).Groups[2] ?? null;
+                    var match = new Regex(Constant.REG_EXTRACT_MONEY_TEMPLATE1).Match(mess).Groups[2] ?? null;
+                    if (match.Length == 0)
+                    {
+                        match = new Regex(Constant.REG_EXTRACT_MONEY_TEMPLATE2).Match(mess).Groups[2] ?? null;
+                    }
+
                     if (string.IsNullOrEmpty(match.Value))
                         return result;
 
@@ -154,7 +159,7 @@ namespace ProcessAutomation.Main.Services
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }
