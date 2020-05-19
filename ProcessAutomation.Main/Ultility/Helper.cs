@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,6 +36,38 @@ namespace ProcessAutomation.Main.Ultility
             }
 
             return Encoding.UTF8.GetString(bytes);
+        }
+
+        public async void sendMessageZalo(string message)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    HttpResponseMessage response = client.PostAsync("https://openapi.zalo.me/v2.0/oa/message?access_token=SRGfJyQJcKnwjoL8nv6PJ7cqBql4YvWS3lHwUhQCh1rsqajyr8or9mZdOL35euTD0zno3C26eqOy-KCvqA7mNWU40oh5m-GZ8E0a9_scs5CMm34jrPRXPtVs5XMogzWHPSCxTDcSrJupw1auq87mKHgW7LJXvDOhMS4QS9UFtsqWr0mf_h73Vp_XS1x4feP6FULMFuQaYdz-vsm5cxdG0qt-47Q3cjSqDByRGU_azZ0pcpj8ohtc8Ix5327fuSTWCg1wDUd4bcGAf6SxSJcF4OGmpOkPJG",
+                     new StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(
+                       new
+                       {
+                           recipient = new
+                           {
+                               user_id = "61760662423529256"
+                           },
+                           message = new
+                           {
+                               text = message
+                           }
+                       }),
+                       Encoding.UTF8, "application/json")
+                   ).Result;
+
+                    var customerJsonString = response.Content.ReadAsStringAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            
         }
     }
 }

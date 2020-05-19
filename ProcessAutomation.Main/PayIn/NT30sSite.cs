@@ -17,6 +17,7 @@ namespace ProcessAutomation.Main.PayIn
     public class NT30sSite : IAutomationPayIn
     {
         MailService mailService = new MailService();
+        Helper helper = new Helper();
         private WebBrowser webLayout;
         private List<Message> data = new List<Message>();
         private const string web_name = "naptien30s";
@@ -404,6 +405,7 @@ namespace ProcessAutomation.Main.PayIn
         private void SendNotificationForError(string subject, string message)
         {
             mailService.SendEmail(subject, message);
+            helper.sendMessageZalo(message);
         }
 
         private void SaveRecord(string error = "")

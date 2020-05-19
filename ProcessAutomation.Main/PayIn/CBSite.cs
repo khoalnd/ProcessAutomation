@@ -14,6 +14,7 @@ namespace ProcessAutomation.Main.PayIn
     public class CBSite : IAutomationPayIn
     {
         MailService mailService = new MailService();
+        Helper helper = new Helper();
         private WebBrowser webLayout;
         private List<Message> data = new List<Message>();
         private const string web_name = "caybang";
@@ -465,6 +466,7 @@ namespace ProcessAutomation.Main.PayIn
             try
             {
                 mailService.SendEmail(subject, message);
+                helper.sendMessageZalo(message);
             }
             catch (Exception ex)
             {
