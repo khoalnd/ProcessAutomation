@@ -64,7 +64,7 @@ namespace ProcessAutomation.Main.Services
                 messFromDevice.UpdateOne(x => x.Id == mess.Id, updateOption);
                 messageComming = true;
             }
-            return true;
+            return messageComming;
         }
 
         public Dictionary<string, List<Message>> ReadMessage(MessageContition messageCondition)
