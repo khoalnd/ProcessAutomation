@@ -41,21 +41,19 @@
             this.SettingToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabReaMessage = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.web_listBox_filter = new System.Windows.Forms.ListBox();
             this.cbStopAutoLoadMess = new System.Windows.Forms.CheckBox();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.dtExecuteDate_to_filter = new System.Windows.Forms.DateTimePicker();
+            this.dtExecuteDate_from_filter = new System.Windows.Forms.DateTimePicker();
+            this.txtAccount_filter = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.isError_filter = new System.Windows.Forms.ComboBox();
+            this.isProcessed_filter = new System.Windows.Forms.ComboBox();
+            this.isSatisfied_filter = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Web = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -83,8 +81,6 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.SettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.txtMoney_GD = new System.Windows.Forms.TextBox();
-            this.txtMoney_HL = new System.Windows.Forms.TextBox();
             this.tabPayIn.SuspendLayout();
             this.menuStrip2.SuspendLayout();
             this.tabReaMessage.SuspendLayout();
@@ -185,23 +181,19 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.txtMoney_GD);
-            this.groupBox3.Controls.Add(this.txtMoney_HL);
+            this.groupBox3.Controls.Add(this.web_listBox_filter);
             this.groupBox3.Controls.Add(this.cbStopAutoLoadMess);
-            this.groupBox3.Controls.Add(this.dateTimePicker2);
-            this.groupBox3.Controls.Add(this.dateTimePicker1);
-            this.groupBox3.Controls.Add(this.textBox1);
+            this.groupBox3.Controls.Add(this.dtExecuteDate_to_filter);
+            this.groupBox3.Controls.Add(this.dtExecuteDate_from_filter);
+            this.groupBox3.Controls.Add(this.txtAccount_filter);
             this.groupBox3.Controls.Add(this.label3);
-            this.groupBox3.Controls.Add(this.comboBox4);
-            this.groupBox3.Controls.Add(this.comboBox3);
-            this.groupBox3.Controls.Add(this.comboBox2);
+            this.groupBox3.Controls.Add(this.isError_filter);
+            this.groupBox3.Controls.Add(this.isProcessed_filter);
+            this.groupBox3.Controls.Add(this.isSatisfied_filter);
             this.groupBox3.Controls.Add(this.label9);
-            this.groupBox3.Controls.Add(this.comboBox1);
             this.groupBox3.Controls.Add(this.label8);
-            this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.label6);
-            this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.dataGridView1);
             this.groupBox3.Controls.Add(this.btnResetFilter);
@@ -213,10 +205,21 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Tìm Kiếm";
             // 
+            // web_listBox_filter
+            // 
+            this.web_listBox_filter.FormattingEnabled = true;
+            this.web_listBox_filter.HorizontalExtent = 4;
+            this.web_listBox_filter.ItemHeight = 24;
+            this.web_listBox_filter.Location = new System.Drawing.Point(10, 50);
+            this.web_listBox_filter.Name = "web_listBox_filter";
+            this.web_listBox_filter.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.web_listBox_filter.Size = new System.Drawing.Size(173, 76);
+            this.web_listBox_filter.TabIndex = 31;
+            // 
             // cbStopAutoLoadMess
             // 
             this.cbStopAutoLoadMess.AutoSize = true;
-            this.cbStopAutoLoadMess.Location = new System.Drawing.Point(1122, 82);
+            this.cbStopAutoLoadMess.Location = new System.Drawing.Point(1023, 23);
             this.cbStopAutoLoadMess.Name = "cbStopAutoLoadMess";
             this.cbStopAutoLoadMess.Size = new System.Drawing.Size(167, 28);
             this.cbStopAutoLoadMess.TabIndex = 28;
@@ -224,102 +227,94 @@
             this.cbStopAutoLoadMess.UseVisualStyleBackColor = true;
             this.cbStopAutoLoadMess.CheckedChanged += new System.EventHandler(this.cbStopAutoLoadMess_CheckedChanged);
             // 
-            // dateTimePicker2
+            // dtExecuteDate_to_filter
             // 
-            this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker2.Location = new System.Drawing.Point(631, 30);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(188, 29);
-            this.dateTimePicker2.TabIndex = 27;
+            this.dtExecuteDate_to_filter.Checked = false;
+            this.dtExecuteDate_to_filter.CustomFormat = "dd/MM/yyyy";
+            this.dtExecuteDate_to_filter.Enabled = false;
+            this.dtExecuteDate_to_filter.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtExecuteDate_to_filter.Location = new System.Drawing.Point(804, 23);
+            this.dtExecuteDate_to_filter.Name = "dtExecuteDate_to_filter";
+            this.dtExecuteDate_to_filter.Size = new System.Drawing.Size(188, 29);
+            this.dtExecuteDate_to_filter.TabIndex = 27;
+            this.dtExecuteDate_to_filter.ValueChanged += new System.EventHandler(this.dtExecuteDate_to_filter_ValueChanged);
             // 
-            // dateTimePicker1
+            // dtExecuteDate_from_filter
             // 
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(430, 31);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(180, 29);
-            this.dateTimePicker1.TabIndex = 27;
+            this.dtExecuteDate_from_filter.CustomFormat = "dd/MM/yyyy";
+            this.dtExecuteDate_from_filter.Enabled = false;
+            this.dtExecuteDate_from_filter.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtExecuteDate_from_filter.Location = new System.Drawing.Point(603, 24);
+            this.dtExecuteDate_from_filter.Name = "dtExecuteDate_from_filter";
+            this.dtExecuteDate_from_filter.Size = new System.Drawing.Size(180, 29);
+            this.dtExecuteDate_from_filter.TabIndex = 27;
+            this.dtExecuteDate_from_filter.ValueChanged += new System.EventHandler(this.dtExecuteDate_from_filter_ValueChanged);
             // 
-            // textBox1
+            // txtAccount_filter
             // 
-            this.textBox1.Location = new System.Drawing.Point(124, 85);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(174, 29);
-            this.textBox1.TabIndex = 24;
+            this.txtAccount_filter.Location = new System.Drawing.Point(306, 25);
+            this.txtAccount_filter.Name = "txtAccount_filter";
+            this.txtAccount_filter.Size = new System.Drawing.Size(166, 29);
+            this.txtAccount_filter.TabIndex = 24;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(14, 87);
+            this.label3.Location = new System.Drawing.Point(207, 25);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(93, 24);
             this.label3.TabIndex = 22;
             this.label3.Text = "Tài khoản";
             // 
-            // comboBox4
+            // isError_filter
             // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(926, 80);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(158, 32);
-            this.comboBox4.TabIndex = 23;
+            this.isError_filter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.isError_filter.FormattingEnabled = true;
+            this.isError_filter.Location = new System.Drawing.Point(816, 82);
+            this.isError_filter.Name = "isError_filter";
+            this.isError_filter.Size = new System.Drawing.Size(158, 32);
+            this.isError_filter.TabIndex = 23;
             // 
-            // comboBox3
+            // isProcessed_filter
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(684, 82);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(158, 32);
-            this.comboBox3.TabIndex = 23;
+            this.isProcessed_filter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.isProcessed_filter.FormattingEnabled = true;
+            this.isProcessed_filter.Location = new System.Drawing.Point(574, 84);
+            this.isProcessed_filter.Name = "isProcessed_filter";
+            this.isProcessed_filter.Size = new System.Drawing.Size(158, 32);
+            this.isProcessed_filter.TabIndex = 23;
             // 
-            // comboBox2
+            // isSatisfied_filter
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(405, 83);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(158, 32);
-            this.comboBox2.TabIndex = 23;
+            this.isSatisfied_filter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.isSatisfied_filter.FormattingEnabled = true;
+            this.isSatisfied_filter.Location = new System.Drawing.Point(295, 85);
+            this.isSatisfied_filter.Name = "isSatisfied_filter";
+            this.isSatisfied_filter.Size = new System.Drawing.Size(158, 32);
+            this.isSatisfied_filter.TabIndex = 23;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(874, 86);
+            this.label9.Location = new System.Drawing.Point(764, 88);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(35, 24);
             this.label9.TabIndex = 22;
             this.label9.Text = "Lỗi";
             // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(124, 34);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(174, 32);
-            this.comboBox1.TabIndex = 23;
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(591, 88);
+            this.label8.Location = new System.Drawing.Point(481, 90);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(77, 24);
             this.label8.TabIndex = 22;
             this.label8.Text = "Đã xử lý";
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(1056, 35);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(27, 29);
-            this.label5.TabIndex = 22;
-            this.label5.Text = "~";
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(325, 87);
+            this.label7.Location = new System.Drawing.Point(215, 89);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(66, 24);
             this.label7.TabIndex = 22;
@@ -328,25 +323,16 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(325, 34);
+            this.label6.Location = new System.Drawing.Point(498, 27);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(98, 24);
             this.label6.TabIndex = 22;
             this.label6.Text = "Ngày xử lý";
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(854, 34);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(68, 24);
-            this.label4.TabIndex = 22;
-            this.label4.Text = "Số tiền";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(14, 37);
+            this.label2.Location = new System.Drawing.Point(6, 25);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(50, 24);
             this.label2.TabIndex = 22;
@@ -632,20 +618,6 @@
             this.SettingToolStripMenuItem.Name = "SettingToolStripMenuItem";
             this.SettingToolStripMenuItem.Size = new System.Drawing.Size(12, 29);
             // 
-            // txtMoney_GD
-            // 
-            this.txtMoney_GD.Location = new System.Drawing.Point(1089, 31);
-            this.txtMoney_GD.Name = "txtMoney_GD";
-            this.txtMoney_GD.Size = new System.Drawing.Size(134, 29);
-            this.txtMoney_GD.TabIndex = 29;
-            // 
-            // txtMoney_HL
-            // 
-            this.txtMoney_HL.Location = new System.Drawing.Point(926, 31);
-            this.txtMoney_HL.Name = "txtMoney_HL";
-            this.txtMoney_HL.Size = new System.Drawing.Size(124, 29);
-            this.txtMoney_HL.TabIndex = 30;
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -700,18 +672,15 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button btnShowHistory;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtAccount_filter;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.DateTimePicker dtExecuteDate_from_filter;
+        private System.Windows.Forms.ComboBox isSatisfied_filter;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btnResetFilter;
-        private System.Windows.Forms.DateTimePicker dateTimePicker2;
+        private System.Windows.Forms.DateTimePicker dtExecuteDate_to_filter;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label lblReadMessageProgress;
         private System.Windows.Forms.Label lblPayInProgress;
@@ -719,8 +688,8 @@
         private System.Windows.Forms.ToolStripMenuItem SettingToolStripMenuItem;
         private System.Windows.Forms.MenuStrip menuStrip2;
         private System.Windows.Forms.ToolStripMenuItem SettingToolStripMenuItem1;
-        private System.Windows.Forms.ComboBox comboBox4;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox isError_filter;
+        private System.Windows.Forms.ComboBox isProcessed_filter;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.CheckBox cbStopAutoLoadMess;
         private System.Windows.Forms.DataGridViewTextBoxColumn Web;
@@ -733,7 +702,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn DateExcute;
         private System.Windows.Forms.DataGridViewTextBoxColumn Error;
         private System.Windows.Forms.DataGridViewTextBoxColumn Id;
-        private System.Windows.Forms.TextBox txtMoney_GD;
-        private System.Windows.Forms.TextBox txtMoney_HL;
+        private System.Windows.Forms.ListBox web_listBox_filter;
     }
 }

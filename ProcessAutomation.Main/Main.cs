@@ -17,6 +17,8 @@ using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
 using MongoDB.Bson.IO;
+using System.Media;
+using System.IO;
 
 namespace ProcessAutomation.Main
 {
@@ -31,6 +33,8 @@ namespace ProcessAutomation.Main
         System.Timers.Timer timerAnalyzeMessage;
         System.Timers.Timer timerReadMessageFromDevice;
         MessageContition messageContition = new MessageContition();
+        System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-US");
+        SoundPlayer audio = new SoundPlayer(Properties.Resources.ring);
 
         public Main()
         {
@@ -174,7 +178,10 @@ namespace ProcessAutomation.Main
             {
                 timerAnalyzeMessage.Stop();
                 Thread.Sleep(2000);
-                messageService.StartReadMessage();
+                if (messageService.StartReadMessage())
+                {
+                    audio.Play();
+                } 
             }
             catch (Exception ex)
             {
@@ -322,8 +329,32 @@ namespace ProcessAutomation.Main
         {
             this.Invoke(new Action(() =>
             {
+                var account = txtAccount_filter.Text.Trim();
+                List<string> selectedList = new List<string>();
+                foreach (var item in web_listBox_filter.SelectedItems)
+                {
+                    selectedList.Add(item.ToString());
+                }
+
                 var database = new MongoDatabase<Message>(typeof(Message).Name);
-                List<Message> listMessge = database.Query.ToList();
+                List<Message> listMessge = database.Query
+                    .Where(x => (web_listBox_filter.SelectedItems.Count == 0) || selectedList.Contains(x.Web))
+                    .Where(x => string.IsNullOrEmpty(account) || x.Account == account)
+                    .Where(x => (isSatisfied_filter.SelectedItem.ToString().Equals("Tất Cả")) 
+                        || (isSatisfied_filter.SelectedItem.ToString().Equals("Hợp Lệ") && x.IsSatisfied)
+                        || (isSatisfied_filter.SelectedItem.ToString().Equals("Không") && !x.IsSatisfied))
+                    .Where(x => (isProcessed_filter.SelectedItem.ToString().Equals("Tất Cả"))
+                        || (isProcessed_filter.SelectedItem.ToString().Equals("Rồi") && x.IsProcessed)
+                        || (isProcessed_filter.SelectedItem.ToString().Equals("Chưa") && !x.IsProcessed))
+                    .Where(x => (isError_filter.SelectedItem.ToString().Equals("Tất Cả"))
+                        || (isSatisfied_filter.SelectedItem.ToString().Equals("Có") && !string.IsNullOrEmpty(x.Error))
+                        || (isSatisfied_filter.SelectedItem.ToString().Equals("Không") && string.IsNullOrEmpty(x.Error)))
+                    //.Where(x => (x.DateExcute > BsonDateTime.Create(dtExecuteDate_from_filter.Value)
+                    //            && x.DateExcute < BsonDateTime.Create(dtExecuteDate_to_filter.Value)))
+
+                    .ToList();
+
+
                 dataGridView1.Columns[4].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
                 dataGridView1.Columns[4].Frozen = false;
                 dataGridView1.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -395,6 +426,30 @@ namespace ProcessAutomation.Main
             lblReadMessageProgress.Hide();
             lblPayInProgress.Hide();
 
+            isProcessed_filter.Items.Add(new ComboboxItem() { Text = "Tất Cả", Value = "" });
+            isProcessed_filter.Items.Add(new ComboboxItem() { Text = "Rồi", Value = true });
+            isProcessed_filter.Items.Add(new ComboboxItem() { Text = "Chưa", Value = false });
+            isProcessed_filter.SelectedIndex = 0;
+
+            isSatisfied_filter.Items.Add(new ComboboxItem() { Text = "Tất Cả", Value = "" });
+            isSatisfied_filter.Items.Add(new ComboboxItem() { Text = "Hợp Lệ", Value = true });
+            isSatisfied_filter.Items.Add(new ComboboxItem() { Text = "Không", Value = false });
+            isSatisfied_filter.SelectedIndex = 0;
+
+            isError_filter.Items.Add(new ComboboxItem() { Text = "Tất Cả", Value = "" });
+            isError_filter.Items.Add(new ComboboxItem() { Text = "Có", Value = true });
+            isError_filter.Items.Add(new ComboboxItem() { Text = "Không", Value = false });
+            isError_filter.SelectedIndex = 0;
+
+            web_listBox_filter.Items.Add(Constant.CAYBANG);
+            web_listBox_filter.Items.Add(Constant.HANHLANG);
+            web_listBox_filter.Items.Add(Constant.GIADINHVN);
+            web_listBox_filter.Items.Add(Constant.NT30s);
+            web_listBox_filter.SetSelected(0, true);
+            web_listBox_filter.SetSelected(1, true);
+            web_listBox_filter.SetSelected(2, true);
+            web_listBox_filter.SetSelected(3, true);
+            
             messageContition.WebSRun.Add(Constant.CAYBANG);
             messageContition.WebSRun.Add(Constant.NT30s);
             messageContition.WebSRun.Add(Constant.HANHLANG);
@@ -478,5 +533,25 @@ namespace ProcessAutomation.Main
                 return BitConverter.ToString(hash).Replace("-", String.Empty).ToLower();
             }
         }
+
+        private void dtExecuteDate_from_filter_ValueChanged(object sender, EventArgs e)
+        {
+            dtExecuteDate_from_filter.CustomFormat = "dd/MM/yyyy";
+        }
+
+        private void dtExecuteDate_to_filter_ValueChanged(object sender, EventArgs e)
+        {
+            dtExecuteDate_to_filter.CustomFormat = "dd/MM/yyyy";
+        }
+
+        //private void dtExecuteDate_from_filter_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    dtExecuteDate_from_filter.CustomFormat = " ";
+        //}
+
+        //private void dtExecuteDate_to_filter_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    dtExecuteDate_to_filter.CustomFormat = " ";
+        //}
     }
 }

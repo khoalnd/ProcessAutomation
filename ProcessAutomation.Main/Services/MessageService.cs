@@ -49,8 +49,9 @@ namespace ProcessAutomation.Main.Services
             }
         }
 
-        public void StartReadMessage()
+        public bool StartReadMessage()
         {
+            var messageComming = false;
             var messages = messFromDevice.Query.Where(x => x.IsProcessed == false).ToList();
             foreach (var mess in messages)
             {
@@ -61,7 +62,9 @@ namespace ProcessAutomation.Main.Services
                 var updateOption = Builders<MessageFromDevice>.Update
                 .Set(p => p.IsProcessed, true);
                 messFromDevice.UpdateOne(x => x.Id == mess.Id, updateOption);
-            } 
+                messageComming = true;
+            }
+            return true;
         }
 
         public Dictionary<string, List<Message>> ReadMessage(MessageContition messageCondition)
@@ -78,6 +81,7 @@ namespace ProcessAutomation.Main.Services
         {
             try
             {
+                var messageComing = 0;
                 if (matches.Count > 0)
                 {
                     foreach (Match match in matches)
@@ -113,6 +117,7 @@ namespace ProcessAutomation.Main.Services
                         //messages.Add(mess);
                         database.InsertOne(mess);
                         csvHelper.WriteToFile(dataToWrite, $"{DateTime.Now.ToString("dd-MM-yyyy")}.csv");
+                        messageComing++;
                     }
                 }
             }
