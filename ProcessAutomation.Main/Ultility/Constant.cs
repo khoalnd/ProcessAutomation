@@ -19,7 +19,7 @@ namespace ProcessAutomation.Main.Ultility
         public const string REG_EXTRACT_MESSAGE = "(\\+CMGL: \\d+)+(,\".*?\",)+(\".*?\",)+(,\".*?\")+(\n|\r\n)+(.*)";
         public const string REG_EXTRACT_MONEY_TEMPLATE1 = @"(tang)+(.*?VND)";
         public const string REG_EXTRACT_MONEY_TEMPLATE2 = @"(\+ )+(.*? )";
-        public const string REG_EXTRACT_ACCOUNT = @"(cb|hl|gd|nt| c b| h l| g d| n t)+(\d\d\d\d)";/*"(cb|hl|gd|nt| c b| h l| g d| n t)+(.*?(?=[.]))";*/
+        public const string REG_EXTRACT_ACCOUNT = @"(cb|hl|gd|nt| c b| h l| g d| n t|cb |hl |gd |nt | c b | h l | g d | n t )+(\d\d\d\d)";
         public static List<string> WEBS_NAME = new List<string> { "cb", "hl", "gd", "nt" };
         #endregion
 
