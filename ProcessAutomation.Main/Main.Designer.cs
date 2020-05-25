@@ -43,8 +43,6 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.web_listBox_filter = new System.Windows.Forms.ListBox();
             this.cbStopAutoLoadMess = new System.Windows.Forms.CheckBox();
-            this.dtExecuteDate_to_filter = new System.Windows.Forms.DateTimePicker();
-            this.dtExecuteDate_from_filter = new System.Windows.Forms.DateTimePicker();
             this.txtAccount_filter = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.isError_filter = new System.Windows.Forms.ComboBox();
@@ -53,7 +51,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Web = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -66,7 +63,6 @@
             this.DateExcute = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Error = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnResetFilter = new System.Windows.Forms.Button();
             this.btnShowHistory = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lblReadMessageProgress = new System.Windows.Forms.Label();
@@ -183,8 +179,6 @@
             // 
             this.groupBox3.Controls.Add(this.web_listBox_filter);
             this.groupBox3.Controls.Add(this.cbStopAutoLoadMess);
-            this.groupBox3.Controls.Add(this.dtExecuteDate_to_filter);
-            this.groupBox3.Controls.Add(this.dtExecuteDate_from_filter);
             this.groupBox3.Controls.Add(this.txtAccount_filter);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.isError_filter);
@@ -193,10 +187,8 @@
             this.groupBox3.Controls.Add(this.label9);
             this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.label7);
-            this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.label2);
             this.groupBox3.Controls.Add(this.dataGridView1);
-            this.groupBox3.Controls.Add(this.btnResetFilter);
             this.groupBox3.Controls.Add(this.btnShowHistory);
             this.groupBox3.Location = new System.Drawing.Point(3, 121);
             this.groupBox3.Name = "groupBox3";
@@ -213,13 +205,13 @@
             this.web_listBox_filter.Location = new System.Drawing.Point(10, 50);
             this.web_listBox_filter.Name = "web_listBox_filter";
             this.web_listBox_filter.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.web_listBox_filter.Size = new System.Drawing.Size(173, 76);
+            this.web_listBox_filter.Size = new System.Drawing.Size(199, 76);
             this.web_listBox_filter.TabIndex = 31;
             // 
             // cbStopAutoLoadMess
             // 
             this.cbStopAutoLoadMess.AutoSize = true;
-            this.cbStopAutoLoadMess.Location = new System.Drawing.Point(1023, 23);
+            this.cbStopAutoLoadMess.Location = new System.Drawing.Point(1006, 30);
             this.cbStopAutoLoadMess.Name = "cbStopAutoLoadMess";
             this.cbStopAutoLoadMess.Size = new System.Drawing.Size(167, 28);
             this.cbStopAutoLoadMess.TabIndex = 28;
@@ -227,40 +219,17 @@
             this.cbStopAutoLoadMess.UseVisualStyleBackColor = true;
             this.cbStopAutoLoadMess.CheckedChanged += new System.EventHandler(this.cbStopAutoLoadMess_CheckedChanged);
             // 
-            // dtExecuteDate_to_filter
-            // 
-            this.dtExecuteDate_to_filter.Checked = false;
-            this.dtExecuteDate_to_filter.CustomFormat = "dd/MM/yyyy";
-            this.dtExecuteDate_to_filter.Enabled = false;
-            this.dtExecuteDate_to_filter.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtExecuteDate_to_filter.Location = new System.Drawing.Point(804, 23);
-            this.dtExecuteDate_to_filter.Name = "dtExecuteDate_to_filter";
-            this.dtExecuteDate_to_filter.Size = new System.Drawing.Size(188, 29);
-            this.dtExecuteDate_to_filter.TabIndex = 27;
-            this.dtExecuteDate_to_filter.ValueChanged += new System.EventHandler(this.dtExecuteDate_to_filter_ValueChanged);
-            // 
-            // dtExecuteDate_from_filter
-            // 
-            this.dtExecuteDate_from_filter.CustomFormat = "dd/MM/yyyy";
-            this.dtExecuteDate_from_filter.Enabled = false;
-            this.dtExecuteDate_from_filter.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtExecuteDate_from_filter.Location = new System.Drawing.Point(603, 24);
-            this.dtExecuteDate_from_filter.Name = "dtExecuteDate_from_filter";
-            this.dtExecuteDate_from_filter.Size = new System.Drawing.Size(180, 29);
-            this.dtExecuteDate_from_filter.TabIndex = 27;
-            this.dtExecuteDate_from_filter.ValueChanged += new System.EventHandler(this.dtExecuteDate_from_filter_ValueChanged);
-            // 
             // txtAccount_filter
             // 
-            this.txtAccount_filter.Location = new System.Drawing.Point(306, 25);
+            this.txtAccount_filter.Location = new System.Drawing.Point(374, 26);
             this.txtAccount_filter.Name = "txtAccount_filter";
-            this.txtAccount_filter.Size = new System.Drawing.Size(166, 29);
+            this.txtAccount_filter.Size = new System.Drawing.Size(189, 29);
             this.txtAccount_filter.TabIndex = 24;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(207, 25);
+            this.label3.Location = new System.Drawing.Point(250, 26);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(93, 24);
             this.label3.TabIndex = 22;
@@ -270,33 +239,33 @@
             // 
             this.isError_filter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.isError_filter.FormattingEnabled = true;
-            this.isError_filter.Location = new System.Drawing.Point(816, 82);
+            this.isError_filter.Location = new System.Drawing.Point(769, 26);
             this.isError_filter.Name = "isError_filter";
-            this.isError_filter.Size = new System.Drawing.Size(158, 32);
+            this.isError_filter.Size = new System.Drawing.Size(185, 32);
             this.isError_filter.TabIndex = 23;
             // 
             // isProcessed_filter
             // 
             this.isProcessed_filter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.isProcessed_filter.FormattingEnabled = true;
-            this.isProcessed_filter.Location = new System.Drawing.Point(574, 84);
+            this.isProcessed_filter.Location = new System.Drawing.Point(769, 82);
             this.isProcessed_filter.Name = "isProcessed_filter";
-            this.isProcessed_filter.Size = new System.Drawing.Size(158, 32);
+            this.isProcessed_filter.Size = new System.Drawing.Size(185, 32);
             this.isProcessed_filter.TabIndex = 23;
             // 
             // isSatisfied_filter
             // 
             this.isSatisfied_filter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.isSatisfied_filter.FormattingEnabled = true;
-            this.isSatisfied_filter.Location = new System.Drawing.Point(295, 85);
+            this.isSatisfied_filter.Location = new System.Drawing.Point(374, 81);
             this.isSatisfied_filter.Name = "isSatisfied_filter";
-            this.isSatisfied_filter.Size = new System.Drawing.Size(158, 32);
+            this.isSatisfied_filter.Size = new System.Drawing.Size(189, 32);
             this.isSatisfied_filter.TabIndex = 23;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(764, 88);
+            this.label9.Location = new System.Drawing.Point(656, 26);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(35, 24);
             this.label9.TabIndex = 22;
@@ -305,7 +274,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(481, 90);
+            this.label8.Location = new System.Drawing.Point(656, 89);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(77, 24);
             this.label8.TabIndex = 22;
@@ -314,20 +283,11 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(215, 89);
+            this.label7.Location = new System.Drawing.Point(258, 90);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(66, 24);
             this.label7.TabIndex = 22;
             this.label7.Text = "Hợp lệ";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(498, 27);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(98, 24);
-            this.label6.TabIndex = 22;
-            this.label6.Text = "Ngày xử lý";
             // 
             // label2
             // 
@@ -477,18 +437,9 @@
             this.Id.Name = "Id";
             this.Id.Visible = false;
             // 
-            // btnResetFilter
-            // 
-            this.btnResetFilter.Location = new System.Drawing.Point(1318, 31);
-            this.btnResetFilter.Name = "btnResetFilter";
-            this.btnResetFilter.Size = new System.Drawing.Size(118, 33);
-            this.btnResetFilter.TabIndex = 20;
-            this.btnResetFilter.Text = "Reset";
-            this.btnResetFilter.UseVisualStyleBackColor = true;
-            // 
             // btnShowHistory
             // 
-            this.btnShowHistory.Location = new System.Drawing.Point(1318, 82);
+            this.btnShowHistory.Location = new System.Drawing.Point(1006, 85);
             this.btnShowHistory.Name = "btnShowHistory";
             this.btnShowHistory.Size = new System.Drawing.Size(118, 33);
             this.btnShowHistory.TabIndex = 20;
@@ -629,7 +580,7 @@
             this.MaximizeBox = false;
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Nạp Tiền Tự Động";
+            this.Text = "Auto Bot";
             this.Load += new System.EventHandler(this.Main_Load);
             this.tabPayIn.ResumeLayout(false);
             this.tabPayIn.PerformLayout();
@@ -675,12 +626,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtAccount_filter;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.DateTimePicker dtExecuteDate_from_filter;
         private System.Windows.Forms.ComboBox isSatisfied_filter;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Button btnResetFilter;
-        private System.Windows.Forms.DateTimePicker dtExecuteDate_to_filter;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label lblReadMessageProgress;
         private System.Windows.Forms.Label lblPayInProgress;

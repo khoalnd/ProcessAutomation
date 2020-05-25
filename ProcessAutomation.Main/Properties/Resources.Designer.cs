@@ -63,9 +63,9 @@ namespace ProcessAutomation.Main.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream ring {
+        internal static System.IO.UnmanagedMemoryStream ring1 {
             get {
-                return ResourceManager.GetStream("ring", resourceCulture);
+                return ResourceManager.GetStream("ring1", resourceCulture);
             }
         }
         

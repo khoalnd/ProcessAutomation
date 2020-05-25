@@ -34,7 +34,7 @@ namespace ProcessAutomation.Main
         System.Timers.Timer timerReadMessageFromDevice;
         MessageContition messageContition = new MessageContition();
         System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-US");
-        SoundPlayer audio = new SoundPlayer(Properties.Resources.ring);
+        SoundPlayer audio = new SoundPlayer(Properties.Resources.ring1);
 
         public Main()
         {
@@ -338,7 +338,8 @@ namespace ProcessAutomation.Main
 
                 var database = new MongoDatabase<Message>(typeof(Message).Name);
                 List<Message> listMessge = database.Query
-                    .Where(x => (web_listBox_filter.SelectedItems.Count == 0) || selectedList.Contains(x.Web))
+                    .Where(x => (web_listBox_filter.SelectedItems.Count == 0)
+                        || (web_listBox_filter.SelectedItems.Count == 4) || selectedList.Contains(x.Web))
                     .Where(x => string.IsNullOrEmpty(account) || x.Account == account)
                     .Where(x => (isSatisfied_filter.SelectedItem.ToString().Equals("Tất Cả")) 
                         || (isSatisfied_filter.SelectedItem.ToString().Equals("Hợp Lệ") && x.IsSatisfied)
@@ -476,7 +477,6 @@ namespace ProcessAutomation.Main
             if (cbStopAutoLoadMess.Checked)
             {
                 btnShowHistory.Enabled = false;
-                btnResetFilter.Enabled = false;
                 dataGridView1.ReadOnly = true;
                 dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.LightGray;
                 dataGridView1.EnableHeadersVisualStyles = false;
@@ -484,7 +484,6 @@ namespace ProcessAutomation.Main
             else
             {
                 btnShowHistory.Enabled = true;
-                btnResetFilter.Enabled = true;
                 dataGridView1.ReadOnly = false;
                 dataGridView1.Columns[7].ReadOnly = true;
                 dataGridView1.Columns[3].ReadOnly = true;
@@ -533,25 +532,5 @@ namespace ProcessAutomation.Main
                 return BitConverter.ToString(hash).Replace("-", String.Empty).ToLower();
             }
         }
-
-        private void dtExecuteDate_from_filter_ValueChanged(object sender, EventArgs e)
-        {
-            dtExecuteDate_from_filter.CustomFormat = "dd/MM/yyyy";
-        }
-
-        private void dtExecuteDate_to_filter_ValueChanged(object sender, EventArgs e)
-        {
-            dtExecuteDate_to_filter.CustomFormat = "dd/MM/yyyy";
-        }
-
-        //private void dtExecuteDate_from_filter_KeyDown(object sender, KeyEventArgs e)
-        //{
-        //    dtExecuteDate_from_filter.CustomFormat = " ";
-        //}
-
-        //private void dtExecuteDate_to_filter_KeyDown(object sender, KeyEventArgs e)
-        //{
-        //    dtExecuteDate_to_filter.CustomFormat = " ";
-        //}
     }
 }

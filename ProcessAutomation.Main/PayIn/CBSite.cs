@@ -131,10 +131,11 @@ namespace ProcessAutomation.Main.PayIn
                                     SendNotificationForError("Account không đủ số tiền tối thiểu",
                                         $"{web_name} : Account admin không đủ số tiền tối thiểu");
                                 }
-                                process = "Finish";
-                                break;
                             }
-                            Globals.isSentNotification_CB = false;
+                            else
+                            {
+                                Globals.isSentNotification_CB = false;
+                            }
                             process = "AccessToDaily";
                             break;
                         case "AccessToDaily":
