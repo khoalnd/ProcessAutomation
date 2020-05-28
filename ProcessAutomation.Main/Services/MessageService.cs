@@ -10,6 +10,7 @@ using MongoDB.Driver;
 using ProcessAutomation.DAL;
 using System.Media;
 using ProcessAutomation.Main.PayIn;
+using System.Globalization;
 
 namespace ProcessAutomation.Main.Services
 {
@@ -17,6 +18,7 @@ namespace ProcessAutomation.Main.Services
     {
         MongoDatabase<Message> database = new MongoDatabase<Message>(typeof(Message).Name);
         MongoDatabase<MessageFromDevice> messFromDevice = new MongoDatabase<MessageFromDevice>(typeof(MessageFromDevice).Name);
+        Helper helper = new Helper();
         CSV csvHelper = new CSV();
 
         public void ReadMessageFromDevice(SerialPort serialPort)
@@ -93,16 +95,18 @@ namespace ProcessAutomation.Main.Services
                             .Replace("+00", "")
                             .Replace("\"", "")
                             .Skip(1));
-
+                        
+                        mess.MessageContent = match.Groups[6].Value.Trim();
                         if (database.Query.Any(x =>
                             x.RecievedDate.Equals(mess.RecievedDate) &&
                             x.Account.Equals(mess.Account) &&
                             x.Web.Equals(mess.Web) &&
-                            x.Money.Equals(mess.Money))) {
+                            x.Money.Equals(mess.Money) &&
+                            x.MessageContent.Equals(mess.MessageContent))) {
                             continue;
                         }
 
-                        mess.MessageContent = match.Groups[6].Value.Trim();
+                        mess.MessageContent = helper.DecodeFromHexToString(mess.MessageContent);
                         dataToWrite.AppendFormat(
                             "{0},{1},{2},{3},{4},{5},{6},{7}",
                             mess.Account,
