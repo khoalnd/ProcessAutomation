@@ -210,14 +210,15 @@ namespace ProcessAutomation.Main
 
                 listMessage = GetMessageToRun();
                 if (listMessage.Count == 0)
-                    isCurrentPayInProcessDone = true;
-                else
                 {
-                    isCurrentPayInProcessDone = false;
-                    if (!timerCheckChildProcess.Enabled)
-                    {
-                        timerCheckChildProcess.Start();
-                    }
+                    listMessage.Add(Constant.CAYBANG, new List<Message>() { new Message { IsKeepSession = true } });
+                    listMessage.Add(Constant.HANHLANG, new List<Message>() { new Message { IsKeepSession = true } });
+                }
+
+                isCurrentPayInProcessDone = false;
+                if (!timerCheckChildProcess.Enabled)
+                {
+                    timerCheckChildProcess.Start();
                 }
             }
             catch (Exception ex)

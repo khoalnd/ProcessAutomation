@@ -23,7 +23,8 @@ public class Message
     public string RecievedDate { get; set; }
     public string MessageContent { get; set; }
     public bool IsSatisfied { get; set; }
-    public bool IsProcessed{ get; set; }
+    public bool IsProcessed { get; set; }
     public string Error { get; set; }
     public BsonDateTime DateExcute { get; set; }
+    public bool IsKeepSession { get; set; } = false;
 }
