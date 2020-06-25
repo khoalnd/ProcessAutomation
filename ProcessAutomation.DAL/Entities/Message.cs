@@ -28,4 +28,5 @@ public class Message
     public bool IsProcessed { get; set; }
     public string Error { get; set; }
     public BsonDateTime DateExcute { get; set; }
+    public bool IsKeepSession { get; set; }
 }

@@ -77,6 +77,7 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.SettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timerCheckKeepSection = new System.Windows.Forms.Timer(this.components);
             this.tabPayIn.SuspendLayout();
             this.menuStrip2.SuspendLayout();
             this.tabReaMessage.SuspendLayout();
@@ -650,5 +651,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Error;
         private System.Windows.Forms.DataGridViewTextBoxColumn Id;
         private System.Windows.Forms.ListBox web_listBox_filter;
+        private System.Windows.Forms.Timer timerCheckKeepSection;
     }
 }

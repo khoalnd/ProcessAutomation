@@ -83,6 +83,10 @@ namespace ProcessAutomation.Main.PayIn
                             if (webLayout.Url.ToString() == user_URL)
                             {
                                 process = "CheckAmountAccount";
+                                if (data.Count() == 0 && data.Exists(x => x.IsKeepSession))
+                                {
+                                    process = "Finish";
+                                }
                                 break;
                             }
 
@@ -116,6 +120,11 @@ namespace ProcessAutomation.Main.PayIn
                             }
                             Globals.isSentNotification_HL = false;
                             process = "CheckAmountAccount";
+                            if (data.Exists(x => x.IsKeepSession))
+                            {
+                                process = "Finish";
+                            }
+                            break;
 
                             break;
                         case "CheckAmountAccount":

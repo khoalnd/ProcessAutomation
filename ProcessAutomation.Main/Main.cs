@@ -201,6 +201,33 @@ namespace ProcessAutomation.Main
             }
         }
 
+        private void StartLoginKeepSeciton(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!isCurrentPayInProcessDone)
+                    return;
+
+                listMessage = GetMessageToRun();
+                if (listMessage.Count == 0)
+                {
+                    listMessage.Add(Constant.CAYBANG, new List<Message>() { new Message { IsKeepSession = true } });
+                    listMessage.Add(Constant.HANHLANG, new List<Message>() { new Message { IsKeepSession = true } });
+                }
+                isCurrentPayInProcessDone = false;
+                if (!timerCheckChildProcess.Enabled)
+                {
+                    timerCheckChildProcess.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                btnStopPayIn.Hide();
+                btnStartPayIn.Show();
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         private void StartPayIn(object sender, EventArgs e)
         {
             try
@@ -417,6 +444,10 @@ namespace ProcessAutomation.Main
             timerCheckChildProcess = new System.Windows.Forms.Timer();
             timerCheckChildProcess.Interval = (5000);
             timerCheckChildProcess.Tick += new EventHandler(Process);
+
+            timerCheckKeepSection = new System.Windows.Forms.Timer();
+            timerCheckKeepSection.Interval = (32400);
+            timerCheckKeepSection.Tick += new EventHandler(StartLoginKeepSeciton);
         }
 
         private void InitControl()
