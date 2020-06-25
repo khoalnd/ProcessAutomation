@@ -84,10 +84,6 @@ namespace ProcessAutomation.Main.PayIn
                             if (webLayout.Url.ToString() == user_URL)
                             {
                                 process = "CheckAmountAccount";
-                                if (data.Count() == 0 && data.Exists(x => x.IsKeepSession))
-                                {
-                                    process = "Finish";
-                                }
                                 break;
                             }
 
@@ -121,10 +117,7 @@ namespace ProcessAutomation.Main.PayIn
                             }
                             Globals.isSentNotification_CB = false;
                             process = "CheckAmountAccount";
-                            if (data.Exists(x => x.IsKeepSession))
-                            {
-                                process = "Finish";
-                            }
+
                             break;
                         case "CheckAmountAccount":
                             var isAmountEnough = CheckAmountAccount();
@@ -154,7 +147,7 @@ namespace ProcessAutomation.Main.PayIn
                             if (webLayout.Url.ToString() != agencies_URL)
                             {
                                 SendNotificationForError(
-                                    "Truy cập vào đại lý bị lỗi", 
+                                    "Truy cập vào đại lý bị lỗi",
                                     $"{web_name} : Trang đại lý bị lỗi");
                                 process = "Finish";
                                 break;
@@ -189,7 +182,7 @@ namespace ProcessAutomation.Main.PayIn
                             break;
                         case "AccessToPayIn":
                             var userRow = FindAccountOnResult(userAccount);
-                            if(userRow == null)
+                            if (userRow == null)
                             {
                                 var errorMessage = $"" +
                                     $"Truy cập trang cộng tiền web {web_name} bị lỗi hoặc" +
@@ -207,7 +200,7 @@ namespace ProcessAutomation.Main.PayIn
                                 }
                                 process = "OpenWeb";
                                 break;
-                            } 
+                            }
 
                             CreateSyncTask();
                             AccessToPayIn(userRow);
@@ -231,7 +224,7 @@ namespace ProcessAutomation.Main.PayIn
                                 SaveRecord(errorMessage);
 
                                 SendNotificationForError(
-                                    "Cộng tiền không thành công", 
+                                    "Cộng tiền không thành công",
                                     $"{web_name} : Cộng tiền account { currentMessage.Account } bị lỗi");
                             }
                             else
@@ -274,7 +267,7 @@ namespace ProcessAutomation.Main.PayIn
                     "Lỗi không xác định",
                     $"{web_name} : {ex.Message}");
             }
-            
+
             return;
         }
 
@@ -285,7 +278,7 @@ namespace ProcessAutomation.Main.PayIn
             webLayout.DocumentCompleted += documentComplete;
         }
 
-        private void Login(AdminAccount adminAccount) 
+        private void Login(AdminAccount adminAccount)
         {
             var htmlLogin = webLayout.Document;
             var inputUserName = htmlLogin.GetElementById("Username");

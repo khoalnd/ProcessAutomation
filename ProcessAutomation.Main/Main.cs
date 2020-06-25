@@ -43,7 +43,7 @@ namespace ProcessAutomation.Main
 
         private void Main_Load(object sender, EventArgs e)
         {
-            if(checkLicense())
+            if (checkLicense())
             {
                 AddPortsToCombobox();
                 InitAllTimer();
@@ -62,7 +62,7 @@ namespace ProcessAutomation.Main
 
                 // Adding this control to the form 
                 this.Controls.Add(illegaLabel);
-                
+
             }
         }
 
@@ -181,7 +181,7 @@ namespace ProcessAutomation.Main
                 if (messageService.StartReadMessage())
                 {
                     audio.Play();
-                } 
+                }
             }
             catch (Exception ex)
             {
@@ -210,15 +210,14 @@ namespace ProcessAutomation.Main
 
                 listMessage = GetMessageToRun();
                 if (listMessage.Count == 0)
+                    isCurrentPayInProcessDone = true;
+                else
                 {
-                    listMessage.Add(Constant.CAYBANG, new List<Message>() { new Message { IsKeepSession = true } });
-                    listMessage.Add(Constant.HANHLANG, new List<Message>() { new Message { IsKeepSession = true } });
-                }
-
-                isCurrentPayInProcessDone = false;
-                if (!timerCheckChildProcess.Enabled)
-                {
-                    timerCheckChildProcess.Start();
+                    isCurrentPayInProcessDone = false;
+                    if (!timerCheckChildProcess.Enabled)
+                    {
+                        timerCheckChildProcess.Start();
+                    }
                 }
             }
             catch (Exception ex)
@@ -342,7 +341,7 @@ namespace ProcessAutomation.Main
                     .Where(x => (web_listBox_filter.SelectedItems.Count == 0)
                         || (web_listBox_filter.SelectedItems.Count == 4) || selectedList.Contains(x.Web))
                     .Where(x => string.IsNullOrEmpty(account) || x.Account == account)
-                    .Where(x => (isSatisfied_filter.SelectedItem.ToString().Equals("Tất Cả")) 
+                    .Where(x => (isSatisfied_filter.SelectedItem.ToString().Equals("Tất Cả"))
                         || (isSatisfied_filter.SelectedItem.ToString().Equals("Hợp Lệ") && x.IsSatisfied)
                         || (isSatisfied_filter.SelectedItem.ToString().Equals("Không") && !x.IsSatisfied))
                     .Where(x => (isProcessed_filter.SelectedItem.ToString().Equals("Tất Cả"))
@@ -367,7 +366,7 @@ namespace ProcessAutomation.Main
                 dataGridView1.DataSource = listMessge.OrderByDescending(x => x.Id).Take(100).ToList();
             }));
 
-         
+
         }
 
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -381,7 +380,7 @@ namespace ProcessAutomation.Main
             }
 
             foreach (DataGridViewRow Myrow in dataGridView1.Rows)
-            {  
+            {
                 if ((Myrow.Cells[8].Value != null &&
                     !string.IsNullOrEmpty(Myrow.Cells[8].Value.ToString())) ||
                     (Myrow.Cells[5].Value != null &&
@@ -396,7 +395,7 @@ namespace ProcessAutomation.Main
             }
         }
 
-        private Dictionary<string,List<Message>> GetMessageToRun()
+        private Dictionary<string, List<Message>> GetMessageToRun()
         {
             return messageService.ReadMessage(messageContition);
         }
@@ -451,7 +450,7 @@ namespace ProcessAutomation.Main
             web_listBox_filter.SetSelected(1, true);
             web_listBox_filter.SetSelected(2, true);
             web_listBox_filter.SetSelected(3, true);
-            
+
             messageContition.WebSRun.Add(Constant.CAYBANG);
             messageContition.WebSRun.Add(Constant.NT30s);
             messageContition.WebSRun.Add(Constant.HANHLANG);
@@ -503,7 +502,8 @@ namespace ProcessAutomation.Main
                 var web = row.Cells[0].Value == null ? "" : row.Cells[0].Value.ToString().Trim();
                 var account = row.Cells[1].Value == null ? "" : row.Cells[1].Value.ToString().Trim();
                 decimal money = 0;
-                if (decimal.TryParse(row.Cells[2].Value == null ? "" : row.Cells[2].Value.ToString(), out money)) {
+                if (decimal.TryParse(row.Cells[2].Value == null ? "" : row.Cells[2].Value.ToString(), out money))
+                {
                 }
                 var IsSatisfied = (bool)row.Cells[5].Value;
                 var IsProcessed = (bool)row.Cells[6].Value;
@@ -519,7 +519,7 @@ namespace ProcessAutomation.Main
                 .Set(p => p.Error, Error);
 
                 database.UpdateOne(x => x.Id == id, updateOption);
-            } 
+            }
         }
         internal static string GetStringSha256Hash(string text)
         {

@@ -1,5 +1,7 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
+[BsonIgnoreExtraElements]
 public class Message
 {
     public Message()
@@ -26,5 +28,4 @@ public class Message
     public bool IsProcessed { get; set; }
     public string Error { get; set; }
     public BsonDateTime DateExcute { get; set; }
-    public bool IsKeepSession { get; set; } = false;
 }
